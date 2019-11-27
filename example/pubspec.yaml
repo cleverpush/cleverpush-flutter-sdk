@@ -1,0 +1,17 @@
+name: cleverpush_example
+description: Demonstrates how to use the cleverpush plugin.
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  cleverpush_flutter:
+    path: ../
+
+flutter:
+  uses-material-design: true

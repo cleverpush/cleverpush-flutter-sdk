@@ -1,0 +1,73 @@
+group 'com.cleverpush.flutter'
+version '1.0.0'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+}
+
+dependencies {
+    api 'com.cleverpush:CleverPush:3.12.2'
+}
+
+class DefaultManifestPlaceHolders {
+    static final MANIFEST_PLACEHOLDERS_DEFAULTS = [
+        cleverpush_app_id: '${cleverpush_app_id}',
+        cleverpush_google_project_number: '${cleverpush_google_project_number}'
+    ]
+
+    static void addManifestToAppProject(Project proj) {
+        def androidApp = proj.android
+        MANIFEST_PLACEHOLDERS_DEFAULTS.each { defKey, defValue ->
+            if (!androidApp.defaultConfig.manifestPlaceholders.containsKey(defKey)) {
+                androidApp.defaultConfig.manifestPlaceholders[defKey] = defValue
+
+                androidApp.buildTypes.each { buildType ->
+                    if (!buildType.manifestPlaceholders.containsKey(defKey))
+                        buildType.manifestPlaceholders[defKey] = defValue
+                }
+            }
+        }
+    }
+}
+
+rootProject.childProjects.each { projName, proj ->
+    if (projName != 'app' && projName != 'cleverpush_flutter')
+        return
+
+    if (proj.hasProperty('android')) {
+        DefaultManifestPlaceHolders.addManifestToAppProject(proj)
+        return
+    }
+
+    proj.afterEvaluate {
+        DefaultManifestPlaceHolders.addManifestToAppProject(proj)
+    }
+}

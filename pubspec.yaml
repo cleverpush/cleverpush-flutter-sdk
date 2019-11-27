@@ -1,0 +1,23 @@
+name: cleverpush_flutter
+description: CleverPush
+version: 1.0.0
+author: CleverPush GmbH
+homepage: https://github.com/cleverpush/cleverpush-flutter-sdk
+
+flutter:
+  plugin:
+    androidPackage: com.cleverpush.flutter
+    pluginClass: CleverPushPlugin
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  test: ^1.5.1
+  flutter_test:
+    sdk: flutter
+
+environment:
+  sdk: ">=2.0.0-dev.28.0 <3.0.0"
+  flutter: ">=0.1.4 <2.0.0"
