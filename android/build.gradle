@@ -34,13 +34,12 @@ android {
 }
 
 dependencies {
-    api 'com.cleverpush:CleverPush:3.12.2'
+    api 'com.cleverpush:CleverPush:0.5.3'
 }
 
 class DefaultManifestPlaceHolders {
     static final MANIFEST_PLACEHOLDERS_DEFAULTS = [
-        cleverpush_app_id: '${cleverpush_app_id}',
-        cleverpush_google_project_number: '${cleverpush_google_project_number}'
+        cleverpush_channel_id: '${cleverpush_channel_id}'
     ]
 
     static void addManifestToAppProject(Project proj) {

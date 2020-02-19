@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'CleverPush', '0.2.9'
+  s.dependency 'CleverPush', '0.4.4'
   s.static_framework = true
   s.ios.deployment_target = '8.0'
 end
