@@ -10,8 +10,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  cleverpush_flutter:
-    path: ../
+  cleverpush_flutter: 1.0.0
 
 flutter:
   uses-material-design: true
