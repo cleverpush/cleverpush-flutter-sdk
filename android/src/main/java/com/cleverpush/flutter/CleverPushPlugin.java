@@ -1,29 +1,20 @@
 package com.cleverpush.flutter;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.cleverpush.OSEmailSubscriptionObserver;
-import com.cleverpush.OSEmailSubscriptionStateChanges;
-import com.cleverpush.OSInAppMessageAction;
-import com.cleverpush.OSNotification;
-import com.cleverpush.OSNotificationOpenResult;
-import com.cleverpush.OSPermissionObserver;
-import com.cleverpush.OSPermissionStateChanges;
-import com.cleverpush.OSPermissionSubscriptionState;
-import com.cleverpush.OSSubscriptionObserver;
-import com.cleverpush.OSSubscriptionStateChanges;
+import com.cleverpush.Notification;
+import com.cleverpush.NotificationOpenedResult;
 import com.cleverpush.CleverPush;
-import com.cleverpush.CleverPush.EmailUpdateError;
-import com.cleverpush.CleverPush.EmailUpdateHandler;
-import com.cleverpush.CleverPush.InAppMessageClickHandler;
-import com.cleverpush.CleverPush.NotificationOpenedHandler;
-import com.cleverpush.CleverPush.NotificationReceivedHandler;
-import com.cleverpush.CleverPush.OSInFocusDisplayOption;
+import com.cleverpush.listener.SubscribedListener;
+import com.cleverpush.listener.NotificationReceivedListener;
+import com.cleverpush.listener.NotificationOpenedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import io.flutter.plugin.common.MethodCall;
@@ -34,8 +25,8 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.view.FlutterNativeView;
 
-public class CleverPushPlugin extends FlutterRegistrarResponder implements MethodCallHandler, NotificationReceivedHandler, NotificationOpenedHandler {
-  private CPNotificationOpenResult coldStartNotificationResult;
+public class CleverPushPlugin extends FlutterRegistrarResponder implements MethodCallHandler, NotificationReceivedListener, NotificationOpenedListener, SubscribedListener {
+  private NotificationOpenedResult coldStartNotificationResult;
   private boolean hasSetNotificationOpenedHandler = false;
   private boolean hasSetInAppMessageClickedHandler = false;
 
@@ -49,9 +40,10 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     plugin.flutterRegistrar.addViewDestroyListener(new PluginRegistry.ViewDestroyListener() {
       @Override
       public boolean onViewDestroy(FlutterNativeView flutterNativeView) {
-        CleverPush.removeNotificationReceivedHandler();
-        CleverPush.removeNotificationOpenedHandler();
-        CleverPush.removeInAppMessageClickHandler();
+        Context context = flutterRegistrar.activeContext();
+        CleverPush.getInstance(context).removeNotificationReceivedListener();
+        CleverPush.getInstance(context).removeNotificationOpenedListener();
+        CleverPush.getInstance(context).removeSubscribedListener();
         return false;
       }
     });
@@ -79,25 +71,32 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     String channelId = call.argument("channelId");
     Context context = flutterRegistrar.activeContext();
 
-    CleverPush.Builder builder = CleverPush.getCurrentOrNewInitBuilder();
-
-    CleverPush.init(context, null, channelId, this, this);
+    CleverPush.getInstance(context).init(channelId, null, this, this);
 
     replySuccess(reply, null);
   }
 
   private void subscribe(MethodCall call, Result result) {
-    CleverPush.subscribe();
+    Context context = flutterRegistrar.activeContext();
+    CleverPush.getInstance(context).subscribe();
     replySuccess(result, null);
   }
 
   private void unsubscribe(MethodCall call, Result result) {
-    CleverPush.unsubscribe();
+    Context context = flutterRegistrar.activeContext();
+    CleverPush.getInstance(context).unsubscribe();
     replySuccess(result, null);
   }
 
   private void isSubscribed(Result reply) {
-    replySuccess(reply, CleverPush.isSubscribed());
+    Context context = flutterRegistrar.activeContext();
+    replySuccess(reply, CleverPush.getInstance(context).isSubscribed());
+  }
+
+  private void showTopicsDialog(MethodCall call, Result reply) {
+    Context context = flutterRegistrar.activeContext();
+    CleverPush.getInstance(context).showTopicsDialog();
+    replySuccess(reply, null);
   }
 
   private void initNotificationOpenedHandlerParams() {
@@ -109,23 +108,24 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
   }
 
   @Override
-  public void handleSubscribed(OSSubscriptionStateChanges stateChanges) {
-    invokeMethodOnUiThread("CleverPush#handleSubscribed", CleverPushSerializer.convertSubscriptionStateChangesToMap(stateChanges));
+  public void subscribed(String subscriptionId) {
+    HashMap<String, Object> hash = new HashMap<>();
+    hash.put("subscriptionId", subscriptionId);
+    invokeMethodOnUiThread("CleverPush#handleSubscribed", hash);
   }
 
   @Override
-  public void notificationReceived(OSNotification notification) {
+  public void notificationReceived(NotificationOpenedResult result) {
     try {
-      invokeMethodOnUiThread("CleverPush#handleReceivedNotification", CleverPushSerializer.convertNotificationToMap(notification));
+      invokeMethodOnUiThread("CleverPush#handleReceivedNotification", CleverPushSerializer.convertNotificationOpenResultToMap(result));
     } catch (JSONException e) {
       e.printStackTrace();
-      CleverPush.cleverpushLog(CleverPush.LOG_LEVEL.ERROR,
-         "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage());
+      Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage());
     }
   }
 
   @Override
-  public void notificationOpened(OSNotificationOpenResult result) {
+  public void notificationOpened(NotificationOpenedResult result) {
     if (!this.hasSetNotificationOpenedHandler) {
       this.coldStartNotificationResult = result;
       return;
@@ -135,8 +135,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
       invokeMethodOnUiThread("CleverPush#handleOpenedNotification", CleverPushSerializer.convertNotificationOpenResultToMap(result));
     } catch (JSONException e) {
       e.getStackTrace();
-      CleverPush.cleverpushLog(CleverPush.LOG_LEVEL.ERROR,
-              "Encountered an error attempting to convert CPNotificationOpenResult object to map: " + e.getMessage());
+      Log.e("CleverPush", "Encountered an error attempting to convert CPNotificationOpenResult object to map: " + e.getMessage());
     }
   }
 }

@@ -1,7 +1,6 @@
 package com.cleverpush.flutter;
 
 import android.util.Log;
-import com.cleverpush.OSNotificationPayload.BackgroundImageLayout;
 import com.cleverpush.*;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,95 +11,47 @@ import java.util.Iterator;
 import java.util.List;
 
 class CleverPushSerializer {
-    private static HashMap<String, Object> convertNotificationPayloadToMap(OSNotificationPayload payload) throws JSONException {
+    private static HashMap<String, Object> convertNotificationToMap(Notification payload) throws JSONException {
        HashMap<String, Object> hash = new HashMap<>();
 
-        hash.put("notificationId", payload.notificationID);
-        hash.put("templateName", payload.templateName);
-        hash.put("templateId", payload.templateId);
-        hash.put("sound", payload.sound);
-        hash.put("title", payload.title);
-        hash.put("body", payload.body);
-        hash.put("launchUrl", payload.launchURL);
-        hash.put("smallIcon", payload.smallIcon);
-        hash.put("largeIcon", payload.largeIcon);
-        hash.put("bigPicture", payload.bigPicture);
-        hash.put("smallIconAccentColor", payload.smallIconAccentColor);
-        hash.put("ledColor", payload.ledColor);
-        hash.put("lockScreenVisibility", payload.lockScreenVisibility);
-        hash.put("groupKey", payload.groupKey);
-        hash.put("groupMessage", payload.groupMessage);
-        hash.put("fromProjectNumber", payload.fromProjectNumber);
-        hash.put("collapseId", payload.collapseId);
-        hash.put("priority", payload.priority);
+        hash.put("_id", payload.getId());
+        hash.put("title", payload.getTitle());
+        hash.put("text", payload.getText());
+        hash.put("url", payload.getUrl());
+        hash.put("iconUrl", payload.getIconUrl());
+        hash.put("mediaUrl", payload.getMediaUrl());
+        hash.put("createdAt", payload.getCreatedAt());
 
         ArrayList<HashMap> buttons = new ArrayList<>();
 
-        if (payload.actionButtons != null) {
-            for (int i = 0; i < payload.actionButtons.size(); i++) {
-                OSNotificationPayload.ActionButton button = payload.actionButtons.get(i);
+        if (payload.getActions() != null) {
+            for (int i = 0; i < payload.getActions().length; i++) {
+                NotificationAction button = payload.getActions()[i];
 
                HashMap<String, Object> buttonHash = new HashMap<>();
-                buttonHash.put("id", button.id);
-                buttonHash.put("text", button.text);
-                buttonHash.put("icon", button.icon);
+                buttonHash.put("title", button.getTitle());
+                buttonHash.put("icon", button.getIcon());
+                buttonHash.put("url", button.getUrl());
                 buttons.add(buttonHash);
             }
         }
 
-        if (buttons.size() > 0)
-            hash.put("buttons", buttons);
-
-        if (payload.backgroundImageLayout != null)
-            hash.put("backgroundImageLayout", convertAndroidBackgroundImageLayoutToMap(payload.backgroundImageLayout));
-
-        if (payload.rawPayload != null)
-            hash.put("rawPayload", payload.rawPayload);
-
-        Log.d("cleverpush", "Created json raw payload: " + convertJSONObjectToHashMap(new JSONObject(payload.rawPayload)).toString());
-
-        if (payload.additionalData != null)
-            hash.put("additionalData", convertJSONObjectToHashMap(payload.additionalData));
-
-        return hash;
-    }
-
-    static HashMap<String, Object> convertNotificationToMap(OSNotification notification) throws JSONException {
-        HashMap<String, Object> hash = new HashMap<>();
-
-        hash.put("payload", convertNotificationPayloadToMap(notification.payload));
-        hash.put("shown", notification.shown);
-        hash.put("appInFocus", notification.isAppInFocus);
-        hash.put("androidNotificationId", notification.androidNotificationId);
-
-        switch (notification.displayType) {
-            case None:
-                hash.put("displayType", 0);
-            case InAppAlert:
-                hash.put("displayType", 1);
-                break;
-            case Notification:
-                hash.put("displayType", 2);
+        if (buttons.size() > 0) {
+            hash.put("actions", buttons);
         }
 
-        return hash;
-    }
+        Log.d("CleverPush", "Created json payload: " + hash.toString());
 
-    static HashMap<String, Object> convertNotificationOpenResultToMap(OSNotificationOpenResult openResult) throws JSONException {
-        HashMap<String, Object> hash = new HashMap<>();
-
-        hash.put("notification", convertNotificationToMap(openResult.notification));
-        hash.put("action", convertNotificationActionToMap(openResult.action));
+        if (payload.getCustomData() != null)
+            hash.put("additionalData",payload.getCustomData());
 
         return hash;
     }
 
-    private static HashMap<String, Object> convertAndroidBackgroundImageLayoutToMap(BackgroundImageLayout layout) {
+    static HashMap<String, Object> convertNotificationOpenResultToMap(NotificationOpenedResult openResult) throws JSONException {
         HashMap<String, Object> hash = new HashMap<>();
 
-        hash.put("image", layout.image);
-        hash.put("bodyTextColor", layout.bodyTextColor);
-        hash.put("titleTextColor", layout.titleTextColor);
+        hash.put("notification", convertNotificationToMap(openResult.getNotification()));
 
         return hash;
     }
