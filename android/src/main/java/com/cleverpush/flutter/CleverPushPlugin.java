@@ -31,7 +31,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
   private boolean hasSetInAppMessageClickedHandler = false;
 
   public static void registerWith(Registrar registrar) {
-    CleverPushPlugin plugin = new CleverPushPlugin();
+    final CleverPushPlugin plugin = new CleverPushPlugin();
 
     plugin.channel = new MethodChannel(registrar.messenger(), "CleverPush");
     plugin.channel.setMethodCallHandler(plugin);
@@ -40,7 +40,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     plugin.flutterRegistrar.addViewDestroyListener(new PluginRegistry.ViewDestroyListener() {
       @Override
       public boolean onViewDestroy(FlutterNativeView flutterNativeView) {
-        Context context = flutterRegistrar.activeContext();
+        Context context = plugin.flutterRegistrar.activeContext();
         CleverPush.getInstance(context).removeNotificationReceivedListener();
         CleverPush.getInstance(context).removeNotificationOpenedListener();
         CleverPush.getInstance(context).removeSubscribedListener();
