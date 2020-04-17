@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 
 export 'src/notification.dart';
 
-typedef void NotificationReceivedHandler(CPNotification notification);
+typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
 typedef void SubscribedHandler(String subscriptionId);
 
@@ -58,11 +58,11 @@ class CleverPush {
   Future<Null> _handleMethod(MethodCall call) async {
     if (call.method == 'CleverPush#handleNotificationReceived' &&
         this._notificationReceivedHandler != null) {
-      this._notificationReceivedHandler(CPNotification(call.arguments.cast<String, dynamic>()));
+      this._notificationReceivedHandler(CPNotificationReceivedResult(call.arguments.cast<String, dynamic>()));
     } else if (call.method == 'CleverPush#handleSubscribed' &&
         this._subscribedHandler != null) {
       this._subscribedHandler(call.arguments.cast<String, dynamic>());
-    } else if (call.method == 'CleverPush#handleOpenedNotification' &&
+    } else if (call.method == 'CleverPush#handleNotificationOpened' &&
         this._notificationOpenedHandler != null) {
       this._notificationOpenedHandler(CPNotificationOpenedResult(call.arguments.cast<String, dynamic>()));
     }

@@ -58,6 +58,15 @@ class CPNotificationOpenedResult {
   }
 }
 
+class CPNotificationReceivedResult {
+  CPNotification notification;
+
+  CPNotificationReceivedResult(Map<String, dynamic> json) {
+    this.notification =
+        CPNotification(json['notification'].cast<String, dynamic>());
+  }
+}
+
 abstract class JSONStringRepresentable {
   String jsonRepresentation();
 

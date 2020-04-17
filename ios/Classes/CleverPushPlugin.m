@@ -51,8 +51,8 @@
 
 - (void)initCleverPush:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush initWithLaunchOptions:nil channelId:call.arguments[@"channelId"]
-     handleNotificationReceived:^(CPNotificationReceivedResult *notification) {
-      [self handleReceivedNotification:notification];
+     handleNotificationReceived:^(CPNotificationReceivedResult *result) {
+      [self handleNotificationReceived:result];
     } handleNotificationOpened:^(CPNotificationOpenedResult *result) {
       [self handleNotificationOpened:result];
     } handleSubscribed:^(NSString *subscriptionId) {
@@ -93,12 +93,18 @@
     [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:result];
 }
 
-- (void)handleReceivedNotification:(CPNotificationReceivedResult *)result {
-    [self.channel invokeMethod:@"CleverPush#handleReceivedNotification" arguments:result];
+- (void)handleNotificationReceived:(CPNotificationReceivedResult *)result {
+    NSMutableDictionary *resultDict = [NSMutableDictionary new];
+    resultDict[@"notification"] = result.notification;
+
+    [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:resultDict];
 }
 
 - (void)handleNotificationOpened:(CPNotificationOpenedResult *)result {
-    [self.channel invokeMethod:@"CleverPush#handleOpenedNotification" arguments:result];
+    NSMutableDictionary *resultDict = [NSMutableDictionary new];
+    resultDict[@"notification"] = result.notification;
+
+    [self.channel invokeMethod:@"CleverPush#handleNotificationOpened" arguments:resultDict];
 }
 
 @end
