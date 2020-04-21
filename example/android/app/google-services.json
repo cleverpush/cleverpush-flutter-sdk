@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "257800252253",
+    "firebase_url": "https://cleverpush-flutter-example.firebaseio.com",
+    "project_id": "cleverpush-flutter-example",
+    "storage_bucket": "cleverpush-flutter-example.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257800252253:android:3618749db5a424005816b4",
+        "android_client_info": {
+          "package_name": "com.cleverpush.example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257800252253-bgri277udk2hig35ubeja6fj456elelc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvj_AY71ZF0xUdJn8IO9eQwDscH8SPIzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257800252253-bgri277udk2hig35ubeja6fj456elelc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

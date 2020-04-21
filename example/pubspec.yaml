@@ -37,7 +37,7 @@ dependencies:
   # Keep screen awake
   screen: 0.0.5
   # Crashlytics
-  #firebase_crashlytics: ^0.0.4+11
+  firebase_crashlytics: ^0.0.4+11
   # Google Analytics
   usage: ^3.4.1
   # Receive cache directory for GA
