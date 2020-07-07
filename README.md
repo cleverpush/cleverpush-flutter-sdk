@@ -2,4 +2,4 @@
 
 ## Documentation
 
-https://developers.cleverpush.com/sdks/flutter/
+https://developers.cleverpush.com/docs/sdks/flutter/setup
