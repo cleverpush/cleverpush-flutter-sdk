@@ -22,6 +22,7 @@ class CleverPush {
   }
 
   Future<void> init(String channelId) async {
+    print("CleverPush: Flutter initializing");
     await _channel.invokeMethod(
         'CleverPush#init', {'channelId': channelId});
   }
@@ -56,15 +57,20 @@ class CleverPush {
   }
 
   Future<Null> _handleMethod(MethodCall call) async {
-    if (call.method == 'CleverPush#handleNotificationReceived' &&
+    print("CleverPush: _handleMethod: " + call.method);
+    print(call.arguments.runtimeType);
+    try {
+    print(CPNotificationReceivedResult(Map<String, dynamic>.from(call.arguments)));
+      if (call.method == 'CleverPush#handleNotificationReceived' &&
         this._notificationReceivedHandler != null) {
-      this._notificationReceivedHandler(CPNotificationReceivedResult(call.arguments.cast<String, dynamic>()));
-    } else if (call.method == 'CleverPush#handleSubscribed' &&
-        this._subscribedHandler != null) {
-      this._subscribedHandler(call.arguments.cast<String, dynamic>());
-    } else if (call.method == 'CleverPush#handleNotificationOpened' &&
-        this._notificationOpenedHandler != null) {
-      this._notificationOpenedHandler(CPNotificationOpenedResult(call.arguments.cast<String, dynamic>()));
+        this._notificationReceivedHandler(CPNotificationReceivedResult(Map<String, dynamic>.from(call.arguments)));
+      } else if (call.method == 'CleverPush#handleSubscribed' && this._subscribedHandler != null) {
+        this._subscribedHandler(call.arguments);
+      } else if (call.method == 'CleverPush#handleNotificationOpened' && this._notificationOpenedHandler != null) {
+        this._notificationOpenedHandler(CPNotificationOpenedResult(Map<String, dynamic>.from(call.arguments)));
+      }
+    } on Exception catch(e) {
+      print(e);
     }
     return null;
   }

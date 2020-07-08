@@ -5,48 +5,8 @@ dependencies:
   flutter:
     sdk: flutter
     
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  # Render SVG graphics
-  flutter_svg: ^0.17.1
-  dio: 2.1.13
-  facebook_analytics_plugin: ^0.0.1+8
-  # Network communication
-  http: ^0.12.0
-  # Simple Date formatting
-  date_format: ^1.0.6
-  video_player: ^0.10.2+1
-  # Launch external apps
-  url_launcher: ^5.2.7
-  # Check installed apps
-  flutter_appavailability: 0.0.21
-  # Embed websites in the app
-  webview_flutter: 0.3.6
-  # Save persistently favourite buttons
-  shared_preferences: 0.5.2
-  permission_handler: ^4.0.0
-  # Share intent
-  share: ^0.6.2+4
-  # Switching orientation on iOS
-  auto_orientation: 1.0.1
-  # Retry and fetching of images
-  flutter_advanced_networkimage: 0.6.4
-  # State management
-  provider: 2.0.0+1
-  # Keep screen awake
-  screen: 0.0.5
-  # Crashlytics
-  firebase_crashlytics: ^0.0.4+11
-  # Google Analytics
-  usage: ^3.4.1
-  # Receive cache directory for GA
-  path: 1.6.4
-  # Version name
   package_info: ^0.4.0+6
-  # Creating the iOS launcher icons
-  flutter_launcher_icons: "^0.7.2"
-  geolocator: ^5.1.5
 
 dev_dependencies:
   flutter_test:
