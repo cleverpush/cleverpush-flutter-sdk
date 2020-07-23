@@ -69,9 +69,15 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
   private void initCleverPush(MethodCall call, Result reply) {
     String channelId = call.argument("channelId");
+    boolean autoRegister = false;
+    if (call.hasArgument("autoRegister") && call.argument("autoRegister") != null) {
+      try {
+        autoRegister = (boolean) call.argument("autoRegister");
+      } catch (NullPointerException ignored) {}
+    }
     Context context = flutterRegistrar.activeContext();
 
-    CleverPush.getInstance(context).init(channelId, null, this, this);
+    CleverPush.getInstance(context).init(channelId, this, this, this, autoRegister);
 
     replySuccess(reply, null);
   }
@@ -116,8 +122,9 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
   @Override
   public void notificationReceived(NotificationOpenedResult result) {
+    Log.d("CleverPush", "notificationReceived");
     try {
-      invokeMethodOnUiThread("CleverPush#handleReceivedNotification", CleverPushSerializer.convertNotificationOpenResultToMap(result));
+      invokeMethodOnUiThread("CleverPush#handleNotificationReceived", CleverPushSerializer.convertNotificationOpenResultToMap(result));
     } catch (JSONException e) {
       e.printStackTrace();
       Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage());
@@ -126,13 +133,14 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
   @Override
   public void notificationOpened(NotificationOpenedResult result) {
+    Log.d("CleverPush", "notificationOpened");
     if (!this.hasSetNotificationOpenedHandler) {
       this.coldStartNotificationResult = result;
       return;
     }
 
     try {
-      invokeMethodOnUiThread("CleverPush#handleOpenedNotification", CleverPushSerializer.convertNotificationOpenResultToMap(result));
+      invokeMethodOnUiThread("CleverPush#handleNotificationOpened", CleverPushSerializer.convertNotificationOpenResultToMap(result));
     } catch (JSONException e) {
       e.getStackTrace();
       Log.e("CleverPush", "Encountered an error attempting to convert CPNotificationOpenResult object to map: " + e.getMessage());
