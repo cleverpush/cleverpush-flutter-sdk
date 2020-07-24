@@ -21,10 +21,10 @@ class CleverPush {
     this._channel.setMethodCallHandler(_handleMethod);
   }
 
-  Future<void> init(String channelId) async {
+  Future<void> init(String channelId, [bool autoRegister]) async {
     print("CleverPush: Flutter initializing");
     await _channel.invokeMethod(
-        'CleverPush#init', {'channelId': channelId});
+        'CleverPush#init', { 'channelId': channelId, 'autoRegister': autoRegister });
   }
 
   void setNotificationReceivedHandler(NotificationReceivedHandler handler) {

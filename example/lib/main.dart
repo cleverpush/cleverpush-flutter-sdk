@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("7R8nkAxtrY5wy5TsS");
+    await CleverPush.shared.init("7R8nkAxtrY5wy5TsS", true);
   }
 
   void _handleSubscribe() {
