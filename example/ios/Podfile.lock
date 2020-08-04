@@ -1,41 +1,10 @@
 PODS:
-  - auto_orientation (0.0.1):
-    - Flutter
   - CleverPush (0.5.9)
   - cleverpush_flutter (1.0.5):
     - CleverPush (= 0.5.9)
     - Flutter
-  - facebook_analytics_plugin (0.0.1):
-    - FBSDKCoreKit (~> 5.5)
-    - Flutter
-  - FBSDKCoreKit (5.15.1):
-    - FBSDKCoreKit/Basics (= 5.15.1)
-    - FBSDKCoreKit/Core (= 5.15.1)
-  - FBSDKCoreKit/Basics (5.15.1)
-  - FBSDKCoreKit/Core (5.15.1):
-    - FBSDKCoreKit/Basics
   - Flutter (1.0.0)
-  - flutter_appavailability (0.0.1):
-    - Flutter
-  - geolocator (5.3.1):
-    - Flutter
-  - google_api_availability (2.0.4):
-    - Flutter
-  - location_permissions (2.0.5):
-    - Flutter
   - package_info (0.0.1):
-    - Flutter
-  - path_provider (0.0.1):
-    - Flutter
-  - path_provider_macos (0.0.1):
-    - Flutter
-  - "permission_handler (4.4.0+hotfix.4)":
-    - Flutter
-  - screen (0.0.1):
-    - Flutter
-  - share (0.5.2):
-    - Flutter
-  - shared_preferences (0.0.1):
     - Flutter
   - url_launcher (0.0.1):
     - Flutter
@@ -47,69 +16,29 @@ PODS:
     - Flutter
   - video_player_web (0.0.1):
     - Flutter
-  - webview_flutter (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
-  - auto_orientation (from `.symlinks/plugins/auto_orientation/ios`)
   - CleverPush
   - cleverpush_flutter (from `.symlinks/plugins/cleverpush_flutter/ios`)
-  - facebook_analytics_plugin (from `.symlinks/plugins/facebook_analytics_plugin/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
-  - flutter_appavailability (from `.symlinks/plugins/flutter_appavailability/ios`)
-  - geolocator (from `.symlinks/plugins/geolocator/ios`)
-  - google_api_availability (from `.symlinks/plugins/google_api_availability/ios`)
-  - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
-  - path_provider (from `.symlinks/plugins/path_provider/ios`)
-  - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
-  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
-  - screen (from `.symlinks/plugins/screen/ios`)
-  - share (from `.symlinks/plugins/share/ios`)
-  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
   - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - video_player_web (from `.symlinks/plugins/video_player_web/ios`)
-  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
   trunk:
     - CleverPush
-    - FBSDKCoreKit
 
 EXTERNAL SOURCES:
-  auto_orientation:
-    :path: ".symlinks/plugins/auto_orientation/ios"
   cleverpush_flutter:
     :path: ".symlinks/plugins/cleverpush_flutter/ios"
-  facebook_analytics_plugin:
-    :path: ".symlinks/plugins/facebook_analytics_plugin/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
-  flutter_appavailability:
-    :path: ".symlinks/plugins/flutter_appavailability/ios"
-  geolocator:
-    :path: ".symlinks/plugins/geolocator/ios"
-  google_api_availability:
-    :path: ".symlinks/plugins/google_api_availability/ios"
-  location_permissions:
-    :path: ".symlinks/plugins/location_permissions/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
-  path_provider:
-    :path: ".symlinks/plugins/path_provider/ios"
-  path_provider_macos:
-    :path: ".symlinks/plugins/path_provider_macos/ios"
-  permission_handler:
-    :path: ".symlinks/plugins/permission_handler/ios"
-  screen:
-    :path: ".symlinks/plugins/screen/ios"
-  share:
-    :path: ".symlinks/plugins/share/ios"
-  shared_preferences:
-    :path: ".symlinks/plugins/shared_preferences/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
   url_launcher_macos:
@@ -120,33 +49,17 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player/ios"
   video_player_web:
     :path: ".symlinks/plugins/video_player_web/ios"
-  webview_flutter:
-    :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  auto_orientation: 2941c44ebe5c3d41016001597ab03e81a92a26ce
   CleverPush: 67a5126fa405088c2186bf5c7e976710ea70d843
   cleverpush_flutter: 307fb38d7029e086021c2395cacdfd9f36062eee
-  facebook_analytics_plugin: 73bc728c57267b3b0b18e70facb9faca06986146
-  FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_appavailability: ebf8f85abea44436d1262fcde8a4e64b2534b01a
-  geolocator: 460cc8e850b616f8c0e90944c86517d91ccbb686
-  google_api_availability: 15fa42a8cd83c0a6738507ffe6e87096f12abcb8
-  location_permissions: 4a49d4e5bec5b653643e551ab77963cc99bb0e4a
   package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
-  path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
-  path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
-  permission_handler: 8278954f2382902f63f00dd8828769c0bd6d511b
-  screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
-  share: bae0a282aab4483288913fc4dc0b935d4b491f2e
-  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
   url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
   url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
   video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
   video_player_web: da8cadb8274ed4f8dbee8d7171b420dedd437ce7
-  webview_flutter: 1aa7604e6cdb451a9b7ed2c37d5454c0b440246b
 
 PODFILE CHECKSUM: 41c6abf959125d1a5897ca8457c8e76f611e68c7
 
