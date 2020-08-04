@@ -1,20 +1,10 @@
 PODS:
-  - CleverPush (0.5.9)
-  - cleverpush_flutter (1.0.5):
-    - CleverPush (= 0.5.9)
+  - CleverPush (0.5.11)
+  - cleverpush_flutter (1.2.0):
+    - CleverPush (= 0.5.11)
     - Flutter
   - Flutter (1.0.0)
   - package_info (0.0.1):
-    - Flutter
-  - url_launcher (0.0.1):
-    - Flutter
-  - url_launcher_macos (0.0.1):
-    - Flutter
-  - url_launcher_web (0.0.1):
-    - Flutter
-  - video_player (0.0.1):
-    - Flutter
-  - video_player_web (0.0.1):
     - Flutter
 
 DEPENDENCIES:
@@ -22,11 +12,6 @@ DEPENDENCIES:
   - cleverpush_flutter (from `.symlinks/plugins/cleverpush_flutter/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
-  - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
-  - video_player (from `.symlinks/plugins/video_player/ios`)
-  - video_player_web (from `.symlinks/plugins/video_player_web/ios`)
 
 SPEC REPOS:
   trunk:
@@ -39,28 +24,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/flutter/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
-  url_launcher_macos:
-    :path: ".symlinks/plugins/url_launcher_macos/ios"
-  url_launcher_web:
-    :path: ".symlinks/plugins/url_launcher_web/ios"
-  video_player:
-    :path: ".symlinks/plugins/video_player/ios"
-  video_player_web:
-    :path: ".symlinks/plugins/video_player_web/ios"
 
 SPEC CHECKSUMS:
-  CleverPush: 67a5126fa405088c2186bf5c7e976710ea70d843
-  cleverpush_flutter: 307fb38d7029e086021c2395cacdfd9f36062eee
+  CleverPush: d2bc91ef52195d4ca325ec1b56a099536d4951fe
+  cleverpush_flutter: a3cbf852451235b1f4c682783775d44960450960
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
-  url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
-  url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
-  url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
-  video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
-  video_player_web: da8cadb8274ed4f8dbee8d7171b420dedd437ce7
+  package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
 
 PODFILE CHECKSUM: 41c6abf959125d1a5897ca8457c8e76f611e68c7
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

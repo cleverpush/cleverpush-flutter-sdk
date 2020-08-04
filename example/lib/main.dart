@@ -37,11 +37,15 @@ class _MyAppState extends State<MyApp> {
     });
 
     CleverPush.shared.setSubscribedHandler((subscriptionId) {
+      this.setState(() {
+        _debugLabelString = "Subscribed: " + subscriptionId;
+      });
+      
       print("Subscribed: ${subscriptionId}");
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("7R8nkAxtrY5wy5TsS");
+    await CleverPush.shared.init("7R8nkAxtrY5wy5TsS", true);
   }
 
   void _handleSubscribe() {

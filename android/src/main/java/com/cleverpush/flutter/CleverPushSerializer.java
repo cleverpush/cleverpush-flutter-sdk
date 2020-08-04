@@ -43,7 +43,7 @@ class CleverPushSerializer {
         Log.d("CleverPush", "Created json payload: " + hash.toString());
 
         if (payload.getCustomData() != null)
-            hash.put("additionalData",payload.getCustomData());
+            hash.put("customData", payload.getCustomData());
 
         return hash;
     }

@@ -4,4 +4,5 @@
 build/
 pubspec.lock
 example/ios/Flutter/flutter_export_environment.sh
-
+.dart_tool/
+example/.flutter-plugins-dependencies

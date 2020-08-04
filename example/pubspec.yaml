@@ -5,23 +5,8 @@ dependencies:
   flutter:
     sdk: flutter
     
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  # Render SVG graphics
-  flutter_svg: ^0.17.1
-  dio: 2.1.13
-  # Network communication
-  http: ^0.12.0
-  # Simple Date formatting
-  date_format: ^1.0.6
-  video_player: ^0.10.2+1
-  # Launch external apps
-  url_launcher: ^5.2.7
-  # Version name
   package_info: ^0.4.0+6
-  # Creating the iOS launcher icons
-  flutter_launcher_icons: "^0.7.2"
 
 dev_dependencies:
   flutter_test:
