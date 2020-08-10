@@ -111,7 +111,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
   private void showTopicsDialog(MethodCall call, Result reply) {
     Context context = flutterRegistrar.activeContext();
-    CleverPush.getInstance(context).showTopicsDialog();
+    CleverPush.getInstance(context).showTopicsDialog(context);
     replySuccess(reply, null);
   }
 

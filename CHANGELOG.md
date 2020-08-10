@@ -1,4 +1,7 @@
 # 1.2.1
+- Fix showTopicsDialog
+
+# 1.2.1
 - Show notification when app is in foreground
 
 # 1.2.0
