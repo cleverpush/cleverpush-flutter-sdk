@@ -22,14 +22,16 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
-    CleverPush.shared.setNotificationReceivedHandler((CPNotificationReceivedResult result) {
+    CleverPush.shared
+        .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
       this.setState(() {
         _debugLabelString =
             "Notification received: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
     });
 
-    CleverPush.shared.setNotificationOpenedHandler((CPNotificationOpenedResult result) {
+    CleverPush.shared
+        .setNotificationOpenedHandler((CPNotificationOpenedResult result) {
       this.setState(() {
         _debugLabelString =
             "Notification opened: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
@@ -40,12 +42,12 @@ class _MyAppState extends State<MyApp> {
       this.setState(() {
         _debugLabelString = "Subscribed: " + subscriptionId;
       });
-      
+
       print("Subscribed: ${subscriptionId}");
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("7R8nkAxtrY5wy5TsS", true);
+    await CleverPush.shared.init("hxWyS7jPk4DrnSk5K", true);
   }
 
   void _handleSubscribe() {
@@ -83,8 +85,7 @@ class _MyAppState extends State<MyApp> {
               child: new Table(
                 children: [
                   new TableRow(children: [
-                    new CleverPushButton(
-                        "Subscribe", _handleSubscribe, true)
+                    new CleverPushButton("Subscribe", _handleSubscribe, true)
                   ]),
                   new TableRow(children: [
                     new CleverPushButton(
@@ -95,7 +96,8 @@ class _MyAppState extends State<MyApp> {
                         "Is Subscribed?", _handleIsSubscribed, true)
                   ]),
                   new TableRow(children: [
-                    new CleverPushButton("Show topics dialog", _handleTopicsDialog, true)
+                    new CleverPushButton(
+                        "Show topics dialog", _handleTopicsDialog, true)
                   ]),
                   new TableRow(children: [
                     Container(

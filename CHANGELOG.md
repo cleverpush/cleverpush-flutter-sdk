@@ -1,3 +1,6 @@
+# 1.3.0
+- Updated to latest Android + iOS SDKs
+
 # 1.2.1
 - Fix showTopicsDialog
 
