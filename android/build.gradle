@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         minSdkVersion 17
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    api 'com.cleverpush:cleverpush:1.8.6'
+    api 'com.cleverpush:cleverpush:1.8.7'
 }
 
 class DefaultManifestPlaceHolders {
