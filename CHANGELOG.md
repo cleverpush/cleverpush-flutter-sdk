@@ -1,3 +1,7 @@
+# 1.3.1
+- Updated to latest Android SDK
+- Fixed Topics Dialog theme
+
 # 1.3.0
 - Updated to latest Android + iOS SDKs
 
