@@ -1,3 +1,6 @@
+# 1.5.2
+- Updated to latest Android SDK
+
 # 1.5.1
 - Updated to latest Android SDK
 
