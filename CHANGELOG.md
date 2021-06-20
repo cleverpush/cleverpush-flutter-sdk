@@ -1,3 +1,6 @@
+# 1.5.4
+- Updated to latest Android SDK
+
 # 1.5.3
 - Updated to latest Android SDK
 
