@@ -22,16 +22,14 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
-    CleverPush.shared
-        .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
+    CleverPush.shared.setNotificationReceivedHandler((CPNotificationReceivedResult result) {
       this.setState(() {
         _debugLabelString =
             "Notification received: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
     });
 
-    CleverPush.shared
-        .setNotificationOpenedHandler((CPNotificationOpenedResult result) {
+    CleverPush.shared.setNotificationOpenedHandler((CPNotificationOpenedResult result) {
       this.setState(() {
         _debugLabelString =
             "Notification opened: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";

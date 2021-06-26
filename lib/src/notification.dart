@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
 class CPNotification extends JSONStringRepresentable {
@@ -8,24 +7,42 @@ class CPNotification extends JSONStringRepresentable {
   String url;
   String iconUrl;
   String mediaUrl;
+  String createdAt;
   Map<String, dynamic> customData;
   Map<String, dynamic> rawPayload;
+  bool chatNotification;
+  bool silent;
 
   CPNotification(Map<String, dynamic> json) {
     this.rawPayload = json;
     this.id = json['_id'] as String;
-    if (json.containsKey('title'))
+    if (json.containsKey('title')) {
       this.title = json['title'] as String;
-    if (json.containsKey('text'))
+    }
+    if (json.containsKey('text')) {
       this.text = json['text'] as String;
-    if (json.containsKey('url'))
+    }
+    if (json.containsKey('url')) {
       this.url = json['url'] as String;
-    if (json.containsKey('iconUrl'))
+    }
+    if (json.containsKey('iconUrl')) {
       this.iconUrl = json['iconUrl'] as String;
-    if (json.containsKey('mediaUrl'))
+    }
+    if (json.containsKey('mediaUrl')) {
       this.mediaUrl = json['mediaUrl'] as String;
-    if (json.containsKey('customData'))
+    }
+    if (json.containsKey('createdAt')) {
+      this.createdAt = json['createdAt'] as String;
+    }
+    if (json.containsKey('customData')) {
       this.customData = json['customData'].cast<String, dynamic>();
+    }
+    if (json.containsKey('chatNotification')) {
+      this.chatNotification = json['chatNotification'] as bool;
+    }
+    if (json.containsKey('silent')) {
+      this.silent = json['silent'] as bool;
+    }
   }
 
   String jsonRepresentation() => convertToJsonString(this.rawPayload);

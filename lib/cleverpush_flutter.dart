@@ -57,17 +57,16 @@ class CleverPush {
   }
 
   Future<Null> _handleMethod(MethodCall call) async {
-    print("CleverPush: _handleMethod: " + call.method);
-    print(call.arguments.runtimeType);
     try {
-    print(CPNotificationReceivedResult(Map<String, dynamic>.from(call.arguments)));
       if (call.method == 'CleverPush#handleNotificationReceived' &&
         this._notificationReceivedHandler != null) {
         this._notificationReceivedHandler(CPNotificationReceivedResult(Map<String, dynamic>.from(call.arguments)));
       } else if (call.method == 'CleverPush#handleSubscribed' && this._subscribedHandler != null) {
-        this._subscribedHandler(call.arguments);
+        this._subscribedHandler(call.arguments['subscriptionId']);
       } else if (call.method == 'CleverPush#handleNotificationOpened' && this._notificationOpenedHandler != null) {
         this._notificationOpenedHandler(CPNotificationOpenedResult(Map<String, dynamic>.from(call.arguments)));
+      } else {
+        print("CleverPush: unknown method: " + call.method);
       }
     } on Exception catch(e) {
       print(e);

@@ -46,20 +46,21 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
   @Override
   public void onMethodCall(MethodCall call, Result result) {
-    if (call.method.contentEquals("CleverPush#init"))
+    if (call.method.contentEquals("CleverPush#init")) {
       this.initCleverPush(call, result);
-    else if (call.method.contentEquals("CleverPush#subscribe"))
+    } else if (call.method.contentEquals("CleverPush#subscribe")) {
       this.subscribe(call, result);
-    else if (call.method.contentEquals("CleverPush#unsubscribe"))
+    } else if (call.method.contentEquals("CleverPush#unsubscribe")) {
       this.unsubscribe(call, result);
-    else if (call.method.contentEquals("CleverPush#isSubscribed"))
+    } else if (call.method.contentEquals("CleverPush#isSubscribed")) {
       this.isSubscribed(result);
-    else if (call.method.contentEquals("CleverPush#showTopicsDialog"))
+    } else if (call.method.contentEquals("CleverPush#showTopicsDialog")) {
       this.showTopicsDialog(call, result);
-    else if (call.method.contentEquals("CleverPush#initNotificationOpenedHandlerParams"))
+    } else if (call.method.contentEquals("CleverPush#initNotificationOpenedHandlerParams")) {
       this.initNotificationOpenedHandlerParams();
-    else
+    } else {
       replyNotImplemented(result);
+    }
   }
 
   private void initCleverPush(MethodCall call, Result reply) {
