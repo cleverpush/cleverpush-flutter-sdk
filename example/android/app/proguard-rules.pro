@@ -1,0 +1,4 @@
+-keep class com.cleverpush.** { *; }
+-keep interface com.cleverpush.** { *; }
+-keep class com.firebase.** { *; }
+-keep class com.google.firebase.** { *; }
