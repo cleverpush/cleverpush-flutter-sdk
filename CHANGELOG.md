@@ -1,3 +1,6 @@
+# 1.6.1
+- Updated to latest Android SDK
+
 # 1.6.0
 - Fixed Subscribed Handler for Android and updated example project
 
