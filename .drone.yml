@@ -1,0 +1,13 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: deploy
+  image: cirrusci/flutter:stable
+  pull: if-not-exists
+  commands:
+  - flutter pub publish
+  when:
+    branch:
+    - CP-1965_ci-deployment
