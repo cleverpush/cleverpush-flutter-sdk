@@ -1,5 +1,5 @@
 #import "CleverPushPlugin.h"
-
+#import <objc/runtime.h>
 @interface CleverPushPlugin ()
 
 @property (strong, nonatomic) FlutterMethodChannel *channel;
@@ -95,16 +95,36 @@
 
 - (void)handleNotificationReceived:(CPNotificationReceivedResult *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
-    resultDict[@"notification"] = result.notification;
-
+    resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
     [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:resultDict];
 }
 
 - (void)handleNotificationOpened:(CPNotificationOpenedResult *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
-    resultDict[@"notification"] = result.notification;
-
+    resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
     [self.channel invokeMethod:@"CleverPush#handleNotificationOpened" arguments:resultDict];
 }
 
+- (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+
+    unsigned count;
+    objc_property_t *properties = class_copyPropertyList([obj class], &count);
+
+    for (int i = 0; i < count; i++) {
+        NSString *key = [NSString stringWithUTF8String:property_getName(properties[i])];
+        if ([obj valueForKey:key] != nil) {
+            if ([[obj valueForKey:key] isKindOfClass:[NSDate class]]){
+                [dict setObject:[obj valueForKey:key] forKey:key];
+            }
+            else{
+                NSString *convertedDateString = [NSString stringWithFormat:@"%@", [obj valueForKey:key]];
+                [dict setObject:convertedDateString forKey:key];
+            }
+        }
+    }
+    free(properties);
+    return [NSDictionary dictionaryWithDictionary:dict];
+}
 @end
