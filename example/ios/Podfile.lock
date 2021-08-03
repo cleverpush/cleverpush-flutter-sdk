@@ -1,7 +1,7 @@
 PODS:
-  - CleverPush (1.8.0)
-  - cleverpush_flutter (1.6.1):
-    - CleverPush (= 1.8.0)
+  - CleverPush (1.11.0)
+  - cleverpush_flutter (1.7.0):
+    - CleverPush (= 1.11.0)
     - Flutter
   - Flutter (1.0.0)
   - package_info (0.0.1):

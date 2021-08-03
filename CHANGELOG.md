@@ -1,3 +1,8 @@
+# 1.7.0
+* Fixed issue with Notification handlers on iOS
+- Updated to latest iOS SDK
+- Updated to latest Android SDK
+
 # 1.6.1
 - Updated to latest Android SDK
 
