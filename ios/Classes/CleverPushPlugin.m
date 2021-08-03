@@ -105,8 +105,7 @@
     [self.channel invokeMethod:@"CleverPush#handleNotificationOpened" arguments:resultDict];
 }
 
-- (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj
-{
+- (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     unsigned count;
@@ -115,15 +114,15 @@
     for (int i = 0; i < count; i++) {
         NSString *key = [NSString stringWithUTF8String:property_getName(properties[i])];
         if ([obj valueForKey:key] != nil) {
-            if ([[obj valueForKey:key] isKindOfClass:[NSDate class]]){
-                [dict setObject:[obj valueForKey:key] forKey:key];
-            }
-            else{
+            if ([[obj valueForKey:key] isKindOfClass:[NSDate class]]) {
                 NSString *convertedDateString = [NSString stringWithFormat:@"%@", [obj valueForKey:key]];
                 [dict setObject:convertedDateString forKey:key];
+            } else {
+                [dict setObject:[obj valueForKey:key] forKey:key];
             }
         }
     }
+    
     free(properties);
     return [NSDictionary dictionaryWithDictionary:dict];
 }
