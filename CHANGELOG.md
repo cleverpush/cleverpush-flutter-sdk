@@ -1,3 +1,6 @@
+# 1.8.0
+* Support for sound null safety
+
 # 1.7.0
 * Fixed issue with Notification handlers on iOS
 - Updated to latest iOS SDK
