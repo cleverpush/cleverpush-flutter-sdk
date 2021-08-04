@@ -1,47 +1,47 @@
 import 'dart:convert';
 
 class CPNotification extends JSONStringRepresentable {
-  String id;
-  String title;
-  String text;
-  String url;
-  String iconUrl;
-  String mediaUrl;
-  String createdAt;
-  Map<String, dynamic> customData;
-  Map<String, dynamic> rawPayload;
-  bool chatNotification;
-  bool silent;
+  String? id;
+  String? title;
+  String? text;
+  String? url;
+  String? iconUrl;
+  String? mediaUrl;
+  String? createdAt;
+  Map<String, dynamic>? customData;
+  Map<String, dynamic>? rawPayload;
+  bool? chatNotification;
+  bool? silent;
 
   CPNotification(Map<String, dynamic> json) {
     this.rawPayload = json;
-    this.id = json['_id'] as String;
+    this.id = json['_id'] as String?;
     if (json.containsKey('title')) {
-      this.title = json['title'] as String;
+      this.title = json['title'] as String?;
     }
     if (json.containsKey('text')) {
-      this.text = json['text'] as String;
+      this.text = json['text'] as String?;
     }
     if (json.containsKey('url')) {
-      this.url = json['url'] as String;
+      this.url = json['url'] as String?;
     }
     if (json.containsKey('iconUrl')) {
-      this.iconUrl = json['iconUrl'] as String;
+      this.iconUrl = json['iconUrl'] as String?;
     }
     if (json.containsKey('mediaUrl')) {
-      this.mediaUrl = json['mediaUrl'] as String;
+      this.mediaUrl = json['mediaUrl'] as String?;
     }
     if (json.containsKey('createdAt')) {
-      this.createdAt = json['createdAt'] as String;
+      this.createdAt = json['createdAt'] as String?;
     }
     if (json.containsKey('customData')) {
       this.customData = json['customData'].cast<String, dynamic>();
     }
     if (json.containsKey('chatNotification')) {
-      this.chatNotification = json['chatNotification'] as bool;
+      this.chatNotification = json['chatNotification'] as bool?;
     }
     if (json.containsKey('silent')) {
-      this.silent = json['silent'] as bool;
+      this.silent = json['silent'] as bool?;
     }
   }
 
@@ -49,7 +49,7 @@ class CPNotification extends JSONStringRepresentable {
 }
 
 class CPNotificationOpenedResult {
-  CPNotification notification;
+  CPNotification? notification;
 
   CPNotificationOpenedResult(Map<String, dynamic> json) {
     this.notification = CPNotification(json['notification'].cast<String, dynamic>());
@@ -57,7 +57,7 @@ class CPNotificationOpenedResult {
 }
 
 class CPNotificationReceivedResult {
-  CPNotification notification;
+  CPNotification? notification;
 
   CPNotificationReceivedResult(Map<String, dynamic> json) {
     this.notification = CPNotification(json['notification'].cast<String, dynamic>());
@@ -67,7 +67,7 @@ class CPNotificationReceivedResult {
 abstract class JSONStringRepresentable {
   String jsonRepresentation();
 
-  String convertToJsonString(Map<String, dynamic> object) => JsonEncoder
+  String convertToJsonString(Map<String, dynamic>? object) => JsonEncoder
       .withIndent('  ')
       .convert(object)
       .replaceAll("\\n", "\n")
