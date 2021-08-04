@@ -6,22 +6,22 @@ export 'src/notification.dart';
 
 typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
-typedef void SubscribedHandler(String subscriptionId);
+typedef void SubscribedHandler(String? subscriptionId);
 
 class CleverPush {
   static CleverPush shared = new CleverPush();
 
   MethodChannel _channel = const MethodChannel('CleverPush');
 
-  NotificationReceivedHandler _notificationReceivedHandler;
-  NotificationOpenedHandler _notificationOpenedHandler;
-  SubscribedHandler _subscribedHandler;
+  NotificationReceivedHandler? _notificationReceivedHandler;
+  NotificationOpenedHandler? _notificationOpenedHandler;
+  SubscribedHandler? _subscribedHandler;
 
   CleverPush() {
     this._channel.setMethodCallHandler(_handleMethod);
   }
 
-  Future<void> init(String channelId, [bool autoRegister]) async {
+  Future<void> init(String channelId, [bool? autoRegister]) async {
     print("CleverPush: Flutter initializing");
     await _channel.invokeMethod(
         'CleverPush#init', { 'channelId': channelId, 'autoRegister': autoRegister });
@@ -48,7 +48,7 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#unsubscribe");
   }
 
-  Future<bool> isSubscribed() async {
+  Future<bool?> isSubscribed() async {
     return await _channel.invokeMethod("CleverPush#isSubscribed");
   }
 
@@ -60,11 +60,11 @@ class CleverPush {
     try {
       if (call.method == 'CleverPush#handleNotificationReceived' &&
         this._notificationReceivedHandler != null) {
-        this._notificationReceivedHandler(CPNotificationReceivedResult(Map<String, dynamic>.from(call.arguments)));
+        this._notificationReceivedHandler!(CPNotificationReceivedResult(Map<String, dynamic>.from(call.arguments)));
       } else if (call.method == 'CleverPush#handleSubscribed' && this._subscribedHandler != null) {
-        this._subscribedHandler(call.arguments['subscriptionId']);
+        this._subscribedHandler!(call.arguments['subscriptionId']);
       } else if (call.method == 'CleverPush#handleNotificationOpened' && this._notificationOpenedHandler != null) {
-        this._notificationOpenedHandler(CPNotificationOpenedResult(Map<String, dynamic>.from(call.arguments)));
+        this._notificationOpenedHandler!(CPNotificationOpenedResult(Map<String, dynamic>.from(call.arguments)));
       } else {
         print("CleverPush: unknown method: " + call.method);
       }
