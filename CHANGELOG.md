@@ -1,3 +1,6 @@
+# 1.8.1
+- Updated to latest Android SDK
+
 # 1.8.0
 * Support for sound null safety
 
