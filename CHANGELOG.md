@@ -1,4 +1,5 @@
 # 1.8.1
+- Updated to latest iOS SDK
 - Updated to latest Android SDK
 
 # 1.8.0
