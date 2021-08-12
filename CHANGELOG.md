@@ -1,3 +1,6 @@
+# 1.8.2
+- Fixed handleSubscribed handler for iOS
+
 # 1.8.1
 - Updated to latest iOS SDK
 - Updated to latest Android SDK
