@@ -90,7 +90,9 @@
 }
 
 - (void)handleSubscribed:(NSString *)result {
-    [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:result];
+    NSMutableDictionary *resultDict = [NSMutableDictionary new];
+    resultDict[@"subscriptionId"] = result;
+    [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
 }
 
 - (void)handleNotificationReceived:(CPNotificationReceivedResult *)result {
