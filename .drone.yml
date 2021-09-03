@@ -7,6 +7,7 @@ steps:
   image: cirrusci/flutter:stable
   pull: if-not-exists
   commands:
+  - flutter packages get
   - flutter analyze --no-pub --no-current-package lib
   - |
     mkdir -p .pub-cache
@@ -28,4 +29,4 @@ steps:
       from_secret: FLUTTER_REFRESH_TOKEN
   when:
     event:
-    - tag
+    - push
