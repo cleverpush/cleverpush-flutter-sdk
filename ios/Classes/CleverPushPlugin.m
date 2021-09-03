@@ -18,13 +18,7 @@
     return sharedInstance;
 }
 
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    /*
-     [CleverPush initWithLaunchOptions:nil channelId:nil handleNotificationOpened:^(CPNotificationOpenedResult *result) {
-     CleverPushPlugin.sharedInstance.coldStartOpenResult = result;
-     }];
-     */
-    
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {    
     CleverPushPlugin.sharedInstance.channel = [FlutterMethodChannel
                                                methodChannelWithName:@"CleverPush"
                                                binaryMessenger:[registrar messenger]];

@@ -1,7 +1,7 @@
 import 'dart:ffi';
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
 
@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("64ipj2EG2gGNGkEr7", true);
+    await CleverPush.shared.init("hxWyS7jPk4DrnSk5K", true);
   }
 
   void _handleSubscribe() {
