@@ -22,14 +22,16 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
-    CleverPush.shared.setNotificationReceivedHandler((CPNotificationReceivedResult result) {
+    CleverPush.shared
+        .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
       this.setState(() {
         _debugLabelString =
             "Notification received: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
     });
 
-    CleverPush.shared.setNotificationOpenedHandler((CPNotificationOpenedResult result) {
+    CleverPush.shared
+        .setNotificationOpenedHandler((CPNotificationOpenedResult result) {
       this.setState(() {
         _debugLabelString =
             "Notification opened: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
@@ -45,7 +47,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("hxWyS7jPk4DrnSk5K", true);
+    await CleverPush.shared.init("hrPmxqynN7NJ7qtAz", true);
   }
 
   void _handleSubscribe() {
@@ -67,6 +69,46 @@ class _MyAppState extends State<MyApp> {
 
   void _handleTopicsDialog() {
     CleverPush.shared.showTopicsDialog();
+  }
+
+  void _getNotifications() async {
+    var notifications = await CleverPush.shared.getNotifications();
+    if (notifications.isNotEmpty) {
+      print(notifications[0]);
+    }
+    this.setState(() {
+      _debugLabelString = notifications.length.toString();
+    });
+  }
+
+  void _setSubscriptionTopics() {
+    List<String> topics = ["topic1", "topic2"];
+    CleverPush.shared.setSubScriptionTopics(topics);
+  }
+
+  void _getAvailableTopics() async {
+    var topicIds = await CleverPush.shared.getAvailableTopics();
+    if (topicIds.isNotEmpty) {
+      print(topicIds[0]);
+    }
+    this.setState(() {
+      _debugLabelString = topicIds.length.toString();
+    });
+  }
+  
+  void _getSubscriptionTopics() async {
+    var topicIds = await CleverPush.shared.getSubScriptionTopics();
+    String topicIdsString = "";
+    for (var i = 0; i < topicIds.length; i++) {
+      if (topicIdsString.isEmpty) {
+        topicIdsString = topicIds[i];
+      } else {
+        topicIdsString = topicIdsString + "," + topicIds[i];
+      }
+    }
+    this.setState(() {
+      _debugLabelString = topicIdsString;
+    });
   }
 
   @override
@@ -96,6 +138,22 @@ class _MyAppState extends State<MyApp> {
                   new TableRow(children: [
                     new CleverPushButton(
                         "Show topics dialog", _handleTopicsDialog, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "add topics", _setSubscriptionTopics, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "get Notification", _getNotifications, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "get SubscrptionTopics",_getSubscriptionTopics, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "get AvailableTopics",_getAvailableTopics, true)
                   ]),
                   new TableRow(children: [
                     Container(

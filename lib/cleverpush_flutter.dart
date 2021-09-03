@@ -16,6 +16,10 @@ class CleverPush {
   NotificationReceivedHandler? _notificationReceivedHandler;
   NotificationOpenedHandler? _notificationOpenedHandler;
   SubscribedHandler? _subscribedHandler;
+  List<dynamic> subScriptionTopicsList = <dynamic>[];
+  List<dynamic> notificationList = <dynamic>[];
+  List<dynamic> availableTopicList = <dynamic>[];
+
 
   CleverPush() {
     this._channel.setMethodCallHandler(_handleMethod);
@@ -56,6 +60,29 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#showTopicsDialog");
   }
 
+  Future<List<dynamic>> getNotifications() async {
+    notificationList = await _channel.invokeMethod("CleverPush#getNotifications");
+    print(notificationList.length.toString());
+    return notificationList;
+  }
+  
+  Future<void> setSubScriptionTopics(List<String> topics) async {
+    print("CleverPush: setting topics");
+    await _channel.invokeMethod(
+        'CleverPush#setSubscriptionTopics', { 'topics': topics });
+  }
+
+  Future<List<dynamic>> getSubScriptionTopics() async {
+    subScriptionTopicsList = await _channel.invokeMethod("CleverPush#getSubscriptionTopics");
+    return subScriptionTopicsList;
+  }
+
+  Future<List<dynamic>> getAvailableTopics() async {
+    availableTopicList =
+        await _channel.invokeMethod("CleverPush#getAvailableTopics");
+    return availableTopicList;
+  }
+  
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (call.method == 'CleverPush#handleNotificationReceived' &&

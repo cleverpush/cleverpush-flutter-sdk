@@ -3,8 +3,11 @@ package com.cleverpush.flutter;
 import android.content.Context;
 import android.util.Log;
 
+import com.cleverpush.ChannelTopic;
 import com.cleverpush.CleverPush;
+import com.cleverpush.Notification;
 import com.cleverpush.NotificationOpenedResult;
+import com.cleverpush.listener.ChannelTopicsListener;
 import com.cleverpush.listener.NotificationOpenedListener;
 import com.cleverpush.listener.NotificationReceivedCallbackListener;
 import com.cleverpush.listener.SubscribedListener;
@@ -12,6 +15,9 @@ import com.cleverpush.listener.SubscribedListener;
 import org.json.JSONException;
 
 import java.util.HashMap;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -58,7 +64,15 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
       this.showTopicsDialog(call, result);
     } else if (call.method.contentEquals("CleverPush#initNotificationOpenedHandlerParams")) {
       this.initNotificationOpenedHandlerParams();
-    } else {
+    }else if (call.method.contentEquals("CleverPush#getNotifications")) {
+      this.getNotifications(result);
+    }else if (call.method.contentEquals("CleverPush#setSubscriptionTopics")) {
+      this.setSubscriptionTopics(call, result);
+    }else if (call.method.contentEquals("CleverPush#getSubscriptionTopics")) {
+      this.getAvailableTopics(result);
+    }else if (call.method.contentEquals("CleverPush#getAvailableTopics")) {
+      this.getAvailableTopics(result);
+    }else {
       replyNotImplemented(result);
     }
   }
@@ -122,6 +136,47 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
       this.notificationOpened(this.coldStartNotificationResult);
       this.coldStartNotificationResult = null;
     }
+  }
+
+  private void getNotifications(Result reply) {
+    Context context = flutterRegistrar.activeContext();
+    try {
+        replySuccess(reply, CleverPushSerializer.convertNotificationToMapList(new ArrayList<Notification>(CleverPush.getInstance(context).getNotifications())));
+      } catch (JSONException exception) {
+        exception.printStackTrace();
+      }
+
+  }
+
+  
+  private void setSubscriptionTopics(MethodCall call, Result reply) {
+    List<String> topics = call.argument("topics");
+    String[] topicIds = new String[topics.size()];
+    topicIds = topics.toArray(topicIds);
+    Context context = flutterRegistrar.activeContext();
+    CleverPush.getInstance(context).setSubscriptionTopics(topicIds);
+    replySuccess(reply, null);
+  }
+
+  private void getSubscrptionTopics( Result reply) {
+    Context context = flutterRegistrar.activeContext(); 
+    Set<String> topicIds = CleverPush.getInstance(context).getSubscriptionTopics();
+    List<String> list = new ArrayList<String>(topicIds);
+    replySuccess(reply, list);
+  }
+  
+  private void getAvailableTopics( Result reply) {
+    Context context = flutterRegistrar.activeContext(); 
+    CleverPush.getInstance(context).getAvailableTopics(new ChannelTopicsListener() {
+      @Override
+      public void ready(Set<ChannelTopic> channelTopics) {
+        try {
+          replySuccess(reply, CleverPushSerializer.convertChannelTopicToMapList(new ArrayList<ChannelTopic>(channelTopics)));
+        } catch (JSONException exception) {
+          exception.printStackTrace();
+        }
+      }
+    });
   }
 
   @Override
