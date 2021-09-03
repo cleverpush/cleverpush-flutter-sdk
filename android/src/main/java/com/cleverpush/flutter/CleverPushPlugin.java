@@ -64,15 +64,15 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
       this.showTopicsDialog(call, result);
     } else if (call.method.contentEquals("CleverPush#initNotificationOpenedHandlerParams")) {
       this.initNotificationOpenedHandlerParams();
-    }else if (call.method.contentEquals("CleverPush#getNotifications")) {
+    } else if (call.method.contentEquals("CleverPush#getNotifications")) {
       this.getNotifications(result);
-    }else if (call.method.contentEquals("CleverPush#setSubscriptionTopics")) {
+    } else if (call.method.contentEquals("CleverPush#setSubscriptionTopics")) {
       this.setSubscriptionTopics(call, result);
-    }else if (call.method.contentEquals("CleverPush#getSubscriptionTopics")) {
+    } else if (call.method.contentEquals("CleverPush#getSubscriptionTopics")) {
+      this.getSubscriptionTopics(result);
+    } else if (call.method.contentEquals("CleverPush#getAvailableTopics")) {
       this.getAvailableTopics(result);
-    }else if (call.method.contentEquals("CleverPush#getAvailableTopics")) {
-      this.getAvailableTopics(result);
-    }else {
+    } else {
       replyNotImplemented(result);
     }
   }
@@ -141,13 +141,11 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
   private void getNotifications(Result reply) {
     Context context = flutterRegistrar.activeContext();
     try {
-        replySuccess(reply, CleverPushSerializer.convertNotificationToMapList(new ArrayList<Notification>(CleverPush.getInstance(context).getNotifications())));
-      } catch (JSONException exception) {
-        exception.printStackTrace();
-      }
-
+      replySuccess(reply, CleverPushSerializer.convertNotificationToMapList(new ArrayList<Notification>(CleverPush.getInstance(context).getNotifications())));
+    } catch (JSONException exception) {
+      exception.printStackTrace();
+    }
   }
-
   
   private void setSubscriptionTopics(MethodCall call, Result reply) {
     List<String> topics = call.argument("topics");
@@ -158,14 +156,14 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     replySuccess(reply, null);
   }
 
-  private void getSubscrptionTopics( Result reply) {
+  private void getSubscriptionTopics(Result reply) {
     Context context = flutterRegistrar.activeContext(); 
     Set<String> topicIds = CleverPush.getInstance(context).getSubscriptionTopics();
     List<String> list = new ArrayList<String>(topicIds);
     replySuccess(reply, list);
   }
   
-  private void getAvailableTopics( Result reply) {
+  private void getAvailableTopics(Result reply) {
     Context context = flutterRegistrar.activeContext(); 
     CleverPush.getInstance(context).getAvailableTopics(new ChannelTopicsListener() {
       @Override

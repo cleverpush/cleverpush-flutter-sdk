@@ -1,3 +1,9 @@
+# 1.9.0
+* Added new Method: getNotifications
+* Added new Method: getSubscriptionTopics
+* Added new Method: setSubscriptionTopics
+* Added new Method: getAvailableTopics
+
 # 1.8.2
 - Fixed handleSubscribed handler for iOS
 

@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
 
     CleverPush.shared.setSubscribedHandler((subscriptionId) {
       this.setState(() {
-        _debugLabelString = "Subscribed: " + subscriptionId!;
+        _debugLabelString = "Subscribed: " + subscriptionId;
       });
 
       print("Subscribed: ${subscriptionId}");
