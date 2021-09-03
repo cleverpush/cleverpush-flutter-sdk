@@ -20,15 +20,15 @@
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     /*
-    [CleverPush initWithLaunchOptions:nil channelId:nil handleNotificationOpened:^(CPNotificationOpenedResult *result) {
-        CleverPushPlugin.sharedInstance.coldStartOpenResult = result;
-    }];
-    */
-
+     [CleverPush initWithLaunchOptions:nil channelId:nil handleNotificationOpened:^(CPNotificationOpenedResult *result) {
+     CleverPushPlugin.sharedInstance.coldStartOpenResult = result;
+     }];
+     */
+    
     CleverPushPlugin.sharedInstance.channel = [FlutterMethodChannel
-                                     methodChannelWithName:@"CleverPush"
-                                     binaryMessenger:[registrar messenger]];
-
+                                               methodChannelWithName:@"CleverPush"
+                                               binaryMessenger:[registrar messenger]];
+    
     [registrar addMethodCallDelegate:CleverPushPlugin.sharedInstance channel:CleverPushPlugin.sharedInstance.channel];
 }
 
@@ -43,6 +43,14 @@
         result([NSNumber numberWithBool:CleverPush.isSubscribed]);
     else if ([@"CleverPush#showTopicsDialog" isEqualToString:call.method])
         [self showTopicsDialog:call withResult:result];
+    else if ([@"CleverPush#getNotifications" isEqualToString:call.method])
+        [self getNotifications:call withResult:result];
+    else if ([@"CleverPush#getSubscriptionTopics" isEqualToString:call.method])
+        [self getSubscriptionTopics:call withResult:result];
+    else if ([@"CleverPush#setSubscriptionTopics" isEqualToString:call.method])
+        [self setSubscriptionTopics:call withResult:result];
+    else if ([@"CleverPush#getAvailableTopics" isEqualToString:call.method])
+        [self getAvailableTopics:call withResult:result];
     else if ([@"CleverPush#initNotificationOpenedHandlerParams" isEqualToString:call.method])
         [self initNotificationOpenedHandlerParams];
     else
@@ -51,14 +59,13 @@
 
 - (void)initCleverPush:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush initWithLaunchOptions:nil channelId:call.arguments[@"channelId"]
-     handleNotificationReceived:^(CPNotificationReceivedResult *result) {
-      [self handleNotificationReceived:result];
+           handleNotificationReceived:^(CPNotificationReceivedResult *result) {
+        [self handleNotificationReceived:result];
     } handleNotificationOpened:^(CPNotificationOpenedResult *result) {
-      [self handleNotificationOpened:result];
+        [self handleNotificationOpened:result];
     } handleSubscribed:^(NSString *subscriptionId) {
-      [self handleSubscribed:subscriptionId];
+        [self handleSubscribed:subscriptionId];
     } autoRegister:call.arguments[@"autoRegister"]];
-
     result(nil);
 }
 
@@ -82,6 +89,33 @@
     result(nil);
 }
 
+- (void)getNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSMutableArray *storedNotifications = [NSMutableArray arrayWithArray:[CleverPush getNotifications]];
+    result(storedNotifications);
+}
+
+- (void)getSubscriptionTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSMutableArray *topicIds = [CleverPush getSubscriptionTopics];
+    NSMutableArray *list = [NSMutableArray arrayWithArray:topicIds];
+    result(list);
+}
+
+- (void)setSubscriptionTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush setSubscriptionTopics:call.arguments[@"topics"]];
+    result(nil);
+}
+
+- (void)getAvailableTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSMutableArray *availableTopics = [NSMutableArray new];
+    [CleverPush getAvailableTopics:^(NSArray* channelTopics_) {
+        [channelTopics_ enumerateObjectsWithOptions: NSEnumerationConcurrent usingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+            NSDictionary *dict = [self dictionaryWithPropertiesOfObject: obj];
+            [availableTopics addObject:dict];
+        }];
+    }];
+    result(availableTopics);
+}
+
 - (void)initNotificationOpenedHandlerParams {
     if (self.coldStartOpenResult) {
         [self handleNotificationOpened:self.coldStartOpenResult];
@@ -90,6 +124,7 @@
 }
 
 - (void)handleSubscribed:(NSString *)result {
+    NSLog(@"%@ callback Log",result);
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"subscriptionId"] = result;
     [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
@@ -109,10 +144,10 @@
 
 - (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-
+    
     unsigned count;
     objc_property_t *properties = class_copyPropertyList([obj class], &count);
-
+    
     for (int i = 0; i < count; i++) {
         NSString *key = [NSString stringWithUTF8String:property_getName(properties[i])];
         if ([obj valueForKey:key] != nil) {
@@ -124,8 +159,8 @@
             }
         }
     }
-    
     free(properties);
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 @end
+
