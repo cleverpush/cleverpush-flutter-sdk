@@ -21,7 +21,7 @@ steps:
       "expiration":1628761447180
     }
     EOF
-  - flutter pub publish
+  - flutter pub publish -f
   environment:
     FLUTTER_ACCESS_TOKEN:
       from_secret: FLUTTER_ACCESS_TOKEN
