@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:cleverpush_flutter/src/notification.dart';
 import 'package:flutter/services.dart';
 
@@ -12,14 +13,12 @@ class CleverPush {
   static CleverPush shared = new CleverPush();
 
   MethodChannel _channel = const MethodChannel('CleverPush');
-
   NotificationReceivedHandler? _notificationReceivedHandler;
   NotificationOpenedHandler? _notificationOpenedHandler;
   SubscribedHandler? _subscribedHandler;
   List<dynamic> subScriptionTopicsList = <dynamic>[];
-  List<dynamic> notificationList = <dynamic>[];
   List<dynamic> availableTopicList = <dynamic>[];
-
+  List<dynamic> notificationList = <dynamic>[];
 
   CleverPush() {
     this._channel.setMethodCallHandler(_handleMethod);
@@ -27,8 +26,8 @@ class CleverPush {
 
   Future<void> init(String channelId, [bool? autoRegister]) async {
     print("CleverPush: Flutter initializing");
-    await _channel.invokeMethod(
-        'CleverPush#init', { 'channelId': channelId, 'autoRegister': autoRegister });
+    await _channel.invokeMethod('CleverPush#init',
+        {'channelId': channelId, 'autoRegister': autoRegister});
   }
 
   void setNotificationReceivedHandler(NotificationReceivedHandler handler) {
@@ -61,20 +60,15 @@ class CleverPush {
   }
 
   Future<List<dynamic>> getNotifications() async {
-    notificationList = await _channel.invokeMethod("CleverPush#getNotifications");
+    notificationList =
+        await _channel.invokeMethod("CleverPush#getNotifications");
     print(notificationList.length.toString());
     return notificationList;
   }
-  
-  Future<void> setSubScriptionTopics(List<String> topics) async {
-    print("CleverPush: setting topics");
-    await _channel.invokeMethod(
-        'CleverPush#setSubscriptionTopics', { 'topics': topics });
-  }
 
-  Future<List<dynamic>> getSubScriptionTopics() async {
-    subScriptionTopicsList = await _channel.invokeMethod("CleverPush#getSubscriptionTopics");
-    return subScriptionTopicsList;
+  Future<void> setSubscriptionTopics(List<String> topics) async {
+    await _channel
+        .invokeMethod('CleverPush#setSubscriptionTopics', {'topics': topics});
   }
 
   Future<List<dynamic>> getAvailableTopics() async {
@@ -82,20 +76,30 @@ class CleverPush {
         await _channel.invokeMethod("CleverPush#getAvailableTopics");
     return availableTopicList;
   }
-  
+
+  Future<List<dynamic>> getSubscriptionTopics() async {
+    subScriptionTopicsList =
+        await _channel.invokeMethod("CleverPush#getSubscriptionTopics");
+    return subScriptionTopicsList;
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (call.method == 'CleverPush#handleNotificationReceived' &&
-        this._notificationReceivedHandler != null) {
-        this._notificationReceivedHandler!(CPNotificationReceivedResult(Map<String, dynamic>.from(call.arguments)));
-      } else if (call.method == 'CleverPush#handleSubscribed' && this._subscribedHandler != null) {
+          this._notificationReceivedHandler != null) {
+        this._notificationReceivedHandler!(CPNotificationReceivedResult(
+            Map<String, dynamic>.from(call.arguments)));
+      } else if (call.method == 'CleverPush#handleSubscribed' &&
+          this._subscribedHandler != null) {
         this._subscribedHandler!(call.arguments['subscriptionId']);
-      } else if (call.method == 'CleverPush#handleNotificationOpened' && this._notificationOpenedHandler != null) {
-        this._notificationOpenedHandler!(CPNotificationOpenedResult(Map<String, dynamic>.from(call.arguments)));
+      } else if (call.method == 'CleverPush#handleNotificationOpened' &&
+          this._notificationOpenedHandler != null) {
+        this._notificationOpenedHandler!(CPNotificationOpenedResult(
+            Map<String, dynamic>.from(call.arguments)));
       } else {
         print("CleverPush: unknown method: " + call.method);
       }
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       print(e);
     }
     return null;

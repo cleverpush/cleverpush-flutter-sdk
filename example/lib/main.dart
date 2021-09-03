@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:ffi';
 import 'dart:async';
-
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
 
@@ -40,14 +40,14 @@ class _MyAppState extends State<MyApp> {
 
     CleverPush.shared.setSubscribedHandler((subscriptionId) {
       this.setState(() {
-        _debugLabelString = "Subscribed: " + subscriptionId;
+        _debugLabelString = "Subscribed: " + subscriptionId!;
       });
 
       print("Subscribed: ${subscriptionId}");
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("hrPmxqynN7NJ7qtAz", true);
+    await CleverPush.shared.init("hxWyS7jPk4DrnSk5K", true);
   }
 
   void _handleSubscribe() {
@@ -81,23 +81,8 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _setSubscriptionTopics() {
-    List<String> topics = ["topic1", "topic2"];
-    CleverPush.shared.setSubScriptionTopics(topics);
-  }
-
-  void _getAvailableTopics() async {
-    var topicIds = await CleverPush.shared.getAvailableTopics();
-    if (topicIds.isNotEmpty) {
-      print(topicIds[0]);
-    }
-    this.setState(() {
-      _debugLabelString = topicIds.length.toString();
-    });
-  }
-  
   void _getSubscriptionTopics() async {
-    var topicIds = await CleverPush.shared.getSubScriptionTopics();
+    var topicIds = await CleverPush.shared.getSubscriptionTopics();
     String topicIdsString = "";
     for (var i = 0; i < topicIds.length; i++) {
       if (topicIdsString.isEmpty) {
@@ -108,6 +93,21 @@ class _MyAppState extends State<MyApp> {
     }
     this.setState(() {
       _debugLabelString = topicIdsString;
+    });
+  }
+
+  void _setSubscriptionTopics() {
+    List<String> topics = ['hello', 'world'];
+    CleverPush.shared.setSubscriptionTopics(topics);
+  }
+
+  void _getAvailableTopics() async {
+    var topicIds = await CleverPush.shared.getAvailableTopics();
+    if (topicIds.isNotEmpty) {
+      print(topicIds[0]);
+    }
+    this.setState(() {
+      _debugLabelString = topicIds.length.toString();
     });
   }
 
@@ -141,19 +141,19 @@ class _MyAppState extends State<MyApp> {
                   ]),
                   new TableRow(children: [
                     new CleverPushButton(
-                        "add topics", _setSubscriptionTopics, true)
+                        "Get Notification", _getNotifications, true)
                   ]),
                   new TableRow(children: [
                     new CleverPushButton(
-                        "get Notification", _getNotifications, true)
+                        "Get Subscription Topics", _getSubscriptionTopics, true)
                   ]),
                   new TableRow(children: [
                     new CleverPushButton(
-                        "get SubscrptionTopics",_getSubscriptionTopics, true)
+                        "Set Subscription Topics", _setSubscriptionTopics, true)
                   ]),
                   new TableRow(children: [
                     new CleverPushButton(
-                        "get AvailableTopics",_getAvailableTopics, true)
+                        "Get Available Topics", _getAvailableTopics, true)
                   ]),
                   new TableRow(children: [
                     Container(
