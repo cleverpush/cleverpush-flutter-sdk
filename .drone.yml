@@ -10,7 +10,7 @@ steps:
   - flutter packages get
   - flutter analyze --no-pub --no-current-package lib
   - |
-    mkdir -p .pub-cache
+    mkdir -p ~/.pub-cache
 
     cat <<EOF > ~/.pub-cache/credentials.json
     {
