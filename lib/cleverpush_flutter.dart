@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'package:cleverpush_flutter/src/notification.dart';
 import 'package:flutter/services.dart';
 
