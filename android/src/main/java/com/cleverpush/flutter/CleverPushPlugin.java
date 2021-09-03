@@ -69,7 +69,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }else if (call.method.contentEquals("CleverPush#setSubscriptionTopics")) {
       this.setSubscriptionTopics(call, result);
     }else if (call.method.contentEquals("CleverPush#getSubscriptionTopics")) {
-      this.getAvailableTopics(result);
+      this.getSubscrptionTopics(result);
     }else if (call.method.contentEquals("CleverPush#getAvailableTopics")) {
       this.getAvailableTopics(result);
     }else {

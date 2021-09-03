@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:async';
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,7 @@ class _MyAppState extends State<MyApp> {
 
     CleverPush.shared.setSubscribedHandler((subscriptionId) {
       this.setState(() {
-        _debugLabelString = "Subscribed: " + subscriptionId!;
+        _debugLabelString = "Subscribed: " + subscriptionId;
       });
 
       print("Subscribed: ${subscriptionId}");
