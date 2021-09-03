@@ -5,8 +5,12 @@ homepage: https://github.com/cleverpush/cleverpush-flutter-sdk
 
 flutter:
   plugin:
-    androidPackage: com.cleverpush.flutter
-    pluginClass: CleverPushPlugin
+    platforms:
+      android:
+        package: com.cleverpush.flutter
+        pluginClass: CleverPushPlugin
+      ios:
+        pluginClass: CleverPushPlugin
 
 dependencies:
   flutter:
