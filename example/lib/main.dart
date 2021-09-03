@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:ffi';
 import 'dart:async';
-
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
 
@@ -22,14 +22,16 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
-    CleverPush.shared.setNotificationReceivedHandler((CPNotificationReceivedResult result) {
+    CleverPush.shared
+        .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
       this.setState(() {
         _debugLabelString =
             "Notification received: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
     });
 
-    CleverPush.shared.setNotificationOpenedHandler((CPNotificationOpenedResult result) {
+    CleverPush.shared
+        .setNotificationOpenedHandler((CPNotificationOpenedResult result) {
       this.setState(() {
         _debugLabelString =
             "Notification opened: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
@@ -38,7 +40,7 @@ class _MyAppState extends State<MyApp> {
 
     CleverPush.shared.setSubscribedHandler((subscriptionId) {
       this.setState(() {
-        _debugLabelString = "Subscribed: " + subscriptionId;
+        _debugLabelString = "Subscribed: " + subscriptionId!;
       });
 
       print("Subscribed: ${subscriptionId}");
@@ -69,6 +71,46 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.showTopicsDialog();
   }
 
+  void _getNotifications() async {
+    var notifications = await CleverPush.shared.getNotifications();
+    if (notifications.isNotEmpty) {
+      print(notifications[0]);
+    }
+    this.setState(() {
+      _debugLabelString = notifications.length.toString();
+    });
+  }
+
+  void _getSubscriptionTopics() async {
+    var topicIds = await CleverPush.shared.getSubscriptionTopics();
+    String topicIdsString = "";
+    for (var i = 0; i < topicIds.length; i++) {
+      if (topicIdsString.isEmpty) {
+        topicIdsString = topicIds[i];
+      } else {
+        topicIdsString = topicIdsString + "," + topicIds[i];
+      }
+    }
+    this.setState(() {
+      _debugLabelString = topicIdsString;
+    });
+  }
+
+  void _setSubscriptionTopics() {
+    List<String> topics = ['hello', 'world'];
+    CleverPush.shared.setSubscriptionTopics(topics);
+  }
+
+  void _getAvailableTopics() async {
+    var topicIds = await CleverPush.shared.getAvailableTopics();
+    if (topicIds.isNotEmpty) {
+      print(topicIds[0]);
+    }
+    this.setState(() {
+      _debugLabelString = topicIds.length.toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -96,6 +138,22 @@ class _MyAppState extends State<MyApp> {
                   new TableRow(children: [
                     new CleverPushButton(
                         "Show topics dialog", _handleTopicsDialog, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "Get Notification", _getNotifications, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "Get Subscription Topics", _getSubscriptionTopics, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "Set Subscription Topics", _setSubscriptionTopics, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "Get Available Topics", _getAvailableTopics, true)
                   ]),
                   new TableRow(children: [
                     Container(
