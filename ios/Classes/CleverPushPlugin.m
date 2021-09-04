@@ -1,9 +1,12 @@
 #import "CleverPushPlugin.h"
 #import <objc/runtime.h>
+
 @interface CleverPushPlugin ()
 
 @property (strong, nonatomic) FlutterMethodChannel *channel;
 @property (strong, nonatomic) CPNotificationOpenedResult *coldStartOpenResult;
+@property (strong, nonatomic) NSDictionary *launchOptions;
+@property (nonatomic) BOOL hasNotificationOpenedHandler;
 
 @end
 
@@ -18,15 +21,18 @@
     return sharedInstance;
 }
 
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {    
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+    CleverPushPlugin.sharedInstance.hasNotificationOpenedHandler = NO;
+
     CleverPushPlugin.sharedInstance.channel = [FlutterMethodChannel
                                                methodChannelWithName:@"CleverPush"
                                                binaryMessenger:[registrar messenger]];
-    
+
     [registrar addMethodCallDelegate:CleverPushPlugin.sharedInstance channel:CleverPushPlugin.sharedInstance.channel];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSLog(@"CleverPush Flutter: handleMethodCall %@", call.method);
     if ([@"CleverPush#init" isEqualToString:call.method])
         [self initCleverPush:call withResult:result];
     else if ([@"CleverPush#subscribe" isEqualToString:call.method])
@@ -52,14 +58,19 @@
 }
 
 - (void)initCleverPush:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush initWithLaunchOptions:nil channelId:call.arguments[@"channelId"]
+    [CleverPush initWithLaunchOptions:self.launchOptions channelId:call.arguments[@"channelId"]
            handleNotificationReceived:^(CPNotificationReceivedResult *result) {
         [self handleNotificationReceived:result];
     } handleNotificationOpened:^(CPNotificationOpenedResult *result) {
-        [self handleNotificationOpened:result];
+        if (!self.hasNotificationOpenedHandler) {
+          self.coldStartOpenResult = result;
+        } else {
+          [self handleNotificationOpened:result];
+        }
     } handleSubscribed:^(NSString *subscriptionId) {
         [self handleSubscribed:subscriptionId];
     } autoRegister:call.arguments[@"autoRegister"]];
+
     result(nil);
 }
 
@@ -111,6 +122,7 @@
 }
 
 - (void)initNotificationOpenedHandlerParams {
+    self.hasNotificationOpenedHandler = YES;
     if (self.coldStartOpenResult) {
         [self handleNotificationOpened:self.coldStartOpenResult];
         self.coldStartOpenResult = nil;
@@ -118,7 +130,6 @@
 }
 
 - (void)handleSubscribed:(NSString *)result {
-    NSLog(@"%@ callback Log",result);
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"subscriptionId"] = result;
     [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
@@ -156,5 +167,5 @@
     free(properties);
     return [NSDictionary dictionaryWithDictionary:dict];
 }
-@end
 
+@end
