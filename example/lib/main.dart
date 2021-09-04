@@ -140,7 +140,7 @@ class _MyAppState extends State<MyApp> {
                   ]),
                   new TableRow(children: [
                     new CleverPushButton(
-                        "Get Notification", _getNotifications, true)
+                        "Get Notifications", _getNotifications, true)
                   ]),
                   new TableRow(children: [
                     new CleverPushButton(

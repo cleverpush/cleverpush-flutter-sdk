@@ -8,7 +8,7 @@ steps:
   pull: if-not-exists
   commands:
   - flutter packages get
-  - flutter analyze --no-pub --no-current-package lib
+  - flutter analyze
   - |
     mkdir -p ~/.pub-cache
 

@@ -1,3 +1,7 @@
+# 1.9.1
+* Added nullability checks in example
+* Fixed Notification Opened Handler on iOS when app was killed
+
 # 1.9.0
 * Added new Method: getNotifications
 * Added new Method: getSubscriptionTopics

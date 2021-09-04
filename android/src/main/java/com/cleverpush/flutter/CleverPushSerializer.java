@@ -13,7 +13,7 @@ import java.util.Set;
 
 class CleverPushSerializer {
     private static HashMap<String, Object> convertNotificationToMap(Notification payload) throws JSONException {
-       HashMap<String, Object> hash = new HashMap<>();
+        HashMap<String, Object> hash = new HashMap<>();
 
         hash.put("_id", payload.getId());
         hash.put("title", payload.getTitle());
@@ -29,7 +29,7 @@ class CleverPushSerializer {
             for (int i = 0; i < payload.getActions().length; i++) {
                 NotificationAction button = payload.getActions()[i];
 
-               HashMap<String, Object> buttonHash = new HashMap<>();
+                HashMap<String, Object> buttonHash = new HashMap<>();
                 buttonHash.put("title", button.getTitle());
                 buttonHash.put("icon", button.getIcon());
                 buttonHash.put("url", button.getUrl());
@@ -82,8 +82,9 @@ class CleverPushSerializer {
 
             Log.d("CleverPush", "Created json payload: " + hash.toString());
 
-            if (notifications.get(i).getCustomData() != null)
-                hash.put("customData", notifications.get(i).getCustomData());
+            if (notifications.get(i).getCustomData() != null) {
+              hash.put("customData", notifications.get(i).getCustomData());
+            }
             notificationMapList.add(hash);
         }
 
@@ -109,7 +110,6 @@ class CleverPushSerializer {
         return availableTopics;
     }
 
-
     static HashMap<String, Object> convertNotificationOpenResultToMap(NotificationOpenedResult openResult) throws JSONException {
         HashMap<String, Object> hash = new HashMap<>();
 
@@ -121,8 +121,9 @@ class CleverPushSerializer {
     static HashMap<String, Object> convertJSONObjectToHashMap(JSONObject object) throws JSONException {
         HashMap<String, Object> hash = new HashMap<>();
 
-        if (object == null || object == JSONObject.NULL)
-           return hash;
+        if (object == null || object == JSONObject.NULL) {
+          return hash;
+        }
 
         Iterator<String> keys = object.keys();
 
