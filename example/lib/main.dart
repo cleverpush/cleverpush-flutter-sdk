@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:async';
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class _MyAppState extends State<MyApp> {
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
       this.setState(() {
         _debugLabelString =
-            "Notification received: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
+            "Notification received: \n${result.notification!.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
     });
 
@@ -34,16 +33,16 @@ class _MyAppState extends State<MyApp> {
         .setNotificationOpenedHandler((CPNotificationOpenedResult result) {
       this.setState(() {
         _debugLabelString =
-            "Notification opened: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
+            "Notification opened: \n${result.notification!.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
     });
 
     CleverPush.shared.setSubscribedHandler((subscriptionId) {
       this.setState(() {
-        _debugLabelString = "Subscribed: " + subscriptionId;
+        _debugLabelString = "Subscribed: " + subscriptionId!;
       });
 
-      print("Subscribed: ${subscriptionId}");
+      print("Subscribed: $subscriptionId");
     });
 
     // CleverPush Channel ID
@@ -192,12 +191,7 @@ class CleverPushButtonState extends State<CleverPushButton> {
     return new Table(
       children: [
         new TableRow(children: [
-          new FlatButton(
-            disabledColor: Color.fromARGB(100, 100, 100, 100),
-            disabledTextColor: Colors.white,
-            color: Color.fromARGB(255, 33, 33, 33),
-            textColor: Colors.white,
-            padding: EdgeInsets.all(8.0),
+          new TextButton(
             child: new Text(widget.title),
             onPressed: widget.enabled ? widget.onPressed : null,
           )
