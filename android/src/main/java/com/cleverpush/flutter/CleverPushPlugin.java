@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.cleverpush.ChannelTopic;
 import com.cleverpush.CleverPush;
-import com.cleverpush.Notification;
 import com.cleverpush.NotificationOpenedResult;
 import com.cleverpush.listener.ChannelTopicsListener;
 import com.cleverpush.listener.NotificationOpenedListener;
@@ -14,10 +13,10 @@ import com.cleverpush.listener.SubscribedListener;
 
 import org.json.JSONException;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -141,7 +140,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
   private void getNotifications(Result reply) {
     Context context = flutterRegistrar.activeContext();
     try {
-      replySuccess(reply, CleverPushSerializer.convertNotificationToMapList(new ArrayList<Notification>(CleverPush.getInstance(context).getNotifications())));
+      replySuccess(reply, CleverPushSerializer.convertNotificationToMapList(new ArrayList<>(CleverPush.getInstance(context).getNotifications())));
     } catch (JSONException exception) {
       exception.printStackTrace();
     }
@@ -149,6 +148,10 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
   
   private void setSubscriptionTopics(MethodCall call, Result reply) {
     List<String> topics = call.argument("topics");
+    if (topics == null) {
+      replySuccess(reply, null);
+      return;
+    }
     String[] topicIds = new String[topics.size()];
     topicIds = topics.toArray(topicIds);
     Context context = flutterRegistrar.activeContext();
@@ -159,12 +162,12 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
   private void getSubscriptionTopics(Result reply) {
     Context context = flutterRegistrar.activeContext(); 
     Set<String> topicIds = CleverPush.getInstance(context).getSubscriptionTopics();
-    List<String> list = new ArrayList<String>(topicIds);
+    List<String> list = new ArrayList<>(topicIds);
     replySuccess(reply, list);
   }
-  
-  private void getAvailableTopics(Result reply) {
-    Context context = flutterRegistrar.activeContext(); 
+
+  private void getAvailableTopics(final Result reply) {
+    Context context = flutterRegistrar.activeContext();
     CleverPush.getInstance(context).getAvailableTopics(new ChannelTopicsListener() {
       @Override
       public void ready(Set<ChannelTopic> channelTopics) {
