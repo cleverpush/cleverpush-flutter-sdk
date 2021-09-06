@@ -1,3 +1,6 @@
+# 1.9.2
+* Android: Fixed final argument error in getAvailableTopics
+
 # 1.9.1
 * Added nullability checks in example
 * Fixed Notification Opened Handler on iOS when app was killed
