@@ -1,3 +1,6 @@
+# 1.9.3
+* iOS: Updated native SDK
+
 # 1.9.2
 * Android: Fixed final argument error in getAvailableTopics
 
