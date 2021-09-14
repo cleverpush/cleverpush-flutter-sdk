@@ -1,3 +1,6 @@
+# 1.9.4
+* iOS: Updated native SDK
+
 # 1.9.3
 * iOS: Updated native SDK
 
