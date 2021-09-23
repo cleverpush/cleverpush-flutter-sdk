@@ -1,3 +1,6 @@
+# 1.9.6
+* Android: Updated native SDK
+
 # 1.9.5
 * iOS: Updated native SDK
 * Android: Updated native SDK
