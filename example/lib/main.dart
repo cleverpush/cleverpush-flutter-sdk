@@ -80,6 +80,18 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _getRemoteNotifications() async {
+    bool combineWithApi = true;
+    var remoteNotifications =
+        await CleverPush.shared.getRemoteNotifications(combineWithApi);
+    if (remoteNotifications.isNotEmpty) {
+      print(remoteNotifications[0]);
+    }
+    this.setState(() {
+      _debugLabelString = remoteNotifications.length.toString();
+    });
+  }
+
   void _getSubscriptionTopics() async {
     var topicIds = await CleverPush.shared.getSubscriptionTopics();
     String topicIdsString = "";
@@ -141,6 +153,10 @@ class _MyAppState extends State<MyApp> {
                   new TableRow(children: [
                     new CleverPushButton(
                         "Get Notifications", _getNotifications, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton("Get Remote Notifications",
+                        _getRemoteNotifications, true)
                   ]),
                   new TableRow(children: [
                     new CleverPushButton(
