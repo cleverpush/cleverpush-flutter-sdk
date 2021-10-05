@@ -40,10 +40,10 @@ abstract class FlutterRegistrarResponder {
         });
     }
 
-    private void runOnMainThread(Runnable runnable) {
-        if (Looper.getMainLooper().getThread() == Thread.currentThread())
+    private void runOnMainThread(final Runnable runnable) {
+        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
             runnable.run();
-        else {
+        } else {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(runnable);
         }
