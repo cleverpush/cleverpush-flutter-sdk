@@ -45,6 +45,8 @@
         [self showTopicsDialog:call withResult:result];
     else if ([@"CleverPush#getNotifications" isEqualToString:call.method])
         [self getNotifications:call withResult:result];
+    else if ([@"CleverPush#getNotificationsWithApi" isEqualToString:call.method])
+        [self getRemoteNotifications:call withResult:result];    
     else if ([@"CleverPush#getSubscriptionTopics" isEqualToString:call.method])
         [self getSubscriptionTopics:call withResult:result];
     else if ([@"CleverPush#setSubscriptionTopics" isEqualToString:call.method])
@@ -97,6 +99,17 @@
 - (void)getNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSMutableArray *storedNotifications = [NSMutableArray arrayWithArray:[CleverPush getNotifications]];
     result(storedNotifications);
+}
+
+- (void)getNotificationsWithApi:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSMutableArray *remoteNotifications = [NSMutableArray new];
+    [CleverPush getNotifications:call.arguments[@"combineWithApi"] callback:^(NSArray* Notifications) {
+        [Notifications enumerateObjectsWithOptions: NSEnumerationConcurrent usingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+            NSDictionary *dict = [self dictionaryWithPropertiesOfObject: obj];
+            [remoteNotifications addObject:dict];
+        }];
+        result(remoteNotifications);
+    }];
 }
 
 - (void)getSubscriptionTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {

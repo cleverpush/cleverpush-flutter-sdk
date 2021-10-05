@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 
 export 'src/notification.dart';
 
-typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
+typedef void NotificationReceivedHandler(
+    CPNotificationReceivedResult receivedResult);
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
 typedef void SubscribedHandler(String? subscriptionId);
 
@@ -18,6 +19,7 @@ class CleverPush {
   List<dynamic> subScriptionTopicsList = <dynamic>[];
   List<dynamic> availableTopicList = <dynamic>[];
   List<dynamic> notificationList = <dynamic>[];
+  List<dynamic> remoteNotificationList = <dynamic>[];
 
   CleverPush() {
     this._channel.setMethodCallHandler(_handleMethod);
@@ -63,6 +65,14 @@ class CleverPush {
         await _channel.invokeMethod("CleverPush#getNotifications");
     print(notificationList.length.toString());
     return notificationList;
+  }
+
+  Future<List<dynamic>> getNotificationsWithApi(bool combineWithApi) async {
+    remoteNotificationList = await _channel.invokeMethod(
+        "CleverPush#getNotificationsWithApi",
+        {'combineWithApi': combineWithApi});
+    print(remoteNotificationList.length.toString());
+    return remoteNotificationList;
   }
 
   Future<void> setSubscriptionTopics(List<String> topics) async {
