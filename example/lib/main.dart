@@ -80,10 +80,10 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _getRemoteNotifications() async {
+  void _getNotificationsWithApi() async {
     bool combineWithApi = true;
     var remoteNotifications =
-        await CleverPush.shared.getRemoteNotifications(combineWithApi);
+        await CleverPush.shared.getNotificationsWithApi(combineWithApi);
     if (remoteNotifications.isNotEmpty) {
       print(remoteNotifications[0]);
     }
@@ -156,7 +156,7 @@ class _MyAppState extends State<MyApp> {
                   ]),
                   new TableRow(children: [
                     new CleverPushButton("Get Remote Notifications",
-                        _getRemoteNotifications, true)
+                        _getNotificationsWithApi, true)
                   ]),
                   new TableRow(children: [
                     new CleverPushButton(

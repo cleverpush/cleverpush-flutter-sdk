@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 
 export 'src/notification.dart';
 
-typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
+typedef void NotificationReceivedHandler(
+    CPNotificationReceivedResult receivedResult);
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
 typedef void SubscribedHandler(String? subscriptionId);
 
@@ -66,9 +67,9 @@ class CleverPush {
     return notificationList;
   }
 
-  Future<List<dynamic>> getRemoteNotifications(bool combineWithApi) async {
+  Future<List<dynamic>> getNotificationsWithApi(bool combineWithApi) async {
     remoteNotificationList = await _channel.invokeMethod(
-        "CleverPush#getRemoteNotifications",
+        "CleverPush#getNotificationsWithApi",
         {'combineWithApi': combineWithApi});
     print(remoteNotificationList.length.toString());
     return remoteNotificationList;
