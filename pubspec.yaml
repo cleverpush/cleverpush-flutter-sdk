@@ -1,6 +1,6 @@
 name: cleverpush_flutter
 description: CleverPush
-version: 1.9.6
+version: 1.9.7
 homepage: https://github.com/cleverpush/cleverpush-flutter-sdk
 
 flutter:
