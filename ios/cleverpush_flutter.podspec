@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'cleverpush_flutter'
-  s.version          = '1.9.7'
+  s.version          = '1.10.0'
   s.summary          = 'CleverPush Flutter SDK'
   s.description      = 'CleverPush'
   s.homepage         = 'https://cleverpush.com'
@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'CleverPush', '1.13.1'
+  s.dependency 'CleverPush', '1.13.2'
   s.static_framework = true
   s.ios.deployment_target = '8.0'
 end

@@ -1,3 +1,6 @@
+# 1.10.0
+* Android: Updated to latest native SDK which includes a fix for Android 12
+
 # 1.9.7
 * Android: Added Handler instead of `runInUiThread` to prevent a crash when we do not get an Activity context from Flutter
 
