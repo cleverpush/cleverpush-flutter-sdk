@@ -1,7 +1,10 @@
 package com.cleverpush.flutter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.cleverpush.ChannelTopic;
 import com.cleverpush.CleverPush;
@@ -20,6 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -28,27 +36,56 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.view.FlutterNativeView;
 
-public class CleverPushPlugin extends FlutterRegistrarResponder implements MethodCallHandler, NotificationOpenedListener, SubscribedListener {
+
+public class CleverPushPlugin extends FlutterRegistrarResponder implements MethodCallHandler, NotificationOpenedListener, SubscribedListener, FlutterPlugin, ActivityAware {
     private NotificationOpenedResult coldStartNotificationResult;
     private boolean hasSetNotificationOpenedHandler = false;
+    private Context context;
+    private Activity activity;
 
+    @SuppressWarnings("deprecation")
     public static void registerWith(Registrar registrar) {
         final CleverPushPlugin plugin = new CleverPushPlugin();
+        plugin.onAttachedToEngine(registrar.context(), registrar.messenger());
+    }
 
-        plugin.channel = new MethodChannel(registrar.messenger(), "CleverPush");
-        plugin.channel.setMethodCallHandler(plugin);
-        plugin.flutterRegistrar = registrar;
+    @Override
+    public void onAttachedToEngine(@NonNull final FlutterPluginBinding binding) {
+        onAttachedToEngine(binding.getApplicationContext(), binding.getBinaryMessenger());
+    }
 
-        plugin.flutterRegistrar.addViewDestroyListener(new PluginRegistry.ViewDestroyListener() {
-            @Override
-            public boolean onViewDestroy(FlutterNativeView flutterNativeView) {
-                Context context = plugin.flutterRegistrar.activeContext();
-                CleverPush.getInstance(context).removeNotificationReceivedListener();
-                CleverPush.getInstance(context).removeNotificationOpenedListener();
-                CleverPush.getInstance(context).removeSubscribedListener();
-                return false;
-            }
-        });
+    private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
+        this.context = applicationContext;
+        channel = new MethodChannel(messenger, "CleverPush");
+        channel.setMethodCallHandler(this);
+    }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        CleverPush.getInstance(binding.getApplicationContext()).removeNotificationReceivedListener();
+        CleverPush.getInstance(binding.getApplicationContext()).removeNotificationOpenedListener();
+        CleverPush.getInstance(binding.getApplicationContext()).removeSubscribedListener();
+        context = null;
+
+    }
+
+    @Override
+    public void onAttachedToActivity(ActivityPluginBinding binding) {
+        this.activity = binding.getActivity();
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+
     }
 
     @Override
@@ -89,7 +126,6 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             } catch (NullPointerException ignored) {
             }
         }
-        Context context = flutterRegistrar.activeContext();
 
         NotificationReceivedCallbackListener receivedListener = new NotificationReceivedCallbackListener() {
             @Override
@@ -112,25 +148,21 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void subscribe(MethodCall call, Result result) {
-        Context context = flutterRegistrar.activeContext();
         CleverPush.getInstance(context).subscribe();
         replySuccess(result, null);
     }
 
     private void unsubscribe(MethodCall call, Result result) {
-        Context context = flutterRegistrar.activeContext();
         CleverPush.getInstance(context).unsubscribe();
         replySuccess(result, null);
     }
 
     private void isSubscribed(Result reply) {
-        Context context = flutterRegistrar.activeContext();
         replySuccess(reply, CleverPush.getInstance(context).isSubscribed());
     }
 
     private void showTopicsDialog(MethodCall call, Result reply) {
-        Context context = flutterRegistrar.activeContext();
-        CleverPush.getInstance(context).showTopicsDialog(context);
+        CleverPush.getInstance(context).showTopicsDialog(activity);
         replySuccess(reply, null);
     }
 
@@ -143,7 +175,6 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void getNotifications(Result reply) {
-        Context context = flutterRegistrar.activeContext();
         try {
             replySuccess(reply, CleverPushSerializer.convertNotificationToMapList(new ArrayList<>(CleverPush.getInstance(context).getNotifications())));
         } catch (JSONException exception) {
@@ -152,7 +183,6 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void getNotificationsWithApi(MethodCall call, final Result reply) {
-        final Context context = flutterRegistrar.activeContext();
         boolean combineWithApi = call.argument("combineWithApi");
         CleverPush.getInstance(context).getNotifications(combineWithApi, new NotificationsCallbackListener() {
             @Override
@@ -175,20 +205,17 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         }
         String[] topicIds = new String[topics.size()];
         topicIds = topics.toArray(topicIds);
-        Context context = flutterRegistrar.activeContext();
         CleverPush.getInstance(context).setSubscriptionTopics(topicIds);
         replySuccess(reply, null);
     }
 
     private void getSubscriptionTopics(Result reply) {
-        Context context = flutterRegistrar.activeContext();
         Set<String> topicIds = CleverPush.getInstance(context).getSubscriptionTopics();
         List<String> list = new ArrayList<>(topicIds);
         replySuccess(reply, list);
     }
 
     private void getAvailableTopics(final Result reply) {
-        Context context = flutterRegistrar.activeContext();
         CleverPush.getInstance(context).getAvailableTopics(new ChannelTopicsListener() {
             @Override
             public void ready(Set<ChannelTopic> channelTopics) {
