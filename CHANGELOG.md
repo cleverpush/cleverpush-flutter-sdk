@@ -1,3 +1,6 @@
+# 1.10.1
+* Android: Updated to latest native SDK
+
 # 1.10.0
 * Android: Updated to latest native SDK which includes a fix for Android 12
 
