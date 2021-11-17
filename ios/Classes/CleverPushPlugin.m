@@ -46,7 +46,7 @@
     else if ([@"CleverPush#getNotifications" isEqualToString:call.method])
         [self getNotifications:call withResult:result];
     else if ([@"CleverPush#getNotificationsWithApi" isEqualToString:call.method])
-        [self getRemoteNotifications:call withResult:result];    
+        [self getNotificationsWithApi:call withResult:result];
     else if ([@"CleverPush#getSubscriptionTopics" isEqualToString:call.method])
         [self getSubscriptionTopics:call withResult:result];
     else if ([@"CleverPush#setSubscriptionTopics" isEqualToString:call.method])
