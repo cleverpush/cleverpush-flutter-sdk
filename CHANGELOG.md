@@ -1,3 +1,6 @@
+# 1.10.2
+* iOS: Fixed crash in `getNotifications` method
+
 # 1.10.1
 * Android: Updated to latest native SDK
 
