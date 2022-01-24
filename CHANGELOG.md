@@ -1,3 +1,6 @@
+# 1.11.0
+* iOS: Updated native SDK
+
 # 1.10.2
 * iOS: Fixed crash in `getNotifications` method
 
