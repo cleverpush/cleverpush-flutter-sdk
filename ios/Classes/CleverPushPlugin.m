@@ -53,6 +53,20 @@
         [self setSubscriptionTopics:call withResult:result];
     else if ([@"CleverPush#getAvailableTopics" isEqualToString:call.method])
         [self getAvailableTopics:call withResult:result];
+    else if ([@"CleverPush#getSubscriptionTags" isEqualToString:call.method])
+        [self getSubscriptionTags:call withResult:result];
+    else if ([@"CleverPush#addSubscriptionTag" isEqualToString:call.method])
+        [self addSubscriptionTag:call withResult:result];
+    else if ([@"CleverPush#removeSubscriptionTag" isEqualToString:call.method])
+        [self removeSubscriptionTag:call withResult:result];
+    else if ([@"CleverPush#getAvailableTags" isEqualToString:call.method])
+        [self getAvailableTags:call withResult:result];
+    else if ([@"CleverPush#getSubscriptionAttributes" isEqualToString:call.method])
+        [self getSubscriptionAttributes:call withResult:result];
+    else if ([@"CleverPush#getSubscriptionAttribute" isEqualToString:call.method])
+        [self getSubscriptionAttribute:call withResult:result];
+    else if ([@"CleverPush#setSubscriptionAttribute" isEqualToString:call.method])
+        [self setSubscriptionAttribute:call withResult:result];
     else if ([@"CleverPush#initNotificationOpenedHandlerParams" isEqualToString:call.method])
         [self initNotificationOpenedHandlerParams];
     else
@@ -124,14 +138,68 @@
 }
 
 - (void)getAvailableTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    NSMutableArray *availableTopics = [NSMutableArray new];
     [CleverPush getAvailableTopics:^(NSArray* channelTopics_) {
+        NSMutableArray *availableTopics = [NSMutableArray new];
         [channelTopics_ enumerateObjectsWithOptions: NSEnumerationConcurrent usingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
             NSDictionary *dict = [self dictionaryWithPropertiesOfObject: obj];
             [availableTopics addObject:dict];
         }];
+        result(availableTopics);
     }];
-    result(availableTopics);
+}
+
+- (void)getSubscriptionTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSMutableArray *tagIds = [CleverPush getSubscriptionTags];
+    NSMutableArray *list = [NSMutableArray arrayWithArray:tagIds];
+    result(list);
+}
+
+- (void)addSubscriptionTag:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush addSubscriptionTag:call.arguments[@"id"]];
+    result(nil);
+}
+
+- (void)removeSubscriptionTag:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush removeSubscriptionTag:call.arguments[@"id"]];
+    result(nil);
+}
+
+- (void)getAvailableTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush getAvailableTags:^(NSArray* channelTags_) {
+        NSMutableArray *availableTags = [NSMutableArray new];
+        [channelTags_ enumerateObjectsWithOptions: NSEnumerationConcurrent usingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+            NSDictionary *dict = [self dictionaryWithPropertiesOfObject: obj];
+            [availableTags addObject:dict];
+        }];
+        result(availableTags);
+    }];
+}
+
+- (void)getSubscriptionAttributes:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSDictionary *attributes = [CleverPush getSubscriptionAttributes];
+    result(attributes);
+}
+
+- (void)setSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush setSubscriptionAttribute:call.arguments[@"id"] value:call.arguments[@"value"]];
+    result(nil);
+}
+
+- (void)getSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    result([CleverPush getSubscriptionAttribute:call.arguments[@"id"]]);
+}
+
+- (void)getAvailableAttributes:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush getAvailableAttributes:^(NSDictionary* attributes_) {
+        NSMutableArray *availableAttributes = [NSMutableArray new];
+        [attributes_ enumerateKeysAndObjectsUsingBlock: ^(NSString* key, NSString* value, BOOL *stop) {
+            NSMutableDictionary *dict = [NSMutableDictionary new];
+            [dict setObject:key forKey:@"id"];
+            [dict setObject:value forKey:@"value"];
+            [availableAttributes addObject:dict];
+        }];
+        result(availableAttributes);
+    }];
 }
 
 - (void)initNotificationOpenedHandlerParams {

@@ -16,10 +16,6 @@ class CleverPush {
   NotificationReceivedHandler? _notificationReceivedHandler;
   NotificationOpenedHandler? _notificationOpenedHandler;
   SubscribedHandler? _subscribedHandler;
-  List<dynamic> subScriptionTopicsList = <dynamic>[];
-  List<dynamic> availableTopicList = <dynamic>[];
-  List<dynamic> notificationList = <dynamic>[];
-  List<dynamic> remoteNotificationList = <dynamic>[];
 
   CleverPush() {
     this._channel.setMethodCallHandler(_handleMethod);
@@ -27,8 +23,7 @@ class CleverPush {
 
   Future<void> init(String channelId, [bool? autoRegister]) async {
     print("CleverPush: Flutter initializing");
-    await _channel.invokeMethod('CleverPush#init',
-        {'channelId': channelId, 'autoRegister': autoRegister});
+    await _channel.invokeMethod('CleverPush#init', {'channelId': channelId, 'autoRegister': autoRegister});
   }
 
   void setNotificationReceivedHandler(NotificationReceivedHandler handler) {
@@ -61,35 +56,62 @@ class CleverPush {
   }
 
   Future<List<dynamic>> getNotifications() async {
-    notificationList =
-        await _channel.invokeMethod("CleverPush#getNotifications");
-    print(notificationList.length.toString());
-    return notificationList;
+    return await _channel.invokeMethod("CleverPush#getNotifications");
   }
 
   Future<List<dynamic>> getNotificationsWithApi(bool combineWithApi) async {
-    remoteNotificationList = await _channel.invokeMethod(
+    List<dynamic> remoteNotificationList = await _channel.invokeMethod(
         "CleverPush#getNotificationsWithApi",
         {'combineWithApi': combineWithApi});
-    print(remoteNotificationList.length.toString());
     return remoteNotificationList;
   }
 
   Future<void> setSubscriptionTopics(List<String> topics) async {
-    await _channel
-        .invokeMethod('CleverPush#setSubscriptionTopics', {'topics': topics});
+    await _channel.invokeMethod('CleverPush#setSubscriptionTopics', {'topics': topics});
   }
 
   Future<List<dynamic>> getAvailableTopics() async {
-    availableTopicList =
-        await _channel.invokeMethod("CleverPush#getAvailableTopics");
-    return availableTopicList;
+    return await _channel.invokeMethod("CleverPush#getAvailableTopics");
   }
 
   Future<List<dynamic>> getSubscriptionTopics() async {
-    subScriptionTopicsList =
-        await _channel.invokeMethod("CleverPush#getSubscriptionTopics");
-    return subScriptionTopicsList;
+    return await _channel.invokeMethod("CleverPush#getSubscriptionTopics");
+  }
+
+  Future<void> setSubscriptionTags(List<String> tags) async {
+    await _channel.invokeMethod('CleverPush#setSubscriptionTags', {'tags': tags});
+  }
+
+  Future<List<dynamic>> getAvailableTags() async {
+    return await _channel.invokeMethod("CleverPush#getAvailableTags");
+  }
+
+  Future<List<dynamic>> getSubscriptionTags() async {
+    return await _channel.invokeMethod("CleverPush#getSubscriptionTags");
+  }
+
+  Future<dynamic> addSubscriptionTag(String id) async {
+    return await _channel.invokeMethod("CleverPush#addSubscriptionTag", {'id': id});
+  }
+
+  Future<dynamic> removeSubscriptionTag(String id) async {
+    return await _channel.invokeMethod("CleverPush#removeSubscriptionTag", {'id': id});
+  }
+
+  Future<Map<dynamic, dynamic>> getAvailableAttributes() async {
+    return await _channel.invokeMethod("CleverPush#getAvailableAttributes");
+  }
+
+  Future<Map<dynamic, dynamic>> getSubscriptionAttributes() async {
+    return await _channel.invokeMethod("CleverPush#getSubscriptionAttributes");
+  }
+
+  Future<dynamic> getSubscriptionAttribute(String id) async {
+    return await _channel.invokeMethod("CleverPush#getSubscriptionAttribute", {'id': id});
+  }
+
+  Future<dynamic> setSubscriptionAttribute(String id, String value) async {
+    return await _channel.invokeMethod("CleverPush#setSubscriptionAttribute", {'id': id, 'value': value});
   }
 
   Future<Null> _handleMethod(MethodCall call) async {

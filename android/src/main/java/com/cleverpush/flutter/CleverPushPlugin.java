@@ -6,10 +6,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.cleverpush.ChannelTag;
 import com.cleverpush.ChannelTopic;
 import com.cleverpush.CleverPush;
+import com.cleverpush.CustomAttribute;
 import com.cleverpush.Notification;
 import com.cleverpush.NotificationOpenedResult;
+import com.cleverpush.listener.ChannelAttributesListener;
+import com.cleverpush.listener.ChannelTagsListener;
 import com.cleverpush.listener.ChannelTopicsListener;
 import com.cleverpush.listener.NotificationOpenedListener;
 import com.cleverpush.listener.NotificationReceivedCallbackListener;
@@ -24,7 +28,6 @@ import java.util.List;
 import java.util.Set;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
@@ -32,9 +35,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-import io.flutter.view.FlutterNativeView;
 
 
 public class CleverPushPlugin extends FlutterRegistrarResponder implements MethodCallHandler, NotificationOpenedListener, SubscribedListener, FlutterPlugin, ActivityAware {
@@ -112,6 +113,22 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.getSubscriptionTopics(result);
         } else if (call.method.contentEquals("CleverPush#getAvailableTopics")) {
             this.getAvailableTopics(result);
+        } else if (call.method.contentEquals("CleverPush#addSubscriptionTag")) {
+            this.addSubscriptionTag(call, result);
+        } else if (call.method.contentEquals("CleverPush#removeSubscriptionTag")) {
+            this.removeSubscriptionTag(call, result);
+        } else if (call.method.contentEquals("CleverPush#getSubscriptionTags")) {
+            this.getSubscriptionTags(result);
+        } else if (call.method.contentEquals("CleverPush#getAvailableTags")) {
+            this.getAvailableTags(result);
+        } else if (call.method.contentEquals("CleverPush#getAvailableAttributes")) {
+            this.getAvailableAttributes(result);
+        } else if (call.method.contentEquals("CleverPush#getSubscriptionAttributes")) {
+            this.getSubscriptionAttributes(result);
+        } else if (call.method.contentEquals("CleverPush#getSubscriptionAttribute")) {
+            this.getSubscriptionAttribute(call, result);
+        } else if (call.method.contentEquals("CleverPush#setSubscriptionAttribute")) {
+            this.setSubscriptionAttribute(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -194,7 +211,6 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
                 }
             }
         });
-
     }
 
     private void setSubscriptionTopics(MethodCall call, Result reply) {
@@ -220,12 +236,80 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             @Override
             public void ready(Set<ChannelTopic> channelTopics) {
                 try {
-                    replySuccess(reply, CleverPushSerializer.convertChannelTopicToMapList(new ArrayList<ChannelTopic>(channelTopics)));
+                    replySuccess(reply, CleverPushSerializer.convertChannelTopicToMapList(new ArrayList<>(channelTopics)));
                 } catch (JSONException exception) {
                     exception.printStackTrace();
                 }
             }
         });
+    }
+
+    private void addSubscriptionTag(MethodCall call, Result reply) {
+        String id = call.argument("id");
+        if (id == null) {
+            replySuccess(reply, null);
+            return;
+        }
+        CleverPush.getInstance(context).addSubscriptionTag(id);
+        replySuccess(reply, null);
+    }
+
+    private void removeSubscriptionTag(MethodCall call, Result reply) {
+        String id = call.argument("id");
+        if (id == null) {
+            replySuccess(reply, null);
+            return;
+        }
+        CleverPush.getInstance(context).removeSubscriptionTag(id);
+        replySuccess(reply, null);
+    }
+
+    private void getSubscriptionTags(Result reply) {
+        Set<String> tagIds = CleverPush.getInstance(context).getSubscriptionTags();
+        List<String> list = new ArrayList<>(tagIds);
+        replySuccess(reply, list);
+    }
+
+    private void getAvailableTags(final Result reply) {
+        CleverPush.getInstance(context).getAvailableTags(new ChannelTagsListener() {
+            @Override
+            public void ready(Set<ChannelTag> channelTags) {
+                try {
+                    replySuccess(reply, CleverPushSerializer.convertChannelTagToMapList(new ArrayList<>(channelTags)));
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getAvailableAttributes(final Result reply) {
+        CleverPush.getInstance(context).getAvailableAttributes(new ChannelAttributesListener() {
+            @Override
+            public void ready(Set<CustomAttribute> channelAttributes) {
+                try {
+                    replySuccess(reply, CleverPushSerializer.convertCustomAttributeToMapList(new ArrayList<>(channelAttributes)));
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getSubscriptionAttributes(final Result result) {
+      replySuccess(result, CleverPush.getInstance(context).getSubscriptionAttributes());
+    }
+
+    private void getSubscriptionAttribute(MethodCall call, final Result result) {
+      String id = call.argument("id");
+      replySuccess(result, CleverPush.getInstance(context).getSubscriptionAttribute(id));
+    }
+
+    private void setSubscriptionAttribute(MethodCall call, final Result result) {
+      String id = call.argument("id");
+      String value = call.argument("value");
+      CleverPush.getInstance(context).setSubscriptionAttribute(id, value);
+      replySuccess(result, null);
     }
 
     @Override

@@ -51,7 +51,7 @@ class CleverPushSerializer {
 
     static ArrayList<HashMap> convertNotificationToMapList(ArrayList<Notification> notifications) throws JSONException {
         ArrayList<HashMap> notificationMapList = new ArrayList<>();
-        for (int i = 0; i <notifications.size() ; i++) {
+        for (int i = 0; i <notifications.size(); i++) {
             HashMap<String, Object> hash = new HashMap<>();
 
             hash.put("_id", notifications.get(i).getId());
@@ -93,7 +93,7 @@ class CleverPushSerializer {
 
     static ArrayList<HashMap> convertChannelTopicToMapList(ArrayList<ChannelTopic> channelTopics) throws JSONException {
         ArrayList<HashMap> availableTopics = new ArrayList<>();
-        for (int i = 0; i <channelTopics.size() ; i++) {
+        for (int i = 0; i < channelTopics.size(); i++) {
             HashMap<String, Object> hash = new HashMap<>();
 
             hash.put("id", channelTopics.get(i).getId());
@@ -108,6 +108,30 @@ class CleverPushSerializer {
             availableTopics.add(hash);
         }
         return availableTopics;
+    }
+
+    static ArrayList<HashMap> convertChannelTagToMapList(ArrayList<ChannelTag> channelTags) throws JSONException {
+        ArrayList<HashMap> availableTags = new ArrayList<>();
+        for (int i = 0; i < channelTags.size(); i++) {
+            HashMap<String, Object> hash = new HashMap<>();
+
+            hash.put("id", channelTags.get(i).getId());
+            hash.put("name", channelTags.get(i).getName());
+            availableTags.add(hash);
+        }
+        return availableTags;
+    }
+
+    static ArrayList<HashMap> convertCustomAttributeToMapList(ArrayList<CustomAttribute> customAttributes) throws JSONException {
+        ArrayList<HashMap> availableAttributes = new ArrayList<>();
+        for (int i = 0; i < customAttributes.size(); i++) {
+            HashMap<String, Object> hash = new HashMap<>();
+
+            hash.put("id", customAttributes.get(i).getId());
+            hash.put("name", customAttributes.get(i).getName());
+            availableAttributes.add(hash);
+        }
+        return availableAttributes;
     }
 
     static HashMap<String, Object> convertNotificationOpenResultToMap(NotificationOpenedResult openResult) throws JSONException {

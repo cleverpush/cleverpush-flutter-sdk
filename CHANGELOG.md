@@ -1,3 +1,6 @@
+# 1.12.0
+* Added Tags & Attributes methods
+
 # 1.11.1
 * iOS: Updated native SDK
 

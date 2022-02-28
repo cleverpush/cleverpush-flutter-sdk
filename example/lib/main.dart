@@ -122,6 +122,39 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _getSubscriptionTags() async {
+    var tagIds = await CleverPush.shared.getSubscriptionTags();
+    String tagIdsString = "";
+    for (var i = 0; i < tagIds.length; i++) {
+      if (tagIdsString.isEmpty) {
+        tagIdsString = tagIds[i];
+      } else {
+        tagIdsString = tagIdsString + "," + tagIds[i];
+      }
+    }
+    this.setState(() {
+      _debugLabelString = tagIdsString;
+    });
+  }
+
+  void _addSubscriptionTag() {
+    CleverPush.shared.addSubscriptionTag('test');
+  }
+
+  void _removeSubscriptionTag() {
+    CleverPush.shared.removeSubscriptionTag('test');
+  }
+
+  void _getAvailableTags() async {
+    var tagIds = await CleverPush.shared.getAvailableTags();
+    if (tagIds.isNotEmpty) {
+      print(tagIds[0]);
+    }
+    this.setState(() {
+      _debugLabelString = tagIds.length.toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -169,6 +202,22 @@ class _MyAppState extends State<MyApp> {
                   new TableRow(children: [
                     new CleverPushButton(
                         "Get Available Topics", _getAvailableTopics, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "Get Subscription Tags", _getSubscriptionTags, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "Add Subscription Tag", _addSubscriptionTag, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "Remove Subscription Tag", _removeSubscriptionTag, true)
+                  ]),
+                  new TableRow(children: [
+                    new CleverPushButton(
+                        "Get Available Tags", _getAvailableTags, true)
                   ]),
                   new TableRow(children: [
                     Container(
