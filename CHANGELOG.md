@@ -1,3 +1,6 @@
+# 1.12.1
+* Implemented `setShowNotificationsInForeground` for Android
+
 # 1.12.0
 * Added Tags & Attributes methods
 

@@ -4,8 +4,7 @@ import 'package:flutter/services.dart';
 
 export 'src/notification.dart';
 
-typedef void NotificationReceivedHandler(
-    CPNotificationReceivedResult receivedResult);
+typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
 typedef void SubscribedHandler(String? subscriptionId);
 
@@ -24,6 +23,10 @@ class CleverPush {
   Future<void> init(String channelId, [bool? autoRegister]) async {
     print("CleverPush: Flutter initializing");
     await _channel.invokeMethod('CleverPush#init', {'channelId': channelId, 'autoRegister': autoRegister});
+  }
+
+  Future<void> setShowNotificationsInForeground(bool show) async {
+    await _channel.invokeMethod('CleverPush#setShowNotificationsInForeground', {'show': show});
   }
 
   void setNotificationReceivedHandler(NotificationReceivedHandler handler) {
@@ -76,10 +79,6 @@ class CleverPush {
 
   Future<List<dynamic>> getSubscriptionTopics() async {
     return await _channel.invokeMethod("CleverPush#getSubscriptionTopics");
-  }
-
-  Future<void> setSubscriptionTags(List<String> tags) async {
-    await _channel.invokeMethod('CleverPush#setSubscriptionTags', {'tags': tags});
   }
 
   Future<List<dynamic>> getAvailableTags() async {

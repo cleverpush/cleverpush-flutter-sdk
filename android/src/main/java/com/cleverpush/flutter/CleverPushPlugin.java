@@ -41,6 +41,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 public class CleverPushPlugin extends FlutterRegistrarResponder implements MethodCallHandler, NotificationOpenedListener, SubscribedListener, FlutterPlugin, ActivityAware {
     private NotificationOpenedResult coldStartNotificationResult;
     private boolean hasSetNotificationOpenedHandler = false;
+    private boolean showNotificationsInForeground = true;
     private Context context;
     private Activity activity;
 
@@ -67,7 +68,6 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         CleverPush.getInstance(binding.getApplicationContext()).removeNotificationOpenedListener();
         CleverPush.getInstance(binding.getApplicationContext()).removeSubscribedListener();
         context = null;
-
     }
 
     @Override
@@ -129,6 +129,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.getSubscriptionAttribute(call, result);
         } else if (call.method.contentEquals("CleverPush#setSubscriptionAttribute")) {
             this.setSubscriptionAttribute(call, result);
+        } else if (call.method.contentEquals("CleverPush#setShowNotificationsInForeground")) {
+            this.setShowNotificationsInForeground(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -155,7 +157,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
                     Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage());
                 }
 
-                return true;
+                return showNotificationsInForeground;
             }
         };
 
@@ -309,6 +311,12 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
       String id = call.argument("id");
       String value = call.argument("value");
       CleverPush.getInstance(context).setSubscriptionAttribute(id, value);
+      replySuccess(result, null);
+    }
+
+    private void setShowNotificationsInForeground(MethodCall call, final Result result) {
+      Boolean show = call.argument("show");
+      this.showNotificationsInForeground = show;
       replySuccess(result, null);
     }
 
