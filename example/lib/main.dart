@@ -21,6 +21,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
+    CleverPush.shared.setShowNotificationsInForeground(false);
+
     CleverPush.shared
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
       this.setState(() {

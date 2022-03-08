@@ -1,3 +1,6 @@
+# 1.12.2
+* Implemented `setShowNotificationsInForeground` for iOS
+
 # 1.12.1
 * Implemented `setShowNotificationsInForeground` for Android
 
