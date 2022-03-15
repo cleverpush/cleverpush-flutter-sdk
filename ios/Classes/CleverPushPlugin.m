@@ -68,7 +68,7 @@
     else if ([@"CleverPush#setSubscriptionAttribute" isEqualToString:call.method])
         [self setSubscriptionAttribute:call withResult:result];
     else if ([@"CleverPush#initNotificationOpenedHandlerParams" isEqualToString:call.method])
-        [self setSubscriptionAttribute:call withResult:result];
+        [self initNotificationOpenedHandlerParams];
     else if ([@"CleverPush#setShowNotificationsInForeground" isEqualToString:call.method])
         [self setShowNotificationsInForeground:call withResult:result];
     else
@@ -205,7 +205,7 @@
 }
 
 - (void)setShowNotificationsInForeground:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setShowNotificationsInForeground:call.arguments[@"show"]];
+    [CleverPush setShowNotificationsInForeground:[call.arguments[@"show"] boolValue]];
     result(nil);
 }
 

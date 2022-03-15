@@ -1,3 +1,6 @@
+# 1.12.3
+* Fixed `setShowNotificationsInForeground` and Notification Opened Handler for iOS
+
 # 1.12.2
 * Implemented `setShowNotificationsInForeground` for iOS
 
