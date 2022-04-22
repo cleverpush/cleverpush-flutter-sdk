@@ -113,6 +113,14 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#setSubscriptionAttribute", {'id': id, 'value': value});
   }
 
+  Future<dynamic> setTrackingConsentRequired(bool consentRequired) async {
+    return await _channel.invokeMethod("CleverPush#setTrackingConsentRequired", {'consentRequired': consentRequired});
+  }
+
+  Future<dynamic> setTrackingConsent(bool hasConsent) async {
+    return await _channel.invokeMethod("CleverPush#setTrackingConsent", {'hasConsent': hasConsent});
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (call.method == 'CleverPush#handleNotificationReceived' &&

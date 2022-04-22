@@ -1,3 +1,6 @@
+# 1.13.0
+* Implemented Tracking Consent methods
+
 # 1.12.3
 * Fixed `setShowNotificationsInForeground` and Notification Opened Handler for iOS
 

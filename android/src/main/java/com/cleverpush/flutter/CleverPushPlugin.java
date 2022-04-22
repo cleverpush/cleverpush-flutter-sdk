@@ -131,6 +131,10 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.setSubscriptionAttribute(call, result);
         } else if (call.method.contentEquals("CleverPush#setShowNotificationsInForeground")) {
             this.setShowNotificationsInForeground(call, result);
+        } else if (call.method.contentEquals("CleverPush#setTrackingConsentRequired")) {
+            this.setTrackingConsentRequired(call, result);
+        } else if (call.method.contentEquals("CleverPush#setTrackingConsent")) {
+            this.setTrackingConsent(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -317,6 +321,18 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     private void setShowNotificationsInForeground(MethodCall call, final Result result) {
       Boolean show = call.argument("show");
       this.showNotificationsInForeground = show;
+      replySuccess(result, null);
+    }
+
+    private void setTrackingConsentRequired(MethodCall call, final Result result) {
+      Boolean consentRequired = call.argument("consentRequired");
+      CleverPush.getInstance(context).setTrackingConsentRequired(consentRequired);
+      replySuccess(result, null);
+    }
+
+    private void setTrackingConsent(MethodCall call, final Result result) {
+      Boolean hasConsent = call.argument("hasConsent");
+      CleverPush.getInstance(context).setTrackingConsent(hasConsent);
       replySuccess(result, null);
     }
 
