@@ -1,3 +1,6 @@
+# 1.14.0
+* Updated Android + iOS SDKs
+
 # 1.13.0
 * Implemented Tracking Consent methods
 
