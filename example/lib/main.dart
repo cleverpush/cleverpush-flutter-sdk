@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
+import 'package:cleverpush_flutter/cleverpush_chat_view.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -160,82 +161,105 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      home: new Scaffold(
-          appBar: new AppBar(
-            title: const Text('CleverPush Flutter'),
-            backgroundColor: Color.fromARGB(255, 33, 33, 33),
-          ),
-          body: Container(
-            padding: EdgeInsets.all(10.0),
-            child: SingleChildScrollView(
-              child: new Table(
-                children: [
-                  new TableRow(children: [
-                    new CleverPushButton("Subscribe", _handleSubscribe, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Unsubscribe", _handleUnsubscribe, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Is Subscribed?", _handleIsSubscribed, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Show topics dialog", _handleTopicsDialog, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Get Notifications", _getNotifications, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton("Get Remote Notifications",
-                        _getNotificationsWithApi, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Get Subscription Topics", _getSubscriptionTopics, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Set Subscription Topics", _setSubscriptionTopics, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Get Available Topics", _getAvailableTopics, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Get Subscription Tags", _getSubscriptionTags, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Add Subscription Tag", _addSubscriptionTag, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Remove Subscription Tag", _removeSubscriptionTag, true)
-                  ]),
-                  new TableRow(children: [
-                    new CleverPushButton(
-                        "Get Available Tags", _getAvailableTags, true)
-                  ]),
-                  new TableRow(children: [
-                    Container(
-                      height: 8.0,
-                    )
-                  ]),
-                  new TableRow(children: [
-                    new Container(
-                      child: new Text(_debugLabelString),
-                      alignment: Alignment.center,
-                    )
-                  ]),
-                ],
+      initialRoute: '/',
+      routes: <String, WidgetBuilder>{
+        '/': (BuildContext context) {
+          return new Scaffold(
+            appBar: new AppBar(
+              title: const Text('CleverPush Flutter'),
+              backgroundColor: Color.fromARGB(255, 33, 33, 33),
+            ),
+            body: Container(
+              padding: EdgeInsets.all(10.0),
+              child: SingleChildScrollView(
+                child: new Table(
+                  children: [
+                    new TableRow(children: [
+                      new CleverPushButton( "Show Chat View", () {
+                        Navigator.pushNamed(context, '/chat');
+                      }, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton("Subscribe", _handleSubscribe, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Unsubscribe", _handleUnsubscribe, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Is Subscribed?", _handleIsSubscribed, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Show topics dialog", _handleTopicsDialog, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Get Notifications", _getNotifications, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton("Get Remote Notifications",
+                          _getNotificationsWithApi, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Get Subscription Topics", _getSubscriptionTopics, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Set Subscription Topics", _setSubscriptionTopics, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Get Available Topics", _getAvailableTopics, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Get Subscription Tags", _getSubscriptionTags, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Add Subscription Tag", _addSubscriptionTag, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Remove Subscription Tag", _removeSubscriptionTag, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Get Available Tags", _getAvailableTags, true)
+                    ]),
+                    new TableRow(children: [
+                      Container(
+                        height: 8.0,
+                      )
+                    ]),
+                    new TableRow(children: [
+                      new Container(
+                        child: new Text(_debugLabelString),
+                        alignment: Alignment.center,
+                      )
+                    ]),
+                  ],
+                ),
               ),
             ),
-          )),
+          );
+        },
+        '/chat': (BuildContext context) {
+          return new Scaffold(
+            appBar: AppBar(
+              title: const Text('Chat View'),
+            ),
+            body: new Container(
+              child: CleverPushChatView(
+                
+              ),
+            ),
+          );
+        },
+      },
     );
   }
 }

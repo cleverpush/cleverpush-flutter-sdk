@@ -36,7 +36,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-
+import io.flutter.plugin.platform.PlatformViewRegistry;
 
 public class CleverPushPlugin extends FlutterRegistrarResponder implements MethodCallHandler, NotificationOpenedListener, SubscribedListener, FlutterPlugin, ActivityAware {
     private NotificationOpenedResult coldStartNotificationResult;
@@ -54,12 +54,17 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     @Override
     public void onAttachedToEngine(@NonNull final FlutterPluginBinding binding) {
         onAttachedToEngine(binding.getApplicationContext(), binding.getBinaryMessenger());
+        initPlatformViews(binding.getPlatformViewRegistry());
     }
 
     private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
         this.context = applicationContext;
         channel = new MethodChannel(messenger, "CleverPush");
         channel.setMethodCallHandler(this);
+    }
+
+    private void initPlatformViews(PlatformViewRegistry registry) {
+        registry.registerViewFactory("cleverpush-chat-view", new CleverPushChatViewFactory());
     }
 
     @Override

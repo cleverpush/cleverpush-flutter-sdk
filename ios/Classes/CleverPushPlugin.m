@@ -1,4 +1,5 @@
 #import "CleverPushPlugin.h"
+#import "CPChatViewFlutter.h"
 #import <objc/runtime.h>
 
 @interface CleverPushPlugin ()
@@ -29,6 +30,9 @@
                                                binaryMessenger:[registrar messenger]];
 
     [registrar addMethodCallDelegate:CleverPushPlugin.sharedInstance channel:CleverPushPlugin.sharedInstance.channel];
+
+    CPChatViewFlutterFactory* factory = [[CPChatViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
+    [registrar registerViewFactory:factory withId:@"cleverpush-chat-view"];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
@@ -155,7 +159,7 @@
 }
 
 - (void)getSubscriptionTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    NSMutableArray *tagIds = [CleverPush getSubscriptionTags];
+    NSArray *tagIds = [CleverPush getSubscriptionTags];
     NSMutableArray *list = [NSMutableArray arrayWithArray:tagIds];
     result(list);
 }

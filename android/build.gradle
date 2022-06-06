@@ -1,5 +1,5 @@
 group 'com.cleverpush.flutter'
-version '1.14.0'
+version '1.15.0'
 
 buildscript {
     repositories {
@@ -27,7 +27,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 19
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
