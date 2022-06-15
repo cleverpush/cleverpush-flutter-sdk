@@ -1,3 +1,9 @@
+# 1.15.1
+* Updated Android SDK and fixed App Banner display bug
+
+# 1.15.0
+* Added CleverPush chat view
+
 # 1.14.0
 * Updated Android + iOS SDKs
 
