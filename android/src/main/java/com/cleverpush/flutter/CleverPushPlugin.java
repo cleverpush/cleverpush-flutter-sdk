@@ -59,6 +59,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
     private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
         this.context = applicationContext;
+        // Making sure to init Android sdk
+        CleverPush.getInstance(this.context);
         channel = new MethodChannel(messenger, "CleverPush");
         channel.setMethodCallHandler(this);
     }
