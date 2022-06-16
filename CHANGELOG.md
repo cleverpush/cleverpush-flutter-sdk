@@ -1,3 +1,6 @@
+# 1.15.2
+* Updated Android SDK
+
 # 1.15.1
 * Updated Android SDK and fixed App Banner display bug
 
