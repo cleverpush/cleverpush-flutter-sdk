@@ -1,5 +1,6 @@
 #import "CleverPushPlugin.h"
 #import "CPChatViewFlutter.h"
+#import "UIColor+HexString.h"
 #import <objc/runtime.h>
 
 @interface CleverPushPlugin ()
@@ -78,6 +79,8 @@
         [self setTrackingConsentRequired:call withResult:result];
     else if ([@"CleverPush#setTrackingConsent" isEqualToString:call.method])
         [self setTrackingConsent:call withResult:result];
+    else if ([@"CleverPush#setBrandingColor" isEqualToString:call.method])
+        [self setBrandingColor:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -223,6 +226,12 @@
 
 - (void)setTrackingConsent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush setTrackingConsent:[call.arguments[@"hasConsent"] boolValue]];
+    result(nil);
+}
+
+- (void)setBrandingColor:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSLog(@"setBrandingColor: %@", call.arguments[@"color"]);
+    [CleverPush setBrandingColor:[UIColor colorWithHexString:call.arguments[@"color"]]];
     result(nil);
 }
 

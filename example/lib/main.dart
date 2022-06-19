@@ -48,6 +48,8 @@ class _MyAppState extends State<MyApp> {
       print("Subscribed: $subscriptionId");
     });
 
+    CleverPush.shared.setBrandingColor("#ff0000");
+
     // CleverPush Channel ID
     await CleverPush.shared.init("7R8nkAxtrY5wy5TsS", true);
 

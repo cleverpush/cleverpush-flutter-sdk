@@ -48,6 +48,10 @@ class CleverPush {
     _chatUrlOpenedHandler = handler;
   }
 
+  void setBrandingColor(String color) {
+    _channel.invokeMethod("CleverPush#setBrandingColor", {'color': color});
+  }
+
   Future<void> subscribe() async {
     return await _channel.invokeMethod("CleverPush#subscribe");
   }
