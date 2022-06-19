@@ -50,6 +50,23 @@ class _MyAppState extends State<MyApp> {
 
     // CleverPush Channel ID
     await CleverPush.shared.init("7R8nkAxtrY5wy5TsS", true);
+
+    CleverPush.shared.setChatUrlOpenedHandler((url) {
+      Widget continueButton = TextButton(
+        child: Text("Ok"),
+        onPressed: () => Navigator.pop(context, 'Ok'),
+      );
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Chat URL opened'),
+          content: Text(url),
+          actions: <Widget>[
+            continueButton,
+          ],
+        ),
+      );
+    });
   }
 
   void _handleSubscribe() {

@@ -4,7 +4,6 @@
 
 @interface CleverPushPlugin ()
 
-@property (strong, nonatomic) FlutterMethodChannel *channel;
 @property (strong, nonatomic) CPNotificationOpenedResult *coldStartOpenResult;
 @property (strong, nonatomic) NSDictionary *launchOptions;
 @property (nonatomic) BOOL hasNotificationOpenedHandler;

@@ -1,34 +1,35 @@
 PODS:
   - CleverPush (1.19.0)
-  - cleverpush_flutter (1.15.2):
+  - cleverpush_flutter (1.15.3):
     - CleverPush (= 1.19.0)
     - Flutter
-  - Flutter (3.0.0)
+  - Flutter (1.0.0)
   - package_info (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - CleverPush
   - cleverpush_flutter (from `.symlinks/plugins/cleverpush_flutter/ios`)
+  - Flutter (from `Flutter`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - CleverPush
-    - Flutter
 
 EXTERNAL SOURCES:
   cleverpush_flutter:
     :path: ".symlinks/plugins/cleverpush_flutter/ios"
+  Flutter:
+    :path: Flutter
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
 
 SPEC CHECKSUMS:
   CleverPush: b240332ffaf820a450cc31919fae1f708add6554
-  cleverpush_flutter: cfd313e4193f7b681a45a7052882af31dcdf7435
-  Flutter: aef388869c2d2beecc8df50c818fa66e9c6eb1fb
+  cleverpush_flutter: 4a13171b08213d300a91197f33ea20e2a05ba0e8
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
 
-PODFILE CHECKSUM: 26a9bc5a82177cfde4d94a27e5131ce66ae86f94
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

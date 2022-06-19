@@ -1,3 +1,6 @@
+# 1.15.3
+* Implemented `setBrandingColor` and `setChatUrlOpenedHandler`
+
 # 1.15.2
 * Updated Android SDK
 

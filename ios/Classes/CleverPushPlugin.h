@@ -3,6 +3,8 @@
 
 @interface CleverPushPlugin : NSObject<FlutterPlugin>
 
+@property (strong, nonatomic) FlutterMethodChannel *channel;
+
 + (instancetype)sharedInstance;
 
 @end

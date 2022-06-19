@@ -19,6 +19,8 @@ import com.cleverpush.listener.NotificationOpenedListener;
 import com.cleverpush.listener.NotificationReceivedCallbackListener;
 import com.cleverpush.listener.NotificationsCallbackListener;
 import com.cleverpush.listener.SubscribedListener;
+import com.cleverpush.listener.ChatUrlOpenedListener;
+import com.cleverpush.util.ColorUtils;
 
 import org.json.JSONException;
 
@@ -142,6 +144,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.setTrackingConsentRequired(call, result);
         } else if (call.method.contentEquals("CleverPush#setTrackingConsent")) {
             this.setTrackingConsent(call, result);
+        } else if (call.method.contentEquals("CleverPush#setBrandingColor")) {
+            this.setBrandingColor(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -172,7 +176,18 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             }
         };
 
-        CleverPush.getInstance(context).init(channelId, receivedListener, this, this, autoRegister);
+        CleverPush cleverPush = CleverPush.getInstance(context);
+
+        cleverPush.init(channelId, receivedListener, this, this, autoRegister);
+
+        cleverPush.setChatUrlOpenedListener(new ChatUrlOpenedListener() {
+          @Override
+          public void opened(String url) {
+              HashMap<String, Object> hash = new HashMap<>();
+              hash.put("url", url);
+              invokeMethodOnUiThread("CleverPush#handleChatUrlOpened", hash);
+          }
+        });
 
         replySuccess(reply, null);
     }
@@ -340,6 +355,12 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     private void setTrackingConsent(MethodCall call, final Result result) {
       Boolean hasConsent = call.argument("hasConsent");
       CleverPush.getInstance(context).setTrackingConsent(hasConsent);
+      replySuccess(result, null);
+    }
+
+    private void setBrandingColor(MethodCall call, final Result result) {
+      String color = call.argument("color");
+      CleverPush.getInstance(context).setBrandingColor(ColorUtils.parseColor(color));
       replySuccess(result, null);
     }
 

@@ -1,4 +1,5 @@
 #import "CPChatViewFlutter.h"
+#import "CleverPushPlugin.h"
 #import <CleverPush/CPChatView.h>
 #import <UIKit/UIKit.h>
 
@@ -33,7 +34,13 @@
                     arguments:(id _Nullable)args
               binaryMessenger:(NSObject<FlutterBinaryMessenger>*)messenger {
   if (self = [super init]) {
-    _chatView = [[CPChatView alloc] initWithFrame:frame];
+    _chatView = [[CPChatView alloc] initWithFrame:frame urlOpenedCallback:^(NSURL *url) {
+      NSMutableDictionary *resultDict = [NSMutableDictionary new];
+      resultDict[@"url"] = url.absoluteString;
+      [[[CleverPushPlugin sharedInstance] channel] invokeMethod:@"CleverPush#handleChatUrlOpened" arguments:resultDict];
+    } subscribeCallback:^() {
+        
+    }];
   }
   return self;
 }
