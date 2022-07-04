@@ -1,137 +1,137 @@
-# 1.15.3
+## 1.15.3
 * Implemented `setBrandingColor` and `setChatUrlOpenedHandler`
 
-# 1.15.2
+## 1.15.2
 * Updated Android SDK
 
-# 1.15.1
+## 1.15.1
 * Updated Android SDK and fixed App Banner display bug
 
-# 1.15.0
+## 1.15.0
 * Added CleverPush chat view
 
-# 1.14.0
+## 1.14.0
 * Updated Android + iOS SDKs
 
-# 1.13.0
+## 1.13.0
 * Implemented Tracking Consent methods
 
-# 1.12.3
+## 1.12.3
 * Fixed `setShowNotificationsInForeground` and Notification Opened Handler for iOS
 
-# 1.12.2
+## 1.12.2
 * Implemented `setShowNotificationsInForeground` for iOS
 
-# 1.12.1
+## 1.12.1
 * Implemented `setShowNotificationsInForeground` for Android
 
-# 1.12.0
+## 1.12.0
 * Added Tags & Attributes methods
 
-# 1.11.1
+## 1.11.1
 * iOS: Updated native SDK
 
-# 1.11.0
+## 1.11.0
 * iOS: Updated native SDK
 
-# 1.10.2
+## 1.10.2
 * iOS: Fixed crash in `getNotifications` method
 
-# 1.10.1
+## 1.10.1
 * Android: Updated to latest native SDK
 
-# 1.10.0
+## 1.10.0
 * Android: Updated to latest native SDK which includes a fix for Android 12
 
-# 1.9.7
+## 1.9.7
 * Android: Added Handler instead of `runInUiThread` to prevent a crash when we do not get an Activity context from Flutter
 
-# 1.9.6
+## 1.9.6
 * Android: Updated native SDK
 
-# 1.9.5
+## 1.9.5
 * iOS: Updated native SDK
 * Android: Updated native SDK
 
-# 1.9.4
+## 1.9.4
 * iOS: Updated native SDK
 
-# 1.9.3
+## 1.9.3
 * iOS: Updated native SDK
 
-# 1.9.2
+## 1.9.2
 * Android: Fixed final argument error in getAvailableTopics
 
-# 1.9.1
+## 1.9.1
 * Added nullability checks in example
 * Fixed Notification Opened Handler on iOS when app was killed
 
-# 1.9.0
+## 1.9.0
 * Added new Method: getNotifications
 * Added new Method: getSubscriptionTopics
 * Added new Method: setSubscriptionTopics
 * Added new Method: getAvailableTopics
 
-# 1.8.2
-- Fixed handleSubscribed handler for iOS
+## 1.8.2
+* Fixed handleSubscribed handler for iOS
 
-# 1.8.1
-- Updated to latest iOS SDK
-- Updated to latest Android SDK
+## 1.8.1
+* Updated to latest iOS SDK
+* Updated to latest Android SDK
 
-# 1.8.0
+## 1.8.0
 * Support for sound null safety
 
-# 1.7.0
+## 1.7.0
 * Fixed issue with Notification handlers on iOS
-- Updated to latest iOS SDK
-- Updated to latest Android SDK
+* Updated to latest iOS SDK
+* Updated to latest Android SDK
 
-# 1.6.1
-- Updated to latest Android SDK
+## 1.6.1
+* Updated to latest Android SDK
 
-# 1.6.0
-- Fixed Subscribed Handler for Android and updated example project
+## 1.6.0
+* Fixed Subscribed Handler for Android and updated example project
 
-# 1.5.4
-- Updated to latest Android SDK
+## 1.5.4
+* Updated to latest Android SDK
 
-# 1.5.3
-- Updated to latest Android SDK
+## 1.5.3
+* Updated to latest Android SDK
 
-# 1.5.2
-- Updated to latest Android SDK
+## 1.5.2
+* Updated to latest Android SDK
 
-# 1.5.1
-- Updated to latest Android SDK
+## 1.5.1
+* Updated to latest Android SDK
 
-# 1.5.0
-- Updated to latest iOS & Android SDK
+## 1.5.0
+* Updated to latest iOS & Android SDK
 
-# 1.4.0
-- Updated to latest iOS & Android SDK
+## 1.4.0
+* Updated to latest iOS & Android SDK
 
-# 1.3.3
-- Updated to latest Android SDK
+## 1.3.3
+* Updated to latest Android SDK
 
-# 1.3.2
-- Updated to latest Android SDK
+## 1.3.2
+* Updated to latest Android SDK
 
-# 1.3.1
-- Updated to latest Android SDK
-- Fixed Topics Dialog theme
+## 1.3.1
+* Updated to latest Android SDK
+* Fixed Topics Dialog theme
 
-# 1.3.0
-- Updated to latest Android + iOS SDKs
+## 1.3.0
+* Updated to latest Android + iOS SDKs
 
-# 1.2.1
-- Fix showTopicsDialog
+## 1.2.1
+* Fix showTopicsDialog
 
-# 1.2.1
-- Show notification when app is in foreground
+## 1.2.1
+* Show notification when app is in foreground
 
-# 1.2.0
-- Fixed NotificationOpened/Received handlers on Android
+## 1.2.0
+* Fixed NotificationOpened/Received handlers on Android
 
-# 1.1.1
-- Several bug fixes
+## 1.1.1
+* Several bug fixes
