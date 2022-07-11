@@ -60,6 +60,14 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#unsubscribe");
   }
 
+  Future<void> enableAppBanners() async {
+    return await _channel.invokeMethod("CleverPush#enableAppBanners");
+  }
+
+  Future<void> disableAppBanners() async {
+    return await _channel.invokeMethod("CleverPush#disableAppBanners");
+  }
+
   Future<bool?> isSubscribed() async {
     return await _channel.invokeMethod("CleverPush#isSubscribed");
   }
