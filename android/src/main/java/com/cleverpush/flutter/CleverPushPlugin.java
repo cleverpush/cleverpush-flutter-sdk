@@ -146,6 +146,10 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.setTrackingConsent(call, result);
         } else if (call.method.contentEquals("CleverPush#setBrandingColor")) {
             this.setBrandingColor(call, result);
+        } else if (call.method.contentEquals("CleverPush#enableAppBanners")) {
+            this.enableAppBanners(result);
+        } else if (call.method.contentEquals("CleverPush#disableAppBanners")) {
+            this.disableAppBanners(result);
         } else {
             replyNotImplemented(result);
         }
@@ -181,12 +185,12 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         cleverPush.init(channelId, receivedListener, this, this, autoRegister);
 
         cleverPush.setChatUrlOpenedListener(new ChatUrlOpenedListener() {
-          @Override
-          public void opened(String url) {
-              HashMap<String, Object> hash = new HashMap<>();
-              hash.put("url", url);
-              invokeMethodOnUiThread("CleverPush#handleChatUrlOpened", hash);
-          }
+            @Override
+            public void opened(String url) {
+                HashMap<String, Object> hash = new HashMap<>();
+                hash.put("url", url);
+                invokeMethodOnUiThread("CleverPush#handleChatUrlOpened", hash);
+            }
         });
 
         replySuccess(reply, null);
@@ -199,6 +203,16 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
     private void unsubscribe(MethodCall call, Result result) {
         CleverPush.getInstance(context).unsubscribe();
+        replySuccess(result, null);
+    }
+
+    private void enableAppBanners(Result result) {
+        CleverPush.getInstance(context).enableAppBanners();
+        replySuccess(result, null);
+    }
+
+    private void disableAppBanners(Result result) {
+        CleverPush.getInstance(context).disableAppBanners();
         replySuccess(result, null);
     }
 
@@ -325,43 +339,43 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void getSubscriptionAttributes(final Result result) {
-      replySuccess(result, CleverPush.getInstance(context).getSubscriptionAttributes());
+        replySuccess(result, CleverPush.getInstance(context).getSubscriptionAttributes());
     }
 
     private void getSubscriptionAttribute(MethodCall call, final Result result) {
-      String id = call.argument("id");
-      replySuccess(result, CleverPush.getInstance(context).getSubscriptionAttribute(id));
+        String id = call.argument("id");
+        replySuccess(result, CleverPush.getInstance(context).getSubscriptionAttribute(id));
     }
 
     private void setSubscriptionAttribute(MethodCall call, final Result result) {
-      String id = call.argument("id");
-      String value = call.argument("value");
-      CleverPush.getInstance(context).setSubscriptionAttribute(id, value);
-      replySuccess(result, null);
+        String id = call.argument("id");
+        String value = call.argument("value");
+        CleverPush.getInstance(context).setSubscriptionAttribute(id, value);
+        replySuccess(result, null);
     }
 
     private void setShowNotificationsInForeground(MethodCall call, final Result result) {
-      Boolean show = call.argument("show");
-      this.showNotificationsInForeground = show;
-      replySuccess(result, null);
+        Boolean show = call.argument("show");
+        this.showNotificationsInForeground = show;
+        replySuccess(result, null);
     }
 
     private void setTrackingConsentRequired(MethodCall call, final Result result) {
-      Boolean consentRequired = call.argument("consentRequired");
-      CleverPush.getInstance(context).setTrackingConsentRequired(consentRequired);
-      replySuccess(result, null);
+        Boolean consentRequired = call.argument("consentRequired");
+        CleverPush.getInstance(context).setTrackingConsentRequired(consentRequired);
+        replySuccess(result, null);
     }
 
     private void setTrackingConsent(MethodCall call, final Result result) {
-      Boolean hasConsent = call.argument("hasConsent");
-      CleverPush.getInstance(context).setTrackingConsent(hasConsent);
-      replySuccess(result, null);
+        Boolean hasConsent = call.argument("hasConsent");
+        CleverPush.getInstance(context).setTrackingConsent(hasConsent);
+        replySuccess(result, null);
     }
 
     private void setBrandingColor(MethodCall call, final Result result) {
-      String color = call.argument("color");
-      CleverPush.getInstance(context).setBrandingColor(ColorUtils.parseColor(color));
-      replySuccess(result, null);
+        String color = call.argument("color");
+        CleverPush.getInstance(context).setBrandingColor(ColorUtils.parseColor(color));
+        replySuccess(result, null);
     }
 
     @Override
