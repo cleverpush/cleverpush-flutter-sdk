@@ -4,7 +4,7 @@ name: default
 
 steps:
 - name: deploy
-  image: cirrusci/flutter:stable
+  image: cirrusci/flutter:3.0.1
   pull: if-not-exists
   commands:
   - flutter packages get
