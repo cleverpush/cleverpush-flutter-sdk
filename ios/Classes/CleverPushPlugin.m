@@ -85,6 +85,8 @@
         [self enableAppBanners:call withResult:result];
     else if ([@"CleverPush#disableAppBanners" isEqualToString:call.method])
         [self disableAppBanners:call withResult:result];
+    else if ([@"CleverPush#setLogListener" isEqualToString:call.method])
+        [self setLogListener:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -256,6 +258,16 @@
         self.coldStartOpenResult = nil;
     }
 }
+
+- (void)setLogListener:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush setLogListener:^(NSString* message) {
+        NSMutableDictionary *resultDict = [NSMutableDictionary new];
+        resultDict[@"message"] = message;
+        [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
+    }];
+    result(nil);
+}
+
 
 - (void)handleSubscribed:(NSString *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];

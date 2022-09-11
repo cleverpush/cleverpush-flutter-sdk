@@ -69,6 +69,10 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     });
+
+    CleverPush.shared.setLogHandler((message) {
+      print("LOG HANDLER: " + message);
+    });
   }
 
   void _handleSubscribe() {

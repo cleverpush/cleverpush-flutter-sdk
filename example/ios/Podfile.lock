@@ -1,7 +1,7 @@
 PODS:
-  - CleverPush (1.20.4)
-  - cleverpush_flutter (1.15.4):
-    - CleverPush (= 1.20.4)
+  - CleverPush (1.21.4)
+  - cleverpush_flutter (1.16.0):
+    - CleverPush (= 1.21.4)
     - Flutter
   - Flutter (1.0.0)
   - package_info (0.0.1):
@@ -25,8 +25,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info/ios"
 
 SPEC CHECKSUMS:
-  CleverPush: b240332ffaf820a450cc31919fae1f708add6554
-  cleverpush_flutter: 4a13171b08213d300a91197f33ea20e2a05ba0e8
+  CleverPush: 54dd2a338a89de3cf34ed5cc8dddce5f2d8fe6e9
+  cleverpush_flutter: 94fca26a26364af643ad74d75c28a6c4f598572c
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
 

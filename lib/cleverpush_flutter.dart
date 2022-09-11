@@ -8,6 +8,7 @@ typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedRe
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
 typedef void SubscribedHandler(String? subscriptionId);
 typedef void ChatUrlOpenedHandler(String url);
+typedef void LogHandler(String message);
 
 class CleverPush {
   static CleverPush shared = new CleverPush();
@@ -17,6 +18,7 @@ class CleverPush {
   NotificationOpenedHandler? _notificationOpenedHandler;
   SubscribedHandler? _subscribedHandler;
   ChatUrlOpenedHandler? _chatUrlOpenedHandler;
+  LogHandler? _logHandler;
 
   CleverPush() {
     this._channel.setMethodCallHandler(_handleMethod);
@@ -46,6 +48,11 @@ class CleverPush {
 
   void setChatUrlOpenedHandler(ChatUrlOpenedHandler handler) {
     _chatUrlOpenedHandler = handler;
+  }
+
+  void setLogHandler(LogHandler handler) {
+    _logHandler = handler;
+    _channel.invokeMethod("CleverPush#setLogListener");
   }
 
   void setBrandingColor(String color) {
@@ -166,6 +173,12 @@ class CleverPush {
       ) {
         String url = call.arguments['url'];
         this._chatUrlOpenedHandler!(url);
+      } else if (
+        call.method == 'CleverPush#handleLog'
+        && this._logHandler != null
+      ) {
+        String message = call.arguments['message'];
+        this._logHandler!(message);
       } else {
         print("CleverPush: unknown method: " + call.method);
       }

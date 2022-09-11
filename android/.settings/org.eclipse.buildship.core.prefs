@@ -1,8 +1,8 @@
-arguments=
+arguments=--init-script /var/folders/n7/65zqcx_d0t3c7tgdmtknfnp40000gn/T/init10472048939796092689.gradle --init-script /var/folders/n7/65zqcx_d0t3c7tgdmtknfnp40000gn/T/init7844083091942966063.gradle
 auto.sync=false
 build.scans.enabled=false
 connection.gradle.distribution=GRADLE_DISTRIBUTION(WRAPPER)
-connection.project.dir=../example/android
+connection.project.dir=
 eclipse.preferences.version=1
 gradle.user.home=
 java.home=/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home

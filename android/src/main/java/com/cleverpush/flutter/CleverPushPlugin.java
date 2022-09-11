@@ -20,6 +20,7 @@ import com.cleverpush.listener.NotificationReceivedCallbackListener;
 import com.cleverpush.listener.NotificationsCallbackListener;
 import com.cleverpush.listener.SubscribedListener;
 import com.cleverpush.listener.ChatUrlOpenedListener;
+import com.cleverpush.listener.LogListener;
 import com.cleverpush.util.ColorUtils;
 
 import org.json.JSONException;
@@ -150,6 +151,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.enableAppBanners(result);
         } else if (call.method.contentEquals("CleverPush#disableAppBanners")) {
             this.disableAppBanners(result);
+        } else if (call.method.contentEquals("CleverPush#setLogListener")) {
+            this.setLogListener(result);
         } else {
             replyNotImplemented(result);
         }
@@ -213,6 +216,18 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
     private void disableAppBanners(Result result) {
         CleverPush.getInstance(context).disableAppBanners();
+        replySuccess(result, null);
+    }
+
+    private void setLogListener(Result result) {
+        CleverPush.getInstance(context).setLogListener(new LogListener() {
+          @Override
+          public void log(String message) {
+              HashMap<String, Object> hash = new HashMap<>();
+              hash.put("message", message);
+              invokeMethodOnUiThread("CleverPush#handleLog", hash);
+          }
+      });
         replySuccess(result, null);
     }
 
