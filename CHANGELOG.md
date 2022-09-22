@@ -1,3 +1,12 @@
+## 1.17.0
+* Android 13 support
+
+## 1.16.1
+* Updated Android SDK
+
+## 1.16.0
+* Implemented `setLogListener`
+
 ## 1.15.4
 * Updated Android & iOS SDKs
 
