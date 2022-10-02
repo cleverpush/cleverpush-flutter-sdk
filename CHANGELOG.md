@@ -1,3 +1,6 @@
+## 1.17.1
+* Updated iOS SDK
+
 ## 1.17.0
 * Android 13 support
 
