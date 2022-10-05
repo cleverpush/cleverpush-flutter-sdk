@@ -1,3 +1,6 @@
+## 1.17.3
+* Updated Android SDK to fix potential App Banner crash
+
 ## 1.17.2
 * Updated iOS SDK
 
