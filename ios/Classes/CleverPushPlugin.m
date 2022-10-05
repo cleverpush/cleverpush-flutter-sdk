@@ -92,7 +92,13 @@
 }
 
 - (void)initCleverPush:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush initWithLaunchOptions:self.launchOptions channelId:call.arguments[@"channelId"]
+    NSString* channelId = call.arguments[@"channelId"];
+    BOOL autoRegister = YES;
+    if (call.arguments[@"autoRegister"] != nil) {
+      autoRegister = [call.arguments[@"autoRegister"] boolValue];
+    }
+
+    [CleverPush initWithLaunchOptions:self.launchOptions channelId:channelId
            handleNotificationReceived:^(CPNotificationReceivedResult *result) {
         [self handleNotificationReceived:result];
     } handleNotificationOpened:^(CPNotificationOpenedResult *result) {
@@ -103,7 +109,7 @@
         }
     } handleSubscribed:^(NSString *subscriptionId) {
         [self handleSubscribed:subscriptionId];
-    } autoRegister:call.arguments[@"autoRegister"]];
+    } autoRegister:autoRegister];
 
     result(nil);
 }

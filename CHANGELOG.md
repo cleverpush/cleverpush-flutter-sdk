@@ -1,4 +1,7 @@
-## 1.17.1
+## 1.17.2
+* Updated iOS SDK
+
+* ## 1.17.1
 * Updated iOS SDK
 
 ## 1.17.0

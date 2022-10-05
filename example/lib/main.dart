@@ -22,6 +22,10 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
+    CleverPush.shared.setLogHandler((message) {
+      print(message);
+    });
+
     CleverPush.shared.setShowNotificationsInForeground(false);
 
     CleverPush.shared
@@ -68,10 +72,6 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
       );
-    });
-
-    CleverPush.shared.setLogHandler((message) {
-      print("LOG HANDLER: " + message);
     });
   }
 
