@@ -1,3 +1,6 @@
+## 1.17.4
+* Fixed iOS SDK version
+
 ## 1.17.3
 * Updated Android SDK to fix potential App Banner crash
 
