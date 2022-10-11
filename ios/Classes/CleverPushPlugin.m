@@ -86,7 +86,9 @@
     else if ([@"CleverPush#disableAppBanners" isEqualToString:call.method])
         [self disableAppBanners:call withResult:result];
     else if ([@"CleverPush#setLogListener" isEqualToString:call.method])
-        [self setLogListener:call withResult:result];
+      [self disableAppBanners:call withResult:result];
+    else if ([@"CleverPush#trackPageView" isEqualToString:call.method])
+      [self trackPageView:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -252,7 +254,6 @@
 }
 
 - (void)setBrandingColor:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    NSLog(@"setBrandingColor: %@", call.arguments[@"color"]);
     [CleverPush setBrandingColor:[UIColor colorWithHexString:call.arguments[@"color"]]];
     result(nil);
 }
@@ -274,6 +275,10 @@
     result(nil);
 }
 
+- (void)trackPageView:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush trackPageView:call.arguments[@"url"]];
+    result(nil);
+}
 
 - (void)handleSubscribed:(NSString *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];

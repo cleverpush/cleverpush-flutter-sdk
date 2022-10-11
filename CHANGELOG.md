@@ -1,3 +1,7 @@
+## 1.17.5
+* Updated iOS SDK version
+* Implemented `trackPageView` method for automatically assigning tags
+
 ## 1.17.4
 * Fixed iOS SDK version
 

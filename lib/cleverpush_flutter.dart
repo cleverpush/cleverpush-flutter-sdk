@@ -146,6 +146,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#setTrackingConsent", {'hasConsent': hasConsent});
   }
 
+  Future<dynamic> trackPageView(String url) async {
+    return await _channel.invokeMethod("CleverPush#trackPageView", {'url': url});
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (

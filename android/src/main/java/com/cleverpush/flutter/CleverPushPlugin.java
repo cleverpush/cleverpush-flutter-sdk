@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.FlutterPlugin; 
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
@@ -153,6 +153,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.disableAppBanners(result);
         } else if (call.method.contentEquals("CleverPush#setLogListener")) {
             this.setLogListener(result);
+        } else if (call.method.contentEquals("CleverPush#trackPageView")) {
+            this.trackPageView(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -221,13 +223,18 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
     private void setLogListener(Result result) {
         CleverPush.getInstance(context).setLogListener(new LogListener() {
-          @Override
-          public void log(String message) {
-              HashMap<String, Object> hash = new HashMap<>();
-              hash.put("message", message);
-              invokeMethodOnUiThread("CleverPush#handleLog", hash);
-          }
-      });
+            @Override
+            public void log(String message) {
+                HashMap<String, Object> hash = new HashMap<>();
+                hash.put("message", message);
+                invokeMethodOnUiThread("CleverPush#handleLog", hash);
+            }
+        });
+        replySuccess(result, null);
+    }
+
+    private void trackPageView(MethodCall call, Result result) {
+        CleverPush.getInstance(context).trackPageView((String) call.argument("url"));
         replySuccess(result, null);
     }
 
