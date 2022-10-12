@@ -1,3 +1,6 @@
+## 1.17.6
+* Updated Android SDK version
+
 ## 1.17.5
 * Updated iOS SDK version
 * Implemented `trackPageView` method for automatically assigning tags
