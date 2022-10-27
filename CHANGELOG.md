@@ -1,3 +1,6 @@
+## 1.17.8
+* Updated Android SDK version
+
 ## 1.17.7
 * Updated Android SDK version
 
