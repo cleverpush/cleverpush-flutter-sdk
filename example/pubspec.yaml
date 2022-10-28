@@ -1,26 +1,22 @@
-name: cleverpush_flutter
-description: CleverPush
-version: 1.17.9
-homepage: https://github.com/cleverpush/cleverpush-flutter-sdk
-
-flutter:
-  plugin:
-    platforms:
-      android:
-        package: com.cleverpush.flutter
-        pluginClass: CleverPushPlugin
-      ios:
-        pluginClass: CleverPushPlugin
+name: cleverpush_example
+description: Demonstrates how to use the cleverpush plugin.
 
 dependencies:
   flutter:
     sdk: flutter
-
-dev_dependencies:
-  test: ^1.16.8
-  flutter_test:
-    sdk: flutter
+    
+  cupertino_icons: ^0.1.2
+  package_info: ^0.4.0+6
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
-  flutter: '>=1.10.0'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  cleverpush_flutter:
+    path: ../
+
+flutter:
+  uses-material-design: true
