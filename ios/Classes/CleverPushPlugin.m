@@ -89,6 +89,14 @@
       [self disableAppBanners:call withResult:result];
     else if ([@"CleverPush#trackPageView" isEqualToString:call.method])
       [self trackPageView:call withResult:result];
+    else if ([@"CleverPush#trackEvent" isEqualToString:call.method])
+      [self trackEvent:call withResult:result];
+    else if ([@"CleverPush#triggerFollowUpEvent" isEqualToString:call.method])
+      [self triggerFollowUpEvent:call withResult:result];
+    else if ([@"CleverPush#setSubscriptionLanguage" isEqualToString:call.method])
+      [self setSubscriptionLanguage:call withResult:result];
+    else if ([@"CleverPush#setSubscriptionCountry" isEqualToString:call.method])
+      [self setSubscriptionCountry:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -277,6 +285,26 @@
 
 - (void)trackPageView:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush trackPageView:call.arguments[@"url"]];
+    result(nil);
+}
+
+- (void)trackEvent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush trackEvent:call.arguments[@"eventName"]];
+    result(nil);
+}
+
+- (void)triggerFollowUpEvent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush triggerFollowUpEvent:call.arguments[@"eventName"]];
+    result(nil);
+}
+
+- (void)setSubscriptionLanguage:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush setSubscriptionLanguage:call.arguments[@"language"]];
+    result(nil);
+}
+
+- (void)setSubscriptionCountry:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush setSubscriptionCountry:call.arguments[@"country"]];
     result(nil);
 }
 

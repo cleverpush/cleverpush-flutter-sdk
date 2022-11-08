@@ -1,3 +1,7 @@
+## 1.18.0
+* Added new methods: `setSubscriptionLanguage`, `setSubscriptionCountry`, `trackEvent`, `triggerFollowUpEvent`
+* Updated Android & iOS SDK version
+
 ## 1.17.9
 * Updated Android SDK version
 

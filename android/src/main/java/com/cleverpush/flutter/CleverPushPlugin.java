@@ -155,6 +155,14 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.setLogListener(result);
         } else if (call.method.contentEquals("CleverPush#trackPageView")) {
             this.trackPageView(call, result);
+        } else if (call.method.contentEquals("CleverPush#setSubscriptionCountry")) {
+            this.setSubscriptionCountry(call, result);
+        } else if (call.method.contentEquals("CleverPush#setSubscriptionLanguage")) {
+            this.setSubscriptionLanguage(call, result);
+        } else if (call.method.contentEquals("CleverPush#trackEvent")) {
+            this.trackEvent(call, result);
+        } else if (call.method.contentEquals("CleverPush#triggerFollowUpEvent")) {
+            this.triggerFollowUpEvent(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -235,6 +243,26 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
     private void trackPageView(MethodCall call, Result result) {
         CleverPush.getInstance(context).trackPageView((String) call.argument("url"));
+        replySuccess(result, null);
+    }
+
+    private void trackEvent(MethodCall call, Result result) {
+        CleverPush.getInstance(context).trackEvent((String) call.argument("eventName"));
+        replySuccess(result, null);
+    }
+
+    private void triggerFollowUpEvent(MethodCall call, Result result) {
+        CleverPush.getInstance(context).triggerFollowUpEvent((String) call.argument("eventName"));
+        replySuccess(result, null);
+    }
+
+    private void setSubscriptionLanguage(MethodCall call, Result result) {
+        CleverPush.getInstance(context).setSubscriptionLanguage((String) call.argument("language"));
+        replySuccess(result, null);
+    }
+
+    private void setSubscriptionCountry(MethodCall call, Result result) {
+        CleverPush.getInstance(context).setSubscriptionCountry((String) call.argument("country"));
         replySuccess(result, null);
     }
 

@@ -150,6 +150,22 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#trackPageView", {'url': url});
   }
 
+  Future<dynamic> setSubscriptionLanguage(String language) async {
+    return await _channel.invokeMethod("CleverPush#setSubscriptionLanguage", {'language': language});
+  }
+
+  Future<dynamic> setSubscriptionCountry(String country) async {
+    return await _channel.invokeMethod("CleverPush#setSubscriptionCountry", {'country': country});
+  }
+
+  Future<dynamic> trackEvent(String eventName) async {
+    return await _channel.invokeMethod("CleverPush#trackEvent", {'eventName': eventName});
+  }
+
+  Future<dynamic> triggerFollowUpEvent(String eventName) async {
+    return await _channel.invokeMethod("CleverPush#triggerFollowUpEvent", {'eventName': eventName});
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (
