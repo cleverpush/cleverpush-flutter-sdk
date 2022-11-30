@@ -75,6 +75,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#disableAppBanners");
   }
 
+  Future<void> enableDevelopmentMode() async {
+    return await _channel.invokeMethod("CleverPush#enableDevelopmentMode");
+  }
+
   Future<bool?> isSubscribed() async {
     return await _channel.invokeMethod("CleverPush#isSubscribed");
   }
@@ -158,12 +162,12 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#setSubscriptionCountry", {'country': country});
   }
 
-  Future<dynamic> trackEvent(String eventName) async {
-    return await _channel.invokeMethod("CleverPush#trackEvent", {'eventName': eventName});
+  Future<dynamic> trackEvent(String eventName, [double amount = 0.0]) async {
+    return await _channel.invokeMethod("CleverPush#trackEvent", {'eventName': eventName, 'amount': amount});
   }
 
-  Future<dynamic> triggerFollowUpEvent(String eventName) async {
-    return await _channel.invokeMethod("CleverPush#triggerFollowUpEvent", {'eventName': eventName});
+  Future<dynamic> triggerFollowUpEvent(String eventName, [Map<String, String> parameters = const {}]) async {
+    return await _channel.invokeMethod("CleverPush#triggerFollowUpEvent", {'eventName': eventName, 'parameters': parameters});
   }
 
   Future<Null> _handleMethod(MethodCall call) async {

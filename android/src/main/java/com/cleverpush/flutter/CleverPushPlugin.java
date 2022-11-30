@@ -28,6 +28,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin; 
@@ -149,6 +150,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.setBrandingColor(call, result);
         } else if (call.method.contentEquals("CleverPush#enableAppBanners")) {
             this.enableAppBanners(result);
+        } else if (call.method.contentEquals("CleverPush#enableDevelopmentMode")) {
+            this.enableDevelopmentMode(result);
         } else if (call.method.contentEquals("CleverPush#disableAppBanners")) {
             this.disableAppBanners(result);
         } else if (call.method.contentEquals("CleverPush#setLogListener")) {
@@ -224,6 +227,11 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         replySuccess(result, null);
     }
 
+    private void enableDevelopmentMode(Result result) {
+        CleverPush.getInstance(context).enableDevelopmentMode();
+        replySuccess(result, null);
+    }
+
     private void disableAppBanners(Result result) {
         CleverPush.getInstance(context).disableAppBanners();
         replySuccess(result, null);
@@ -247,12 +255,12 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void trackEvent(MethodCall call, Result result) {
-        CleverPush.getInstance(context).trackEvent((String) call.argument("eventName"));
+        CleverPush.getInstance(context).trackEvent((String) call.argument("eventName"), (Float) call.argument("amount"));
         replySuccess(result, null);
     }
 
     private void triggerFollowUpEvent(MethodCall call, Result result) {
-        CleverPush.getInstance(context).triggerFollowUpEvent((String) call.argument("eventName"));
+        CleverPush.getInstance(context).triggerFollowUpEvent((String) call.argument("eventName"), (Map) call.argument("parameters"));
         replySuccess(result, null);
     }
 

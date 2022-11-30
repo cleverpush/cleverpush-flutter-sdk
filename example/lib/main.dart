@@ -22,11 +22,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
-    CleverPush.shared.setLogHandler((message) {
-      print(message);
-    });
-
     CleverPush.shared.setShowNotificationsInForeground(false);
+    CleverPush.shared.enableDevelopmentMode();
 
     CleverPush.shared
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
@@ -181,6 +178,16 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _trackEvent() async {
+    CleverPush.shared.trackEvent("test", 13.37);
+  }
+
+  void _triggerFollowUpEvent() async {
+    CleverPush.shared.triggerFollowUpEvent("test", {
+      "test": "test",
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -252,6 +259,14 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Get Available Tags", _getAvailableTags, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Track Event", _trackEvent, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Track Follow-Up Event", _triggerFollowUpEvent, true)
                     ]),
                     new TableRow(children: [
                       Container(

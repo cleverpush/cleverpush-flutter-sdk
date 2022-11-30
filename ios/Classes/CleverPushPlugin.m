@@ -85,8 +85,10 @@
         [self enableAppBanners:call withResult:result];
     else if ([@"CleverPush#disableAppBanners" isEqualToString:call.method])
         [self disableAppBanners:call withResult:result];
+    else if ([@"CleverPush#enableDevelopmentMode" isEqualToString:call.method])
+        [self enableDevelopmentMode:call withResult:result];
     else if ([@"CleverPush#setLogListener" isEqualToString:call.method])
-      [self disableAppBanners:call withResult:result];
+      [self setLogListener:call withResult:result];
     else if ([@"CleverPush#trackPageView" isEqualToString:call.method])
       [self trackPageView:call withResult:result];
     else if ([@"CleverPush#trackEvent" isEqualToString:call.method])
@@ -261,6 +263,11 @@
     result(nil);
 }
 
+- (void)enableDevelopmentMode:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush enableDevelopmentMode];
+    result(nil);
+}
+
 - (void)setBrandingColor:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush setBrandingColor:[UIColor colorWithHexString:call.arguments[@"color"]]];
     result(nil);
@@ -289,12 +296,12 @@
 }
 
 - (void)trackEvent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush trackEvent:call.arguments[@"eventName"]];
+    [CleverPush trackEvent:call.arguments[@"eventName"] amount:call.arguments[@"amount"]];
     result(nil);
 }
 
 - (void)triggerFollowUpEvent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush triggerFollowUpEvent:call.arguments[@"eventName"]];
+    [CleverPush triggerFollowUpEvent:call.arguments[@"eventName"] parameters:call.arguments[@"parameters"]];
     result(nil);
 }
 
