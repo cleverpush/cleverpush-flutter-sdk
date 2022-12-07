@@ -45,6 +45,8 @@
         [self unsubscribe:call withResult:result];
     else if ([@"CleverPush#isSubscribed" isEqualToString:call.method])
         result([NSNumber numberWithBool:CleverPush.isSubscribed]);
+    else if ([@"CleverPush#getSubscriptionId" isEqualToString:call.method])
+        [self getSubscriptionId:call withResult:result];
     else if ([@"CleverPush#showTopicsDialog" isEqualToString:call.method])
         [self showTopicsDialog:call withResult:result];
     else if ([@"CleverPush#getNotifications" isEqualToString:call.method])
@@ -127,8 +129,11 @@
 }
 
 - (void)subscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush subscribe];
-    result(nil);
+    [CleverPush subscribe:^(NSString *subscriptionId) {
+        result(subscriptionId);
+    } failure:^(NSError *error) {
+        result(nil);
+    }];
 }
 
 - (void)unsubscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
@@ -139,6 +144,12 @@
 - (void)isSubscribed:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     bool subscribed = [CleverPush isSubscribed];
     result([NSNumber numberWithBool:subscribed]);
+}
+
+- (void)getSubscriptionId:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush getSubscriptionId:^(NSString *subscriptionId) {
+        result(subscriptionId);
+    }];
 }
 
 - (void)showTopicsDialog:(FlutterMethodCall *)call withResult:(FlutterResult)result {

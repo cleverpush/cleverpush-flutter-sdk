@@ -1,3 +1,6 @@
+## 1.19.0
+* Improved return values for `subscribe` and implemented new method `getSubscriptionId`
+
 ## 1.18.1
 * Added new arguments to methods `trackEvent` and `triggerFollowUpEvent`
 

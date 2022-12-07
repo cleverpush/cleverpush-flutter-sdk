@@ -59,12 +59,16 @@ class CleverPush {
     _channel.invokeMethod("CleverPush#setBrandingColor", {'color': color});
   }
 
-  Future<void> subscribe() async {
+  Future<String> subscribe() async {
     return await _channel.invokeMethod("CleverPush#subscribe");
   }
 
   Future<void> unsubscribe() async {
     return await _channel.invokeMethod("CleverPush#unsubscribe");
+  }
+
+  Future<String> getSubscriptionId() async {
+    return await _channel.invokeMethod("CleverPush#getSubscriptionId");
   }
 
   Future<void> enableAppBanners() async {

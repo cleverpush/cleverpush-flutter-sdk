@@ -72,9 +72,10 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _handleSubscribe() {
+  void _handleSubscribe() async {
     print("Prompting for Permission");
-    CleverPush.shared.subscribe();
+    var id = await CleverPush.shared.subscribe();
+    print("Subscribed: $id");
   }
 
   void _handleUnsubscribe() {

@@ -18,6 +18,7 @@ import com.cleverpush.listener.ChannelTopicsListener;
 import com.cleverpush.listener.NotificationOpenedListener;
 import com.cleverpush.listener.NotificationReceivedCallbackListener;
 import com.cleverpush.listener.NotificationsCallbackListener;
+import com.cleverpush.listener.SubscribedCallbackListener;
 import com.cleverpush.listener.SubscribedListener;
 import com.cleverpush.listener.ChatUrlOpenedListener;
 import com.cleverpush.listener.LogListener;
@@ -110,6 +111,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.unsubscribe(call, result);
         } else if (call.method.contentEquals("CleverPush#isSubscribed")) {
             this.isSubscribed(result);
+        } else if (call.method.contentEquals("CleverPush#getSubscriptionId")) {
+            this.getSubscriptionId(result);
         } else if (call.method.contentEquals("CleverPush#showTopicsDialog")) {
             this.showTopicsDialog(call, result);
         } else if (call.method.contentEquals("CleverPush#initNotificationOpenedHandlerParams")) {
@@ -212,9 +215,18 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         replySuccess(reply, null);
     }
 
-    private void subscribe(MethodCall call, Result result) {
-        CleverPush.getInstance(context).subscribe();
-        replySuccess(result, null);
+    private void subscribe(MethodCall call, final Result result) {
+        CleverPush.getInstance(context).subscribe(new SubscribedCallbackListener() {
+            @Override
+            public void onSuccess(String subscriptionId) {
+                replySuccess(result, subscriptionId);
+            }
+
+            @Override
+            public void onFailure(Throwable exception) {
+                replySuccess(result, null);
+            }
+        });
     }
 
     private void unsubscribe(MethodCall call, Result result) {
@@ -276,6 +288,15 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
     private void isSubscribed(Result reply) {
         replySuccess(reply, CleverPush.getInstance(context).isSubscribed());
+    }
+
+    private void getSubscriptionId(final Result reply) {
+        CleverPush.getInstance(context).getSubscriptionId(new SubscribedListener() {
+          @Override
+          public void subscribed(String subscriptionId) {
+              replySuccess(reply, subscriptionId);
+          }
+        });
     }
 
     private void showTopicsDialog(MethodCall call, Result reply) {
