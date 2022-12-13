@@ -226,7 +226,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             public void onFailure(Throwable exception) {
                 replySuccess(result, null);
             }
-        });
+        }, this.activity);
     }
 
     private void unsubscribe(MethodCall call, Result result) {
@@ -300,7 +300,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void showTopicsDialog(MethodCall call, Result reply) {
-        CleverPush.getInstance(context).showTopicsDialog(activity);
+        CleverPush.getInstance(context).showTopicsDialog(this.activity);
         replySuccess(reply, null);
     }
 
