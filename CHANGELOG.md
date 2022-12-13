@@ -1,3 +1,6 @@
+## 1.19.1
+* Fixed issue with `subscribe` activity on Android
+
 ## 1.19.0
 * Improved return values for `subscribe` and implemented new method `getSubscriptionId`
 
