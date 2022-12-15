@@ -1,3 +1,6 @@
+## 1.19.2
+* Updated Android SDK version
+
 ## 1.19.1
 * Fixed issue with `subscribe` activity on Android
 
