@@ -90,6 +90,14 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _handleAreNotificationsEnabled() {
+    CleverPush.shared.areNotificationsEnabled().then((status) {
+      this.setState(() {
+        _debugLabelString = status.toString();
+      });
+    });
+  }
+
   void _handleTopicsDialog() {
     CleverPush.shared.showTopicsDialog();
   }
@@ -220,6 +228,10 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Is Subscribed?", _handleIsSubscribed, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Are Notifications Enabled?", _handleAreNotificationsEnabled, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(

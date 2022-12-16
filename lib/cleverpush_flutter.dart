@@ -87,6 +87,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#isSubscribed");
   }
 
+  Future<bool?> areNotificationsEnabled() async {
+    return await _channel.invokeMethod("CleverPush#areNotificationsEnabled");
+  }
+
   Future<void> showTopicsDialog() async {
     return await _channel.invokeMethod("CleverPush#showTopicsDialog");
   }

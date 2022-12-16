@@ -1,3 +1,7 @@
+## 1.20.0
+* Added `areNotificationsEnabled` method
+* Updated iOS & Android SDK version
+
 ## 1.19.2
 * Updated Android SDK version
 

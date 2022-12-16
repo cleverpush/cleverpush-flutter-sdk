@@ -111,6 +111,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.unsubscribe(call, result);
         } else if (call.method.contentEquals("CleverPush#isSubscribed")) {
             this.isSubscribed(result);
+        } else if (call.method.contentEquals("CleverPush#areNotificationsEnabled")) {
+            this.areNotificationsEnabled(result);
         } else if (call.method.contentEquals("CleverPush#getSubscriptionId")) {
             this.getSubscriptionId(result);
         } else if (call.method.contentEquals("CleverPush#showTopicsDialog")) {
@@ -288,6 +290,10 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
     private void isSubscribed(Result reply) {
         replySuccess(reply, CleverPush.getInstance(context).isSubscribed());
+    }
+
+    private void areNotificationsEnabled(Result reply) {
+        replySuccess(reply, CleverPush.getInstance(context).areNotificationsEnabled());
     }
 
     private void getSubscriptionId(final Result reply) {
