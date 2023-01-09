@@ -49,6 +49,8 @@
         [self areNotificationsEnabled:call withResult:result];
     else if ([@"CleverPush#getSubscriptionId" isEqualToString:call.method])
         [self getSubscriptionId:call withResult:result];
+    else if ([@"CleverPush#getDeviceToken" isEqualToString:call.method])
+        [self getDeviceToken:call withResult:result];
     else if ([@"CleverPush#showTopicsDialog" isEqualToString:call.method])
         [self showTopicsDialog:call withResult:result];
     else if ([@"CleverPush#getNotifications" isEqualToString:call.method])
@@ -157,6 +159,12 @@
 - (void)getSubscriptionId:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush getSubscriptionId:^(NSString *subscriptionId) {
         result(subscriptionId);
+    }];
+}
+
+- (void)getDeviceToken:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush getDeviceToken:^(NSString *deviceToken) {
+        result(deviceToken);
     }];
 }
 

@@ -115,6 +115,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.areNotificationsEnabled(result);
         } else if (call.method.contentEquals("CleverPush#getSubscriptionId")) {
             this.getSubscriptionId(result);
+        } else if (call.method.contentEquals("CleverPush#getDeviceToken")) {
+            this.getDeviceToken(result);
         } else if (call.method.contentEquals("CleverPush#showTopicsDialog")) {
             this.showTopicsDialog(call, result);
         } else if (call.method.contentEquals("CleverPush#initNotificationOpenedHandlerParams")) {
@@ -301,6 +303,15 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
           @Override
           public void subscribed(String subscriptionId) {
               replySuccess(reply, subscriptionId);
+          }
+        });
+    }
+
+    private void getDeviceToken(final Result reply) {
+        CleverPush.getInstance(context).getDeviceToken(new DeviceTokenListener() {
+          @Override
+          public void subscribed(String deviceToken) {
+              replySuccess(reply, deviceToken);
           }
         });
     }

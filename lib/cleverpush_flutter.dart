@@ -71,6 +71,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#getSubscriptionId");
   }
 
+  Future<String> getDeviceToken() async {
+    return await _channel.invokeMethod("CleverPush#getDeviceToken");
+  }
+
   Future<void> enableAppBanners() async {
     return await _channel.invokeMethod("CleverPush#enableAppBanners");
   }
