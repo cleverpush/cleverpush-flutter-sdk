@@ -1,3 +1,7 @@
+## 1.20.1
+* Updated Android SDK version
+* Added `getDeviceToken` method
+
 ## 1.20.0
 * Added `areNotificationsEnabled` method
 * Updated iOS & Android SDK version
