@@ -1,3 +1,6 @@
+## 1.20.2
+* Hotfix for Android build
+
 ## 1.20.1
 * Updated Android SDK version
 * Added `getDeviceToken` method
