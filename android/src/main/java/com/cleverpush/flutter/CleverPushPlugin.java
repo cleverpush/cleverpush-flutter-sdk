@@ -23,6 +23,7 @@ import com.cleverpush.listener.NotificationReceivedCallbackListener;
 import com.cleverpush.listener.NotificationsCallbackListener;
 import com.cleverpush.listener.SubscribedCallbackListener;
 import com.cleverpush.listener.SubscribedListener;
+import com.cleverpush.listener.TopicsDialogListener;
 import com.cleverpush.util.ColorUtils;
 
 import org.json.JSONException;
@@ -317,9 +318,13 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         });
     }
 
-    private void showTopicsDialog(MethodCall call, Result reply) {
-        CleverPush.getInstance(context).showTopicsDialog(this.activity);
-        replySuccess(reply, null);
+    private void showTopicsDialog(MethodCall call, final Result reply) {
+        CleverPush.getInstance(context).showTopicsDialog(this.activity, new TopicsDialogListener() {
+            @Override
+              public void callback(boolean accepted) {
+                  replySuccess(reply, null);
+              }
+        });
     }
 
     private void initNotificationOpenedHandlerParams() {

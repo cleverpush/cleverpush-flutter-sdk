@@ -168,9 +168,22 @@
     }];
 }
 
+- (UIWindow*)keyWindow {
+    UIWindow *foundWindow = nil;
+    NSArray *windows = [[UIApplication sharedApplication] windows];
+    for (UIWindow *window in windows) {
+        if (window.isKeyWindow) {
+            foundWindow = window;
+            break;
+        }
+    }
+    return foundWindow;
+}
+
 - (void)showTopicsDialog:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush showTopicsDialog];
-    result(nil);
+    [CleverPush showTopicsDialog:[self keyWindow] callback:^() {
+      result(nil);
+    }];
 }
 
 - (void)getNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {

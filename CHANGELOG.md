@@ -1,3 +1,6 @@
+## 1.20.3
+* Resolve future for `showTopicsDialog` after user has seen the dialog.
+
 ## 1.20.2
 * Hotfix for Android build
 

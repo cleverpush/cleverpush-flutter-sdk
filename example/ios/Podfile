@@ -1,5 +1,5 @@
 # Uses the up to date pod versions without cache timeout
-source 'https://github.com/CocoaPods/Specs.git'
+# source 'https://github.com/CocoaPods/Specs.git'
 
 # Uncomment this line to define a global platform for your project
 platform :ios, '10.0'
