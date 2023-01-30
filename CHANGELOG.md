@@ -1,3 +1,6 @@
+## 1.20.4
+* Fixed `setShowNotificationsInForeground` for Android
+
 ## 1.20.3
 * Resolve future for `showTopicsDialog` after user has seen the dialog.
 

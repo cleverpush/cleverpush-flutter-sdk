@@ -190,6 +190,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             }
         }
 
+        final CleverPush cleverPush = CleverPush.getInstance(context);
+
         NotificationReceivedCallbackListener receivedListener = new NotificationReceivedCallbackListener() {
             @Override
             public boolean notificationReceivedCallback(NotificationOpenedResult result) {
@@ -201,11 +203,13 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
                     Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage());
                 }
 
-                return showNotificationsInForeground;
+                if (showNotificationsInForeground) {
+                  return true;
+                }
+
+                return !cleverPush.isAppOpen();
             }
         };
-
-        CleverPush cleverPush = CleverPush.getInstance(context);
 
         cleverPush.init(channelId, receivedListener, this, this, autoRegister);
 
