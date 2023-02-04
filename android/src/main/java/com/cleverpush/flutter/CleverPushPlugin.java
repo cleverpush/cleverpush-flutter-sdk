@@ -195,19 +195,23 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         NotificationReceivedCallbackListener receivedListener = new NotificationReceivedCallbackListener() {
             @Override
             public boolean notificationReceivedCallback(NotificationOpenedResult result) {
+                boolean appIsOpen = cleverPush.isAppOpen();
                 Log.d("CleverPush", "notificationReceived");
-                try {
-                    invokeMethodOnUiThread("CleverPush#handleNotificationReceived", CleverPushSerializer.convertNotificationOpenResultToMap(result));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage());
+
+                if (appIsOpen) {
+                    try {
+                      invokeMethodOnUiThread("CleverPush#handleNotificationReceived", CleverPushSerializer.convertNotificationOpenResultToMap(result));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage());
+                    }
                 }
 
                 if (showNotificationsInForeground) {
                   return true;
                 }
 
-                return !cleverPush.isAppOpen();
+                return !appIsOpen;
             }
         };
 

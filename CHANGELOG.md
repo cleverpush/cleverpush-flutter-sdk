@@ -1,3 +1,6 @@
+## 1.20.5
+* Make `handleNotificationReceived` behaviour same for Android + iOS.
+
 ## 1.20.4
 * Fixed `setShowNotificationsInForeground` for Android
 

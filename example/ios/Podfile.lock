@@ -1,6 +1,6 @@
 PODS:
   - CleverPush (1.23.0)
-  - cleverpush_flutter (1.20.4):
+  - cleverpush_flutter (1.20.5):
     - CleverPush (= 1.23.0)
     - Flutter
   - Flutter (1.0.0)
@@ -27,8 +27,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   CleverPush: 4b91afec506953d51bbc5779c3f9a9179323ffae
-  cleverpush_flutter: 7f79e0369e4109a2566d0de54576b15c5f55b49a
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  cleverpush_flutter: 4e4fafa49fff7bc2e6fc0e71d80e2a18728891a2
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
 
 PODFILE CHECKSUM: 5d5e3a3c8e96b3d9d98ad8b4481276126a4a52a6
