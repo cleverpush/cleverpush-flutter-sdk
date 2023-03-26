@@ -1,3 +1,6 @@
+## 1.21.0
+* Upgrade native iOS + Android SDKs
+
 ## 1.20.5
 * Make `handleNotificationReceived` behaviour same for Android + iOS.
 
