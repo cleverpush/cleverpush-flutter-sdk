@@ -281,7 +281,16 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void trackEvent(MethodCall call, Result result) {
-        CleverPush.getInstance(context).trackEvent((String) call.argument("eventName"), (Float) call.argument("amount"));
+        String eventName = (String) call.argument("eventName");
+        Double amount = call.argument("amount");
+        Map properties = call.argument("properties");
+        if (properties != null) {
+            CleverPush.getInstance(context).trackEvent(eventName, properties);
+        } else if (amount != null) {
+            CleverPush.getInstance(context).trackEvent(eventName, amount.floatValue());
+        } else {
+            CleverPush.getInstance(context).trackEvent(eventName);
+        }
         replySuccess(result, null);
     }
 

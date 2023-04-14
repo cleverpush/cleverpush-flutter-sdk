@@ -336,7 +336,16 @@
 }
 
 - (void)trackEvent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush trackEvent:call.arguments[@"eventName"] amount:call.arguments[@"amount"]];
+    NSString *eventName = call.arguments[@"eventName"];
+    NSNumber *amount = call.arguments[@"amount"];
+    NSDictionary *properties = call.arguments[@"properties"];
+    if (properties != nil) {
+        [CleverPush trackEvent:eventName properties:properties];
+    } else if (amount != nil) {
+        [CleverPush trackEvent:eventName amount:properties];
+    } else {
+        [CleverPush trackEvent:eventName];
+    }
     result(nil);
 }
 

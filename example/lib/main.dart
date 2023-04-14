@@ -188,7 +188,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _trackEvent() async {
-    CleverPush.shared.trackEvent("test", 13.37);
+    CleverPush.shared.trackEvent("test");
   }
 
   void _triggerFollowUpEvent() async {

@@ -174,8 +174,14 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#setSubscriptionCountry", {'country': country});
   }
 
-  Future<dynamic> trackEvent(String eventName, [double amount = 0.0]) async {
-    return await _channel.invokeMethod("CleverPush#trackEvent", {'eventName': eventName, 'amount': amount});
+  Future<dynamic> trackEvent(String eventName, [dynamic argument]) async {
+    Map<String, dynamic> arguments = {'eventName': eventName};
+    if (argument is Map) {
+      arguments['properties'] = argument;
+    } else if (argument is double) {
+      arguments['amount'] = argument;
+    }
+    return await _channel.invokeMethod("CleverPush#trackEvent", arguments);
   }
 
   Future<dynamic> triggerFollowUpEvent(String eventName, [Map<String, String> parameters = const {}]) async {

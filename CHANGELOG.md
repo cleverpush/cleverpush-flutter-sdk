@@ -1,3 +1,6 @@
+## 1.21.1
+* Fixed `trackEvent` for Android and support `properties` argument
+
 ## 1.21.0
 * Upgrade native iOS + Android SDKs
 
