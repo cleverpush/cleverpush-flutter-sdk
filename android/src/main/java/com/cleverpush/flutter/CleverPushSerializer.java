@@ -61,6 +61,7 @@ class CleverPushSerializer {
             hash.put("iconUrl", notifications.get(i).getIconUrl());
             hash.put("mediaUrl", notifications.get(i).getMediaUrl());
             hash.put("createdAt", notifications.get(i).getCreatedAt());
+            hash.put("chatNotification", notifications.get(i).isChatNotification());
 
             ArrayList<HashMap> buttons = new ArrayList<>();
 

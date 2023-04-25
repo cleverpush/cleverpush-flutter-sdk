@@ -1,3 +1,6 @@
+## 1.21.2
+* Added `chatNotification` flag support for Android
+
 ## 1.21.1
 * Fixed `trackEvent` for Android and support `properties` argument
 
