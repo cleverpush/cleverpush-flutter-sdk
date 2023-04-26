@@ -22,6 +22,7 @@ class CleverPushSerializer {
         hash.put("iconUrl", payload.getIconUrl());
         hash.put("mediaUrl", payload.getMediaUrl());
         hash.put("createdAt", payload.getCreatedAt());
+        hash.put("chatNotification",payload.isChatNotification());
 
         ArrayList<HashMap> buttons = new ArrayList<>();
 
@@ -51,41 +52,8 @@ class CleverPushSerializer {
 
     static ArrayList<HashMap> convertNotificationToMapList(ArrayList<Notification> notifications) throws JSONException {
         ArrayList<HashMap> notificationMapList = new ArrayList<>();
-        for (int i = 0; i <notifications.size(); i++) {
-            HashMap<String, Object> hash = new HashMap<>();
-
-            hash.put("_id", notifications.get(i).getId());
-            hash.put("title", notifications.get(i).getTitle());
-            hash.put("text", notifications.get(i).getText());
-            hash.put("url", notifications.get(i).getUrl());
-            hash.put("iconUrl", notifications.get(i).getIconUrl());
-            hash.put("mediaUrl", notifications.get(i).getMediaUrl());
-            hash.put("createdAt", notifications.get(i).getCreatedAt());
-            hash.put("chatNotification", notifications.get(i).isChatNotification());
-
-            ArrayList<HashMap> buttons = new ArrayList<>();
-
-            if (notifications.get(i).getActions() != null) {
-                for (int j = 0; j < notifications.get(i).getActions().length; j++) {
-                    NotificationAction button = notifications.get(i).getActions()[j];
-
-                    HashMap<String, Object> buttonHash = new HashMap<>();
-                    buttonHash.put("title", button.getTitle());
-                    buttonHash.put("icon", button.getIcon());
-                    buttonHash.put("url", button.getUrl());
-                    buttons.add(buttonHash);
-                }
-            }
-
-            if (buttons.size() > 0) {
-                hash.put("actions", buttons);
-            }
-
-            Log.d("CleverPush", "Created json payload: " + hash.toString());
-
-            if (notifications.get(i).getCustomData() != null) {
-              hash.put("customData", notifications.get(i).getCustomData());
-            }
+        for (int i = 0; i < notifications.size(); i++) {
+            HashMap<String, Object> hash = convertNotificationToMap(notifications.get(i));
             notificationMapList.add(hash);
         }
 
