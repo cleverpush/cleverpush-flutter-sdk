@@ -22,7 +22,6 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="cleverpush_example"
-        android:theme="@style/AppTheme"
         tools:replace="android:label">
 
         <meta-data
@@ -35,6 +34,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize"
+            android:theme="@style/LaunchTheme"
             android:exported="true">
 
             <!-- Theme to apply as soon as Flutter begins rendering frames -->

@@ -1,3 +1,6 @@
+## 1.21.8
+* Updated native Android SDK
+
 ## 1.21.7
 * Updated native Android SDK
 
