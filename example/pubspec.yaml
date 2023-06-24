@@ -1,5 +1,6 @@
 name: cleverpush_example
 description: Demonstrates how to use the cleverpush plugin.
+version: 1.0.0+2
 
 dependencies:
   flutter:
