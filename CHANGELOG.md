@@ -1,3 +1,6 @@
+## 1.22.2
+* Updated native iOS + Android SDKs
+
 ## 1.22.1
 * Updated native iOS + Android SDKs
 
