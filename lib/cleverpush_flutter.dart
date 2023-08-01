@@ -60,7 +60,11 @@ class CleverPush {
   }
 
   Future<String> subscribe() async {
-    return await _channel.invokeMethod("CleverPush#subscribe");
+    final String result = await _channel.invokeMethod("CleverPush#subscribe");
+    if (result == null)
+      return "";
+    else
+      return result;
   }
 
   Future<void> unsubscribe() async {
