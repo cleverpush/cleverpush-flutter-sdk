@@ -17,6 +17,7 @@ import com.cleverpush.listener.ChannelAttributesListener;
 import com.cleverpush.listener.ChannelTagsListener;
 import com.cleverpush.listener.ChannelTopicsListener;
 import com.cleverpush.listener.DeviceTokenListener;
+import com.cleverpush.listener.InitializeListener;
 import com.cleverpush.listener.LogListener;
 import com.cleverpush.listener.NotificationOpenedListener;
 import com.cleverpush.listener.NotificationReceivedCallbackListener;
@@ -215,7 +216,12 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             }
         };
 
-        cleverPush.init(channelId, receivedListener, this, this, autoRegister);
+        cleverPush.init(channelId, receivedListener, this, this, autoRegister, new InitializeListener() {
+            @Override
+            public void onInitialized() {
+                replySuccess(reply, null);
+            }
+        });
 
         cleverPush.setChatUrlOpenedListener(new ChatUrlOpenedListener() {
             @Override
@@ -225,8 +231,6 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
                 invokeMethodOnUiThread("CleverPush#handleChatUrlOpened", hash);
             }
         });
-
-        replySuccess(reply, null);
     }
 
     private void subscribe(MethodCall call, final Result result) {
