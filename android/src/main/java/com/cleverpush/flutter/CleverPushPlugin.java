@@ -181,7 +181,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         }
     }
 
-    private void initCleverPush(MethodCall call, Result reply) {
+    private void initCleverPush(MethodCall call, final Result reply) {
         String channelId = call.argument("channelId");
         boolean autoRegister = false;
         if (call.hasArgument("autoRegister") && call.argument("autoRegister") != null) {
