@@ -242,7 +242,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
             @Override
             public void onFailure(Throwable exception) {
-                replySuccess(result, null);
+                replySuccess(result, "");
             }
         }, this.activity);
     }

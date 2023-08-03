@@ -136,7 +136,7 @@
     [CleverPush subscribe:^(NSString *subscriptionId) {
         result(subscriptionId);
     } failure:^(NSError *error) {
-        result(nil);
+        result(@"");
     }];
 }
 
