@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'package:cleverpush_flutter/src/notification.dart';
+import 'package:cleverpush_flutter/src/app_banner.dart';
 import 'package:flutter/services.dart';
 
 export 'src/notification.dart';
+export 'src/app_banner.dart';
 
 typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
 typedef void SubscribedHandler(String? subscriptionId);
 typedef void ChatUrlOpenedHandler(String url);
+typedef void AppBannerShownHandler(CPAppBanner appBanner);
+typedef void AppBannerOpenedHandler(CPAppBannerAction action);
 typedef void LogHandler(String message);
 
 class CleverPush {
@@ -18,6 +22,8 @@ class CleverPush {
   NotificationOpenedHandler? _notificationOpenedHandler;
   SubscribedHandler? _subscribedHandler;
   ChatUrlOpenedHandler? _chatUrlOpenedHandler;
+  AppBannerShownHandler? _appBannerShownHandler;
+  AppBannerOpenedHandler? _appBannerOpenedHandler;
   LogHandler? _logHandler;
 
   CleverPush() {
@@ -48,6 +54,14 @@ class CleverPush {
 
   void setChatUrlOpenedHandler(ChatUrlOpenedHandler handler) {
     _chatUrlOpenedHandler = handler;
+  }
+
+  void setAppBannerShownHandler(AppBannerShownHandler handler) {
+    _appBannerShownHandler = handler;
+  }
+
+  void setAppBannerOpenedHandler(AppBannerOpenedHandler handler) {
+    _appBannerOpenedHandler = handler;
   }
 
   void setLogHandler(LogHandler handler) {
@@ -216,6 +230,20 @@ class CleverPush {
       ) {
         String url = call.arguments['url'];
         this._chatUrlOpenedHandler!(url);
+      } else if (
+        call.method == 'CleverPush#handleAppBannerShown'
+        && this._appBannerShownHandler != null
+      ) {
+        this._appBannerShownHandler!(CPAppBanner(
+          Map<String, dynamic>.from(call.arguments['appBanner']))
+        );
+      } else if (
+        call.method == 'CleverPush#handleAppBannerOpened'
+        && this._appBannerOpenedHandler != null
+      ) {
+        this._appBannerOpenedHandler!(CPAppBannerAction(
+          Map<String, dynamic>.from(call.arguments['action']))
+        );
       } else if (
         call.method == 'CleverPush#handleLog'
         && this._logHandler != null

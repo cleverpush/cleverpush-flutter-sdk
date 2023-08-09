@@ -12,6 +12,10 @@ import com.cleverpush.CleverPush;
 import com.cleverpush.CustomAttribute;
 import com.cleverpush.Notification;
 import com.cleverpush.NotificationOpenedResult;
+import com.cleverpush.banner.models.Banner;
+import com.cleverpush.banner.models.BannerAction;
+import com.cleverpush.listener.AppBannerOpenedListener;
+import com.cleverpush.listener.AppBannerShownListener;
 import com.cleverpush.listener.ChatUrlOpenedListener;
 import com.cleverpush.listener.ChannelAttributesListener;
 import com.cleverpush.listener.ChannelTagsListener;
@@ -229,6 +233,24 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
                 HashMap<String, Object> hash = new HashMap<>();
                 hash.put("url", url);
                 invokeMethodOnUiThread("CleverPush#handleChatUrlOpened", hash);
+            }
+        });
+
+        cleverPush.setAppBannerShownListener(new AppBannerShownListener() {
+            @Override
+            public void shown(Banner banner) {
+                HashMap<String, Object> hash = new HashMap<>();
+                hash.put("appBanner", CleverPushSerializer.convertAppBannerToMap(banner));
+                invokeMethodOnUiThread("CleverPush#handleAppBannerShown", hash);
+            }
+        });
+
+        cleverPush.setAppBannerOpenedListener(new AppBannerOpenedListener() {
+            @Override
+            public void opened(BannerAction action) {
+                HashMap<String, Object> hash = new HashMap<>();
+                hash.put("action", CleverPushSerializer.convertAppBannerActionToMap(action));
+                invokeMethodOnUiThread("CleverPush#handleAppBannerOpened", hash);
             }
         });
     }

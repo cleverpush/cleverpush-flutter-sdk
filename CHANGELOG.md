@@ -1,3 +1,6 @@
+## 1.23.0
+* Implemented `setAppBannerShownHandler` and `setAppBannerOpenedHandler`
+
 ## 1.22.4
 * Updated native Android SDK
 

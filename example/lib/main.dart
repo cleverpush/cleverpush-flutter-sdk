@@ -49,6 +49,14 @@ class _MyAppState extends State<MyApp> {
       print("Subscribed: $subscriptionId");
     });
 
+    CleverPush.shared.enableAppBanners();
+
+    CleverPush.shared.setAppBannerShownHandler((CPAppBanner appBanner) {
+      this.setState(() {
+        _debugLabelString = "APP BANNER SHOWN: " + appBanner.name!;
+      });
+    });
+
     CleverPush.shared.setBrandingColor("#ff0000");
 
     // CleverPush Channel ID

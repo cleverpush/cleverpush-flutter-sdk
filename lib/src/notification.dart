@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'json.dart';
 
 class CPNotification extends JSONStringRepresentable {
   String? id;
@@ -62,14 +62,4 @@ class CPNotificationReceivedResult {
   CPNotificationReceivedResult(Map<String, dynamic> json) {
     this.notification = CPNotification(json['notification'].cast<String, dynamic>());
   }
-}
-
-abstract class JSONStringRepresentable {
-  String jsonRepresentation();
-
-  String convertToJsonString(Map<String, dynamic>? object) => JsonEncoder
-      .withIndent('  ')
-      .convert(object)
-      .replaceAll("\\n", "\n")
-      .replaceAll("\\", "");
 }

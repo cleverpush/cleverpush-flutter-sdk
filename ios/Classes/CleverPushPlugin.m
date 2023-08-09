@@ -91,6 +91,8 @@
         [self enableAppBanners:call withResult:result];
     else if ([@"CleverPush#disableAppBanners" isEqualToString:call.method])
         [self disableAppBanners:call withResult:result];
+    else if ([@"CleverPush#initNotificationOpenedHandlerParams" isEqualToString:call.method])
+        [self initNotificationOpenedHandlerParams];
     else if ([@"CleverPush#enableDevelopmentMode" isEqualToString:call.method])
         [self enableDevelopmentMode:call withResult:result];
     else if ([@"CleverPush#setLogListener" isEqualToString:call.method])
@@ -128,6 +130,14 @@
     } handleSubscribed:^(NSString *subscriptionId) {
         [self handleSubscribed:subscriptionId];
     } autoRegister:autoRegister];
+
+    [CleverPush setAppBannerShownCallback:^(CPAppBanner *appBanner) {
+        [self handleAppBannerShown:appBanner];
+    }];
+
+    [CleverPush setAppBannerOpenedCallback:^(CPAppBannerAction *action) {
+        [self handleAppBannerOpened:action];
+    }];
 
     result(nil);
 }
@@ -382,6 +392,18 @@
     [self.channel invokeMethod:@"CleverPush#handleNotificationOpened" arguments:resultDict];
 }
 
+- (void)handleAppBannerShown:(CPAppBanner *)appBanner {
+    NSMutableDictionary *resultDict = [NSMutableDictionary new];
+    resultDict[@"appBanner"] = [self dictionaryWithPropertiesOfObject:appBanner];
+    [self.channel invokeMethod:@"CleverPush#handleAppBannerShown" arguments:resultDict];
+}
+
+- (void)handleAppBannerOpened:(CPAppBannerAction *)action {
+    NSMutableDictionary *resultDict = [NSMutableDictionary new];
+    resultDict[@"action"] = [self dictionaryWithPropertiesOfObject:action];
+    [self.channel invokeMethod:@"CleverPush#handleAppBannerOpened" arguments:resultDict];
+}
+
 - (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     
@@ -390,12 +412,24 @@
     
     for (int i = 0; i < count; i++) {
         NSString *key = [NSString stringWithUTF8String:property_getName(properties[i])];
-        if ([obj valueForKey:key] != nil) {
-            if ([[obj valueForKey:key] isKindOfClass:[NSDate class]]) {
+        id object = [obj valueForKey:key];
+
+        if (object) {
+            if ([object isKindOfClass:[NSArray class]]) {
+                NSMutableArray *subObj = [NSMutableArray array];
+                for (id o in object) {
+                    [subObj addObject:[self dictionaryWithPropertiesOfObject:o]];
+                }
+                dict[key] = subObj;
+            } else if (
+                       [object isKindOfClass:[NSString class]]
+                       || [object isKindOfClass:[NSNumber class]]
+                       || [object isKindOfClass:[NSDictionary class]]
+                       ) {
+                dict[key] = object;
+            } else if ([object isKindOfClass:[NSDate class]]) {
                 NSString *convertedDateString = [NSString stringWithFormat:@"%@", [obj valueForKey:key]];
                 [dict setObject:convertedDateString forKey:key];
-            } else {
-                [dict setObject:[obj valueForKey:key] forKey:key];
             }
         }
     }

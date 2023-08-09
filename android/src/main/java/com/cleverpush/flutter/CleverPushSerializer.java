@@ -2,6 +2,8 @@ package com.cleverpush.flutter;
 
 import android.util.Log;
 import com.cleverpush.*;
+import com.cleverpush.banner.models.Banner;
+import com.cleverpush.banner.models.BannerAction;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +48,33 @@ class CleverPushSerializer {
 
         if (payload.getCustomData() != null)
             hash.put("customData", payload.getCustomData());
+
+        return hash;
+    }
+
+    protected static HashMap<String, Object> convertAppBannerToMap(Banner payload) {
+        HashMap<String, Object> hash = new HashMap<>();
+
+        hash.put("_id", payload.getId());
+        hash.put("title", payload.getTitle());
+        hash.put("name", payload.getName());
+        hash.put("description", payload.getDescription());
+        hash.put("mediaUrl", payload.getMediaUrl());
+
+        Log.d("CleverPush", "Created json payload: " + hash.toString());
+
+        return hash;
+    }
+
+    protected static HashMap<String, Object> convertAppBannerActionToMap(BannerAction payload) {
+        HashMap<String, Object> hash = new HashMap<>();
+
+        hash.put("url", payload.getUrl());
+        hash.put("urlType", payload.getUrlType());
+        hash.put("name", payload.getName());
+        hash.put("type", payload.getType());
+
+        Log.d("CleverPush", "Created json payload: " + hash.toString());
 
         return hash;
     }
