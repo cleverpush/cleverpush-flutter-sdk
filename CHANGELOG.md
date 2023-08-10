@@ -1,3 +1,6 @@
+## 1.23.1
+* Updated native iOS SDK
+
 ## 1.23.0
 * Implemented `setAppBannerShownHandler` and `setAppBannerOpenedHandler`
 
