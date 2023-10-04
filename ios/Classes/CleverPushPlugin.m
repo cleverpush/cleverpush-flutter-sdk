@@ -63,6 +63,8 @@
         [self setSubscriptionTopics:call withResult:result];
     else if ([@"CleverPush#getAvailableTopics" isEqualToString:call.method])
         [self getAvailableTopics:call withResult:result];
+    else if ([@"CleverPush#getAvailableAttributes" isEqualToString:call.method])
+        [self getAvailableAttributes:call withResult:result];
     else if ([@"CleverPush#getSubscriptionTags" isEqualToString:call.method])
         [self getSubscriptionTags:call withResult:result];
     else if ([@"CleverPush#addSubscriptionTag" isEqualToString:call.method])
@@ -276,14 +278,14 @@
 }
 
 - (void)getAvailableAttributes:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush getAvailableAttributes:^(NSDictionary* attributes_) {
+    [CleverPush getAvailableAttributes:^(NSMutableArray* attributes_) {
         NSMutableArray *availableAttributes = [NSMutableArray new];
-        [attributes_ enumerateKeysAndObjectsUsingBlock: ^(NSString* key, NSString* value, BOOL *stop) {
+        for (NSMutableDictionary* attribute in attributes_) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:key forKey:@"id"];
-            [dict setObject:value forKey:@"value"];
+            [dict setObject:[attribute objectForKey:@"id"] forKey:@"id"];
+            [dict setObject:[attribute objectForKey:@"name"] forKey:@"name"];
             [availableAttributes addObject:dict];
-        }];
+        }
         result(availableAttributes);
     }];
 }

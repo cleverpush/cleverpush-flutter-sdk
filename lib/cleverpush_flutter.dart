@@ -153,7 +153,7 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#removeSubscriptionTag", {'id': id});
   }
 
-  Future<Map<dynamic, dynamic>> getAvailableAttributes() async {
+  Future<List<dynamic>> getAvailableAttributes() async {
     return await _channel.invokeMethod("CleverPush#getAvailableAttributes");
   }
 

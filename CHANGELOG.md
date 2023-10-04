@@ -1,3 +1,6 @@
+## 1.23.3
+* Fixed issue on iOS with `getAvailableAttributes` method
+
 ## 1.23.2
 * Updated native Android SDK
 * Updated native iOS SDK
