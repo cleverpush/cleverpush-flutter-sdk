@@ -178,11 +178,21 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _addSubscriptionTag() {
-    CleverPush.shared.addSubscriptionTag('test');
+    CleverPush.shared.addSubscriptionTag('TAG_ID');
+  }
+
+  void _addSubscriptionTags() {
+    List<String> tagIds = ['TAG_ID1', 'TAG_ID2'];
+    CleverPush.shared.addSubscriptionTags(tagIds);
   }
 
   void _removeSubscriptionTag() {
-    CleverPush.shared.removeSubscriptionTag('test');
+    CleverPush.shared.removeSubscriptionTag('TAG_ID');
+  }
+
+  void _removeSubscriptionTags() {
+    List<String> tagIds = ['TAG_ID1', 'TAG_ID2'];
+    CleverPush.shared.removeSubscriptionTags(tagIds);
   }
 
   void _getAvailableTags() async {
@@ -276,6 +286,14 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Remove Subscription Tag", _removeSubscriptionTag, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Add Subscription Tags", _addSubscriptionTags, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Remove Subscription Tags", _removeSubscriptionTags, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(

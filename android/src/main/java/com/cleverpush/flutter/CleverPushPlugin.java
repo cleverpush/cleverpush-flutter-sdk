@@ -140,8 +140,12 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.getAvailableTopics(result);
         } else if (call.method.contentEquals("CleverPush#addSubscriptionTag")) {
             this.addSubscriptionTag(call, result);
+        }  else if (call.method.contentEquals("CleverPush#addSubscriptionTags")) {
+            this.addSubscriptionTags(call, result);
         } else if (call.method.contentEquals("CleverPush#removeSubscriptionTag")) {
             this.removeSubscriptionTag(call, result);
+        }  else if (call.method.contentEquals("CleverPush#removeSubscriptionTags")) {
+            this.removeSubscriptionTags(call, result);
         } else if (call.method.contentEquals("CleverPush#getSubscriptionTags")) {
             this.getSubscriptionTags(result);
         } else if (call.method.contentEquals("CleverPush#getAvailableTags")) {
@@ -448,6 +452,30 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             return;
         }
         CleverPush.getInstance(context).removeSubscriptionTag(id);
+        replySuccess(reply, null);
+    }
+
+    private void addSubscriptionTags(MethodCall call, Result reply) {
+        List<String> ids = call.argument("ids");
+        if (ids == null) {
+            replySuccess(reply, null);
+            return;
+        }
+        String[] tagIds = new String[ids.size()];
+        tagIds = ids.toArray(tagIds);
+        CleverPush.getInstance(context).addSubscriptionTags(tagIds);
+        replySuccess(reply, null);
+    }
+
+    private void removeSubscriptionTags(MethodCall call, Result reply) {
+        List<String> ids = call.argument("ids");
+        if (ids == null) {
+            replySuccess(reply, null);
+            return;
+        }
+        String[] tagIds = new String[ids.size()];
+        tagIds = ids.toArray(tagIds);
+        CleverPush.getInstance(context).removeSubscriptionTags(tagIds);
         replySuccess(reply, null);
     }
 
