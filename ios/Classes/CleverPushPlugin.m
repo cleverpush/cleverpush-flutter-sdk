@@ -69,8 +69,12 @@
         [self getSubscriptionTags:call withResult:result];
     else if ([@"CleverPush#addSubscriptionTag" isEqualToString:call.method])
         [self addSubscriptionTag:call withResult:result];
+    else if ([@"CleverPush#addSubscriptionTags" isEqualToString:call.method]) 
+        [self addSubscriptionTags:call withResult:result];
     else if ([@"CleverPush#removeSubscriptionTag" isEqualToString:call.method])
         [self removeSubscriptionTag:call withResult:result];
+    else if ([@"CleverPush#removeSubscriptionTags" isEqualToString:call.method]) 
+        [self removeSubscriptionTags:call withResult:result];
     else if ([@"CleverPush#getAvailableTags" isEqualToString:call.method])
         [self getAvailableTags:call withResult:result];
     else if ([@"CleverPush#getSubscriptionAttributes" isEqualToString:call.method])
@@ -247,8 +251,24 @@
     result(nil);
 }
 
+- (void)addSubscriptionTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSArray *tags = call.arguments[@"ids"];
+    [CleverPush addSubscriptionTags:tags callback:^(NSArray *addedTags) {
+        NSLog(@"%@", addedTags);
+    }];
+    result(nil);
+}
+
 - (void)removeSubscriptionTag:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush removeSubscriptionTag:call.arguments[@"id"]];
+    result(nil);
+}
+
+- (void)removeSubscriptionTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSArray *tags = call.arguments[@"ids"];
+    [CleverPush removeSubscriptionTags:tags callback:^(NSArray *removedTags) {
+        NSLog(@"%@", removedTags);
+    }];
     result(nil);
 }
 

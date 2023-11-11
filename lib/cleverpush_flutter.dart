@@ -149,8 +149,16 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#addSubscriptionTag", {'id': id});
   }
 
+  Future<dynamic> addSubscriptionTags(List<String> tagIds) async {
+    return await _channel.invokeMethod("CleverPush#addSubscriptionTags", {'ids': tagIds});
+  }
+
   Future<dynamic> removeSubscriptionTag(String id) async {
     return await _channel.invokeMethod("CleverPush#removeSubscriptionTag", {'id': id});
+  }
+
+  Future<dynamic> removeSubscriptionTags(List<String> tagIds) async {
+    return await _channel.invokeMethod("CleverPush#removeSubscriptionTags", {'ids': tagIds});
   }
 
   Future<List<dynamic>> getAvailableAttributes() async {
