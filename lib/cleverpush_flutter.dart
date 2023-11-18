@@ -189,6 +189,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#trackPageView", {'url': url});
   }
 
+  Future<dynamic> setAuthorizerToken(String token) async {
+    return await _channel.invokeMethod("CleverPush#setAuthorizerToken", {'token': token});
+  }
+
   Future<dynamic> setSubscriptionLanguage(String language) async {
     return await _channel.invokeMethod("CleverPush#setSubscriptionLanguage", {'language': language});
   }

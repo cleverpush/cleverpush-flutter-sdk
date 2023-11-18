@@ -176,6 +176,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.setLogListener(result);
         } else if (call.method.contentEquals("CleverPush#trackPageView")) {
             this.trackPageView(call, result);
+        } else if (call.method.contentEquals("CleverPush#setAuthorizerToken")) {
+            this.setAuthorizerToken(call, result);
         } else if (call.method.contentEquals("CleverPush#setSubscriptionCountry")) {
             this.setSubscriptionCountry(call, result);
         } else if (call.method.contentEquals("CleverPush#setSubscriptionLanguage")) {
@@ -307,6 +309,11 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
     private void trackPageView(MethodCall call, Result result) {
         CleverPush.getInstance(context).trackPageView((String) call.argument("url"));
+        replySuccess(result, null);
+    }
+
+    private void setAuthorizerToken(MethodCall call, Result result) {
+        CleverPush.getInstance(context).setAuthorizerToken((String) call.argument("token"));
         replySuccess(result, null);
     }
 

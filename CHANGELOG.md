@@ -1,3 +1,8 @@
+
+## 1.23.5 (18.11.2023)
+* Implemented `setAuthorizerToken` method
+* Updated native iOS + Android SDKs
+
 ## 1.23.4
 * Updated native Android SDK
 * Updated native iOS SDK

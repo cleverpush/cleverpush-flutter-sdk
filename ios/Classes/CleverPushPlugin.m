@@ -105,6 +105,8 @@
       [self setLogListener:call withResult:result];
     else if ([@"CleverPush#trackPageView" isEqualToString:call.method])
       [self trackPageView:call withResult:result];
+    else if ([@"CleverPush#setAuthorizerToken" isEqualToString:call.method])
+      [self setAuthorizerToken:call withResult:result];
     else if ([@"CleverPush#trackEvent" isEqualToString:call.method])
       [self trackEvent:call withResult:result];
     else if ([@"CleverPush#triggerFollowUpEvent" isEqualToString:call.method])
@@ -364,6 +366,11 @@
 
 - (void)trackPageView:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush trackPageView:call.arguments[@"url"]];
+    result(nil);
+}
+
+- (void)setAuthorizerToken:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush setAuthorizerToken:call.arguments[@"token"]];
     result(nil);
 }
 
