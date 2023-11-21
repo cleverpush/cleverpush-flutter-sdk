@@ -205,8 +205,13 @@
 }
 
 - (void)getNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    NSMutableArray *storedNotifications = [NSMutableArray arrayWithArray:[CleverPush getNotifications]];
-    result(storedNotifications);
+    NSArray *storedNotifications = [CleverPush getNotifications];
+    NSMutableArray *notifications = [NSMutableArray array];
+    for (CPNotification *notification in storedNotifications) {
+        NSDictionary *dict = [self dictionaryWithPropertiesOfObject:notification];
+        [notifications addObject:dict];
+    }
+    result(notifications);
 }
 
 - (void)getNotificationsWithApi:(FlutterMethodCall *)call withResult:(FlutterResult)result {
