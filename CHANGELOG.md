@@ -1,3 +1,5 @@
+## 1.23.6
+* Fixed issue on iOS with `getReceivedNotifications` method
 
 ## 1.23.5 (18.11.2023)
 * Implemented `setAuthorizerToken` method
