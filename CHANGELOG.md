@@ -1,3 +1,6 @@
+## 1.23.7
+* Optimized `getDeviceToken` for iOS + Android
+
 ## 1.23.6
 * Fixed issue on iOS with `getReceivedNotifications` method
 
