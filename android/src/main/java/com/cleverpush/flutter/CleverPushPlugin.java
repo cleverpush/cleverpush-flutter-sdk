@@ -367,7 +367,11 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         CleverPush.getInstance(context).getDeviceToken(new DeviceTokenListener() {
           @Override
           public void complete(String deviceToken) {
-              replySuccess(reply, deviceToken);
+              if (deviceToken != null && !deviceToken.equals("")) {
+                  replySuccess(reply, deviceToken);
+              } else {
+                  replySuccess(reply, "Device Token is null or empty");
+              }
           }
         });
     }
