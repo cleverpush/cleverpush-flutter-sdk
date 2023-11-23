@@ -182,7 +182,12 @@
 
 - (void)getDeviceToken:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush getDeviceToken:^(NSString *deviceToken) {
+      if (deviceToken != nil && ![deviceToken isKindOfClass:[NSNull class]] && ![deviceToken isEqualToString:@""]) {
         result(deviceToken);
+      } else {
+        NSString *errorMessage = @"Device token is null or empty";
+        result(errorMessage);
+      }
     }];
 }
 
