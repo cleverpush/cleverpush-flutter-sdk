@@ -1,3 +1,6 @@
+## 1.23.8
+* Updated native iOS + Android SDKs
+
 ## 1.23.7
 * Optimized `getDeviceToken` for iOS + Android
 
