@@ -1,3 +1,6 @@
+## 1.23.10
+* Fixed issue on iOS with `setAppBannerOpenedHandler` method
+
 ## 1.23.9
 * Updated native iOS + Android SDKs
 
