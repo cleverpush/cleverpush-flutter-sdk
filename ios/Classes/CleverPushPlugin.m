@@ -469,6 +469,8 @@
             } else if ([object isKindOfClass:[NSDate class]]) {
                 NSString *convertedDateString = [NSString stringWithFormat:@"%@", [obj valueForKey:key]];
                 [dict setObject:convertedDateString forKey:key];
+            }  else if ([object isKindOfClass:[NSURL class]]) {
+                dict[key] = [object absoluteString];
             }
         }
     }
