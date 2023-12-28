@@ -186,6 +186,10 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.trackEvent(call, result);
         } else if (call.method.contentEquals("CleverPush#triggerFollowUpEvent")) {
             this.triggerFollowUpEvent(call, result);
+        } else if (call.method.contentEquals("CleverPush#pushSubscriptionAttributeValue")) {
+            this.pushSubscriptionAttributeValue(call, result);
+        } else if (call.method.contentEquals("CleverPush#pullSubscriptionAttributeValue")) {
+            this.pullSubscriptionAttributeValue(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -559,6 +563,20 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     private void setBrandingColor(MethodCall call, final Result result) {
         String color = call.argument("color");
         CleverPush.getInstance(context).setBrandingColor(ColorUtils.parseColor(color));
+        replySuccess(result, null);
+    }
+
+    private void pushSubscriptionAttributeValue(MethodCall call, final Result result) {
+        String id = call.argument("id");
+        String value = call.argument("value");
+        CleverPush.getInstance(context).pushSubscriptionAttributeValue(id, value);
+        replySuccess(result, null);
+    }
+
+    private void pullSubscriptionAttributeValue(MethodCall call, final Result result) {
+        String id = call.argument("id");
+        String value = call.argument("value");
+        CleverPush.getInstance(context).pullSubscriptionAttributeValue(id, value);
         replySuccess(result, null);
     }
 

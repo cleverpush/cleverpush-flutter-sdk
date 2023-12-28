@@ -206,21 +206,21 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _trackEvent() async {
-    CleverPush.shared.trackEvent("test");
+    CleverPush.shared.trackEvent("EVENT_NAME");
   }
 
   void _triggerFollowUpEvent() async {
-    CleverPush.shared.triggerFollowUpEvent("test", {
-      "test": "test",
+    CleverPush.shared.triggerFollowUpEvent("EVENT_NAME", {
+      "property_1": "value",
     });
   }
 
   void _pushSubscriptionAttributeValue() async {
-    CleverPush.shared.pushSubscriptionAttributeValue("Push Subscription Attribute ID One","Push Subscription Attribute Value One");
+    CleverPush.shared.pushSubscriptionAttributeValue("ATTRIBUTE_KEY","ATTRIBUTE_VALUE");
   }
 
   void _pullSubscriptionAttributeValue() async {
-    CleverPush.shared.pullSubscriptionAttributeValue("Pull Subscription Attribute ID One","Pull Subscription Attribute Value One");
+    CleverPush.shared.pullSubscriptionAttributeValue("ATTRIBUTE_KEY","ATTRIBUTE_VALUE");
   }
 
 
