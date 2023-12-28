@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.setBrandingColor("#ff0000");
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("7R8nkAxtrY5wy5TsS", true);
+    await CleverPush.shared.init("CHANNEL_ID", true);
 
     CleverPush.shared.setChatUrlOpenedHandler((url) {
       Widget continueButton = TextButton(
@@ -206,14 +206,23 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _trackEvent() async {
-    CleverPush.shared.trackEvent("test");
+    CleverPush.shared.trackEvent("EVENT_NAME");
   }
 
   void _triggerFollowUpEvent() async {
-    CleverPush.shared.triggerFollowUpEvent("test", {
-      "test": "test",
+    CleverPush.shared.triggerFollowUpEvent("EVENT_NAME", {
+      "property_1": "value",
     });
   }
+
+  void _pushSubscriptionAttributeValue() async {
+    CleverPush.shared.pushSubscriptionAttributeValue("ATTRIBUTE_KEY","ATTRIBUTE_VALUE");
+  }
+
+  void _pullSubscriptionAttributeValue() async {
+    CleverPush.shared.pullSubscriptionAttributeValue("ATTRIBUTE_KEY","ATTRIBUTE_VALUE");
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -306,6 +315,14 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Track Follow-Up Event", _triggerFollowUpEvent, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Push Subscription Attribute Value", _pushSubscriptionAttributeValue, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Pull Subscription Attribute Value", _pullSubscriptionAttributeValue, true)
                     ]),
                     new TableRow(children: [
                       Container(
