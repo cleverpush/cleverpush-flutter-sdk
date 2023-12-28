@@ -201,6 +201,14 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#setSubscriptionCountry", {'country': country});
   }
 
+  Future<dynamic> pushSubscriptionAttributeValue(String id, String value) async {
+    return await _channel.invokeMethod("CleverPush#pushSubscriptionAttributeValue", {'id': id, 'value': value});
+  }
+
+  Future<dynamic> pullSubscriptionAttributeValue(String id, String value) async {
+    return await _channel.invokeMethod("CleverPush#pullSubscriptionAttributeValue", {'id': id, 'value': value});
+  }
+
   Future<dynamic> trackEvent(String eventName, [dynamic argument]) async {
     Map<String, dynamic> arguments = {'eventName': eventName};
     if (argument is Map) {

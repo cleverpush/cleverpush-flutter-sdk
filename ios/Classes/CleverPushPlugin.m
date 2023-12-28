@@ -115,6 +115,10 @@
       [self setSubscriptionLanguage:call withResult:result];
     else if ([@"CleverPush#setSubscriptionCountry" isEqualToString:call.method])
       [self setSubscriptionCountry:call withResult:result];
+    else if ([@"CleverPush#pushSubscriptionAttributeValue" isEqualToString:call.method])
+      [self pushSubscriptionAttributeValue:call withResult:result];
+    else if ([@"CleverPush#pullSubscriptionAttributeValue" isEqualToString:call.method])
+      [self pullSubscriptionAttributeValue:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -281,6 +285,16 @@
     [CleverPush removeSubscriptionTags:tags callback:^(NSArray *removedTags) {
         NSLog(@"%@", removedTags);
     }];
+    result(nil);
+}
+
+- (void)pushSubscriptionAttributeValue:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush pushSubscriptionAttributeValue:call.arguments[@"id"] value:call.arguments[@"value"]];
+    result(nil);
+}
+
+- (void)pullSubscriptionAttributeValue:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush pullSubscriptionAttributeValue:call.arguments[@"id"] value:call.arguments[@"value"]];
     result(nil);
 }
 
