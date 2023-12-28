@@ -1,3 +1,6 @@
+## 1.23.11 (28.12.2023)
+* integrated `pushSubscriptionAttributeValue` and `pullSubscriptionAttributeValue` methods
+
 ## 1.23.10
 * Fixed issue on iOS with `setAppBannerOpenedHandler` method
 
