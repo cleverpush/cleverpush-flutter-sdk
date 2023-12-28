@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.setBrandingColor("#ff0000");
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("RHe2nXvQk9SZgdC4x", true);
+    await CleverPush.shared.init("CHANNEL_ID", true);
 
     CleverPush.shared.setChatUrlOpenedHandler((url) {
       Widget continueButton = TextButton(
