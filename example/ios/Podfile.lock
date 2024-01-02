@@ -1,6 +1,6 @@
 PODS:
   - CleverPush (1.30.0)
-  - cleverpush_flutter (1.23.11):
+  - cleverpush_flutter (1.23.12):
     - CleverPush (= 1.30.0)
     - Flutter
   - Flutter (1.0.0)

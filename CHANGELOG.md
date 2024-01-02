@@ -1,3 +1,6 @@
+## 1.23.12 (02.01.2024)
+* Resolved crashed issue in the `getNotificationsWithApi` method in iOS.
+
 ## 1.23.11 (28.12.2023)
 * integrated `pushSubscriptionAttributeValue` and `pullSubscriptionAttributeValue` methods
 
