@@ -226,10 +226,10 @@
 - (void)getNotificationsWithApi:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSMutableArray *remoteNotifications = [NSMutableArray new];
     [CleverPush getNotifications:call.arguments[@"combineWithApi"] callback:^(NSArray* Notifications) {
-        [Notifications enumerateObjectsWithOptions: NSEnumerationConcurrent usingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-            NSDictionary *dict = [self dictionaryWithPropertiesOfObject: obj];
+        for (CPNotification *notification in Notifications) {
+            NSDictionary *dict = [self dictionaryWithPropertiesOfObject:notification];
             [remoteNotifications addObject:dict];
-        }];
+        }
         result(remoteNotifications);
     }];
 }
