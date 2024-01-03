@@ -1,3 +1,6 @@
+## 1.23.13 (03.01.2024)
+* Updated native iOS SDK
+
 ## 1.23.12 (02.01.2024)
 * Resolved crashed issue in the `getNotificationsWithApi` method in iOS.
 
