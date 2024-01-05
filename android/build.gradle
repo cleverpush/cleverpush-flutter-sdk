@@ -24,6 +24,8 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
+    namespace "com.cleverpush.flutter"
+
     compileSdkVersion 28
 
     defaultConfig {
