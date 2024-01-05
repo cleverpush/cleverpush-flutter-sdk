@@ -1,3 +1,6 @@
+## 1.23.14 (05.01.2024)
+* Fixed build issue on Android for v8
+
 ## 1.23.13 (03.01.2024)
 * Updated native iOS SDK
 
