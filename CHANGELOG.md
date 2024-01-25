@@ -1,3 +1,6 @@
+## 1.23.15 (25.01.2024)
+* Fixed issue on Android with `getSubscriptionAttribute` and `getSubscriptionAttribute` method
+
 ## 1.23.14 (05.01.2024)
 * Fixed build issue on Android for v8
 
