@@ -31,9 +31,11 @@ import com.cleverpush.listener.SubscribedListener;
 import com.cleverpush.listener.TopicsDialogListener;
 import com.cleverpush.util.ColorUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -527,12 +529,50 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void getSubscriptionAttributes(final Result result) {
-        replySuccess(result, CleverPush.getInstance(context).getSubscriptionAttributes());
+        try {
+            Map<String, Object> attributeMap = CleverPush.getInstance(context).getSubscriptionAttributes();
+
+            Map<String, Object> convertedMap = new HashMap<>();
+            for (Map.Entry<String, Object> entry : attributeMap.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                if (value instanceof JSONArray) {
+                    JSONArray jsonArray = (JSONArray) value;
+                    List<Object> list = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        list.add(jsonArray.get(i));
+                    }
+                    convertedMap.put(key, list);
+                } else {
+                    convertedMap.put(key, Collections.singletonList(value));
+                }
+            }
+            replySuccess(result, convertedMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("CleverPush", "Error converting subscriptionAttributes JSONArray to Map: " + e.getMessage());
+        }
     }
 
     private void getSubscriptionAttribute(MethodCall call, final Result result) {
         String id = call.argument("id");
-        replySuccess(result, CleverPush.getInstance(context).getSubscriptionAttribute(id));
+        try {
+            Object attributeArray = CleverPush.getInstance(context).getSubscriptionAttribute(id);
+            if (attributeArray instanceof JSONArray) {
+                JSONArray jsonArray = (JSONArray) attributeArray;
+                List<Object> list = new ArrayList<>();
+                Object o = new Object();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    list.add(jsonArray.get(i));
+                }
+                replySuccess(result, list);
+            } else {
+                replySuccess(result, attributeArray);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("CleverPush", "Encountered an error attempting to convert subscriptionAttribute JSONArray to list: " + e.getMessage());
+        }
     }
 
     private void setSubscriptionAttribute(MethodCall call, final Result result) {
