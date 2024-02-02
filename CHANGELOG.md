@@ -1,3 +1,6 @@
+## 1.23.16 (02.02.2024)
+* Fixed crash on iOS in `getAvailableTopics` method
+
 ## 1.23.15 (25.01.2024)
 * Fixed issue on Android with `getSubscriptionAttribute` and `getSubscriptionAttribute` method
 
