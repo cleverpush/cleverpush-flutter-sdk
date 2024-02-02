@@ -246,12 +246,12 @@
 }
 
 - (void)getAvailableTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSMutableArray *availableTopics = [NSMutableArray new];
     [CleverPush getAvailableTopics:^(NSArray* channelTopics_) {
-        NSMutableArray *availableTopics = [NSMutableArray new];
-        [channelTopics_ enumerateObjectsWithOptions: NSEnumerationConcurrent usingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-            NSDictionary *dict = [self dictionaryWithPropertiesOfObject: obj];
+        for (CPChannelTopic *topic in channelTopics_) {
+            NSDictionary *dict = [self dictionaryWithPropertiesOfObject:topic];
             [availableTopics addObject:dict];
-        }];
+        }
         result(availableTopics);
     }];
 }
