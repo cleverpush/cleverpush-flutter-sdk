@@ -155,16 +155,20 @@
 }
 
 - (void)subscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush subscribe:^(NSString *subscriptionId) {
-        result(subscriptionId);
-    } failure:^(NSError *error) {
-        result(@"");
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [CleverPush subscribe:^(NSString *subscriptionId) {
+            result(subscriptionId);
+        } failure:^(NSError *error) {
+            result(@"");
+        }];
+    });
 }
 
 - (void)unsubscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush unsubscribe];
-    result(nil);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [CleverPush unsubscribe];
+        result(nil);
+    });
 }
 
 - (void)isSubscribed:(FlutterMethodCall *)call withResult:(FlutterResult)result {
@@ -208,9 +212,11 @@
 }
 
 - (void)showTopicsDialog:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush showTopicsDialog:[self keyWindow] callback:^() {
-      result(nil);
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [CleverPush showTopicsDialog:[self keyWindow] callback:^() {
+            result(nil);
+        }];
+    });
 }
 
 - (void)getNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {
