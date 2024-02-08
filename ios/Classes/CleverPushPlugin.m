@@ -411,7 +411,7 @@
     if (properties != nil) {
         [CleverPush trackEvent:eventName properties:properties];
     } else if (amount != nil) {
-        [CleverPush trackEvent:eventName amount:properties];
+        [CleverPush trackEvent:eventName amount:amount];
     } else {
         [CleverPush trackEvent:eventName];
     }
