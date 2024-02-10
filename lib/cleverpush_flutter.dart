@@ -115,23 +115,32 @@ class CleverPush {
   }
 
   Future<List<CPNotification>> getNotifications() async {
-    List<dynamic> notifications = await _channel.invokeMethod("CleverPush#getNotifications");
-    List<CPNotification> cpNotifications = notifications.map((notification) {
-      return CPNotification.fromJson(notification);
-    }).toList();
-    return cpNotifications;
+    List<dynamic>? notifications = await _channel.invokeMethod("CleverPush#getNotifications");
+    if (notifications != null) {
+      List<CPNotification> cpNotifications = notifications.map((notification) {
+        return CPNotification.fromJson(Map<String, dynamic>.from(notification as Map));
+      }).toList();
+      return cpNotifications;
+    } else {
+      return [];
+    }
   }
 
   Future<List<CPNotification>> getNotificationsWithApi(bool combineWithApi) async {
-    List<dynamic> remoteNotificationList = await _channel.invokeMethod(
-        "CleverPush#getNotificationsWithApi",
-        {'combineWithApi': combineWithApi});
-    List<CPNotification> cpNotifications = remoteNotificationList.map((notification) {
-      return CPNotification.fromJson(notification);
-    }).toList();
-    return cpNotifications;
+    List<dynamic>? remoteNotificationList = await _channel.invokeMethod(
+      "CleverPush#getNotificationsWithApi",
+      {'combineWithApi': combineWithApi}
+    );
+    if (remoteNotificationList != null) {
+      List<CPNotification> cpNotifications = remoteNotificationList.map((notification) {
+        return CPNotification.fromJson(Map<String, dynamic>.from(notification as Map));
+      }).toList();
+      return cpNotifications;
+    } else {
+      return [];
+    }
   }
-  
+
   Future<void> setSubscriptionTopics(List<String> topics) async {
     await _channel.invokeMethod('CleverPush#setSubscriptionTopics', {'topics': topics});
   }
@@ -308,48 +317,69 @@ class CPNotification {
   DateTime? expiresAt;
 
   CPNotification({
-    required this.id,
-    required this.tag,
-    required this.title,
-    required this.text,
-    required this.url,
-    required this.iconUrl,
-    required this.mediaUrl,
-    required this.soundFilename,
-    required this.appBanner,
-    required this.inboxAppBanner,
-    required this.actions,
-    required this.customData,
-    required this.carouselItems,
-    required this.chatNotification,
-    required this.carouselEnabled,
-    required this.silent,
-    this.createdAt,
-    this.expiresAt,
+      required this.id,
+      required this.tag,
+      required this.title,
+      required this.text,
+      required this.url,
+      required this.iconUrl,
+      required this.mediaUrl,
+      required this.soundFilename,
+      required this.appBanner,
+      required this.inboxAppBanner,
+      required this.actions,
+      required this.customData,
+      required this.carouselItems,
+      required this.chatNotification,
+      required this.carouselEnabled,
+      required this.silent,
+      this.createdAt,
+      this.expiresAt,
   });
 
-  factory CPNotification.fromJson(Map<String, dynamic> json) {
-    return CPNotification(
-      id: json['id'],
-      tag: json['tag'],
-      title: json['title'],
-      text: json['text'],
-      url: json['url'],
-      iconUrl: json['iconUrl'],
-      mediaUrl: json['mediaUrl'],
-      soundFilename: json['soundFilename'],
-      appBanner: json['appBanner'],
-      inboxAppBanner: json['inboxAppBanner'],
-      actions: List<dynamic>.from(json['actions']),
-      customData: Map<String, dynamic>.from(json['customData']),
-      carouselItems: Map<String, dynamic>.from(json['carouselItems']),
-      chatNotification: json['chatNotification'],
-      carouselEnabled: json['carouselEnabled'],
-      silent: json['silent'],
-      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
-      expiresAt: json['expiresAt'] != null ? DateTime.parse(json['expiresAt']) : null,
-    );
-  }
+  factory CPNotification.fromJson(Map<String, dynamic>? json) {
+        if (json == null) {
+          return CPNotification(
+            id: '',
+            tag: '',
+            title: '',
+            text: '',
+            url: '',
+            iconUrl: '',
+            mediaUrl: '',
+            soundFilename: '',
+            appBanner: '',
+            inboxAppBanner: '',
+            actions: [],
+            customData: {},
+            carouselItems: {},
+            chatNotification: false,
+            carouselEnabled: false,
+            silent: false,
+            createdAt: null,
+            expiresAt: null,
+          );
+        }
+
+        return CPNotification(
+          id: json['id'] as String? ?? '',
+          tag: json['tag'] as String? ?? '',
+          title: json['title'] as String? ?? '',
+          text: json['text'] as String? ?? '',
+          url: json['url'] as String? ?? '',
+          iconUrl: json['iconUrl'] as String? ?? '',
+          mediaUrl: json['mediaUrl'] as String? ?? '',
+          soundFilename: json['soundFilename'] as String? ?? '',
+          appBanner: json['appBanner'] as String? ?? '',
+          inboxAppBanner: json['inboxAppBanner'] as String? ?? '',
+          actions: List<String>.from(json['actions'] ?? []),
+          customData: Map<String, dynamic>.from(json['customData'] ?? {}),
+          carouselItems: Map<String, dynamic>.from(json['carouselItems'] ?? {}),
+          chatNotification: json['chatNotification'] as bool? ?? false,
+          carouselEnabled: json['carouselEnabled'] as bool? ?? false,
+          silent: json['silent'] as bool? ?? false,
+          createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt'] as String) : null,
+          expiresAt: json['expiresAt'] != null ? DateTime.parse(json['expiresAt'] as String) : null,
+        );
+      }
 }
-
-
