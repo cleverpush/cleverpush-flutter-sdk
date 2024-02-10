@@ -114,15 +114,31 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#showTopicsDialog");
   }
 
-  Future<List<dynamic>> getNotifications() async {
-    return await _channel.invokeMethod("CleverPush#getNotifications");
+  Future<List<CPNotification>> getNotifications() async {
+    List<dynamic>? notifications = await _channel.invokeMethod("CleverPush#getNotifications");
+    if (notifications != null) {
+      List<CPNotification> cpNotifications = notifications.map((notification) {
+        return CPNotification.fromJson(Map<String, dynamic>.from(notification as Map));
+      }).toList();
+      return cpNotifications;
+    } else {
+      return [];
+    }
   }
 
-  Future<List<dynamic>> getNotificationsWithApi(bool combineWithApi) async {
-    List<dynamic> remoteNotificationList = await _channel.invokeMethod(
-        "CleverPush#getNotificationsWithApi",
-        {'combineWithApi': combineWithApi});
-    return remoteNotificationList;
+  Future<List<CPNotification>> getNotificationsWithApi(bool combineWithApi) async {
+    List<dynamic>? remoteNotificationList = await _channel.invokeMethod(
+      "CleverPush#getNotificationsWithApi",
+      {'combineWithApi': combineWithApi}
+    );
+    if (remoteNotificationList != null) {
+      List<CPNotification> cpNotifications = remoteNotificationList.map((notification) {
+        return CPNotification.fromJson(Map<String, dynamic>.from(notification as Map));
+      }).toList();
+      return cpNotifications;
+    } else {
+      return [];
+    }
   }
 
   Future<void> setSubscriptionTopics(List<String> topics) async {

@@ -155,16 +155,20 @@
 }
 
 - (void)subscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush subscribe:^(NSString *subscriptionId) {
-        result(subscriptionId);
-    } failure:^(NSError *error) {
-        result(@"");
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [CleverPush subscribe:^(NSString *subscriptionId) {
+            result(subscriptionId);
+        } failure:^(NSError *error) {
+            result(@"");
+        }];
+    });
 }
 
 - (void)unsubscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush unsubscribe];
-    result(nil);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [CleverPush unsubscribe];
+        result(nil);
+    });
 }
 
 - (void)isSubscribed:(FlutterMethodCall *)call withResult:(FlutterResult)result {
@@ -208,9 +212,11 @@
 }
 
 - (void)showTopicsDialog:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush showTopicsDialog:[self keyWindow] callback:^() {
-      result(nil);
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [CleverPush showTopicsDialog:[self keyWindow] callback:^() {
+            result(nil);
+        }];
+    });
 }
 
 - (void)getNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {
@@ -405,7 +411,7 @@
     if (properties != nil) {
         [CleverPush trackEvent:eventName properties:properties];
     } else if (amount != nil) {
-        [CleverPush trackEvent:eventName amount:properties];
+        [CleverPush trackEvent:eventName amount:amount];
     } else {
         [CleverPush trackEvent:eventName];
     }
