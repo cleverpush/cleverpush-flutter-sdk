@@ -114,17 +114,24 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#showTopicsDialog");
   }
 
-  Future<List<dynamic>> getNotifications() async {
-    return await _channel.invokeMethod("CleverPush#getNotifications");
+  Future<List<CPNotification>> getNotifications() async {
+    List<dynamic> notifications = await _channel.invokeMethod("CleverPush#getNotifications");
+    List<CPNotification> cpNotifications = notifications.map((notification) {
+      return CPNotification.fromJson(notification);
+    }).toList();
+    return cpNotifications;
   }
 
-  Future<List<dynamic>> getNotificationsWithApi(bool combineWithApi) async {
+  Future<List<CPNotification>> getNotificationsWithApi(bool combineWithApi) async {
     List<dynamic> remoteNotificationList = await _channel.invokeMethod(
         "CleverPush#getNotificationsWithApi",
         {'combineWithApi': combineWithApi});
-    return remoteNotificationList;
+    List<CPNotification> cpNotifications = remoteNotificationList.map((notification) {
+      return CPNotification.fromJson(notification);
+    }).toList();
+    return cpNotifications;
   }
-
+  
   Future<void> setSubscriptionTopics(List<String> topics) async {
     await _channel.invokeMethod('CleverPush#setSubscriptionTopics', {'topics': topics});
   }
@@ -279,3 +286,70 @@ class CleverPush {
     return null;
   }
 }
+
+class CPNotification {
+  String id;
+  String tag;
+  String title;
+  String text;
+  String url;
+  String iconUrl;
+  String mediaUrl;
+  String soundFilename;
+  String appBanner;
+  String inboxAppBanner;
+  List<dynamic> actions;
+  Map<String, dynamic> customData;
+  Map<String, dynamic> carouselItems;
+  bool chatNotification;
+  bool carouselEnabled;
+  bool silent;
+  DateTime? createdAt;
+  DateTime? expiresAt;
+
+  CPNotification({
+    required this.id,
+    required this.tag,
+    required this.title,
+    required this.text,
+    required this.url,
+    required this.iconUrl,
+    required this.mediaUrl,
+    required this.soundFilename,
+    required this.appBanner,
+    required this.inboxAppBanner,
+    required this.actions,
+    required this.customData,
+    required this.carouselItems,
+    required this.chatNotification,
+    required this.carouselEnabled,
+    required this.silent,
+    this.createdAt,
+    this.expiresAt,
+  });
+
+  factory CPNotification.fromJson(Map<String, dynamic> json) {
+    return CPNotification(
+      id: json['id'],
+      tag: json['tag'],
+      title: json['title'],
+      text: json['text'],
+      url: json['url'],
+      iconUrl: json['iconUrl'],
+      mediaUrl: json['mediaUrl'],
+      soundFilename: json['soundFilename'],
+      appBanner: json['appBanner'],
+      inboxAppBanner: json['inboxAppBanner'],
+      actions: List<dynamic>.from(json['actions']),
+      customData: Map<String, dynamic>.from(json['customData']),
+      carouselItems: Map<String, dynamic>.from(json['carouselItems']),
+      chatNotification: json['chatNotification'],
+      carouselEnabled: json['carouselEnabled'],
+      silent: json['silent'],
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      expiresAt: json['expiresAt'] != null ? DateTime.parse(json['expiresAt']) : null,
+    );
+  }
+}
+
+
