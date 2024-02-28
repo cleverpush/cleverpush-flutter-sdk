@@ -118,7 +118,7 @@ class CleverPush {
     List<dynamic>? notifications = await _channel.invokeMethod("CleverPush#getNotifications");
     if (notifications != null) {
       List<CPNotification> cpNotifications = notifications.map((notification) {
-        return CPNotification.fromJson(Map<String, dynamic>.from(notification as Map));
+        return CPNotification(notification.cast<String, dynamic>());
       }).toList();
       return cpNotifications;
     } else {
@@ -133,7 +133,7 @@ class CleverPush {
     );
     if (remoteNotificationList != null) {
       List<CPNotification> cpNotifications = remoteNotificationList.map((notification) {
-        return CPNotification.fromJson(Map<String, dynamic>.from(notification as Map));
+        return CPNotification(notification.cast<String, dynamic>());
       }).toList();
       return cpNotifications;
     } else {
