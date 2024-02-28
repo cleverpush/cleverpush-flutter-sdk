@@ -305,12 +305,12 @@
 }
 
 - (void)getAvailableTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSMutableArray *availableTags = [NSMutableArray new];
     [CleverPush getAvailableTags:^(NSArray* channelTags_) {
-        NSMutableArray *availableTags = [NSMutableArray new];
-        [channelTags_ enumerateObjectsWithOptions: NSEnumerationConcurrent usingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-            NSDictionary *dict = [self dictionaryWithPropertiesOfObject: obj];
+        for (CPChannelTag *tag in channelTags_) {
+            NSDictionary *dict = [self dictionaryWithPropertiesOfObject:tag];
             [availableTags addObject:dict];
-        }];
+        }
         result(availableTags);
     }];
 }
