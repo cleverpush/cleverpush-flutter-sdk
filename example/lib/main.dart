@@ -111,9 +111,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _getNotifications() async {
-    var notifications = await CleverPush.shared.getNotifications();
+    List<CPNotification> notifications = await CleverPush.shared.getNotifications();
     if (notifications.isNotEmpty) {
-      print(notifications[0]);
+      print("Get Notifications: " + notifications[0].jsonRepresentation());
     }
     this.setState(() {
       _debugLabelString = notifications.length.toString();
@@ -122,10 +122,10 @@ class _MyAppState extends State<MyApp> {
 
   void _getNotificationsWithApi() async {
     bool combineWithApi = true;
-    var remoteNotifications =
+    List<CPNotification> remoteNotifications =
         await CleverPush.shared.getNotificationsWithApi(combineWithApi);
     if (remoteNotifications.isNotEmpty) {
-      print(remoteNotifications[0]);
+      print("Get Notifications With API: " + remoteNotifications[0].jsonRepresentation());
     }
     this.setState(() {
       _debugLabelString = remoteNotifications.length.toString();
