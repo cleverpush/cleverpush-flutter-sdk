@@ -1,3 +1,8 @@
+## 1.23.17 (28.02.2024)
+* Updated native iOS + Android SDKs
+* Optimized `getNotifications` and `getNotificationsWithApi` method
+* Optimised `getAvailableTags` method for preventing a crash in iOS.
+
 ## 1.23.16 (02.02.2024)
 * Fixed crash on iOS in `getAvailableTopics` method
 
