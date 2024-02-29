@@ -1,3 +1,7 @@
+## 1.23.18 (29.02.2024)
+* Updated native Android SDKs
+* Optimized `dictionaryWithPropertiesOfObject` method while the object type is an array in iOS.
+
 ## 1.23.17 (28.02.2024)
 * Updated native iOS + Android SDKs
 * Optimized `getNotifications` and `getNotificationsWithApi` method
