@@ -477,7 +477,11 @@
             if ([object isKindOfClass:[NSArray class]]) {
                 NSMutableArray *subObj = [NSMutableArray array];
                 for (id o in object) {
-                    [subObj addObject:[self dictionaryWithPropertiesOfObject:o]];
+                    if ([o isKindOfClass:[NSDictionary class]]) {
+                        [subObj addObject:o];
+                    } else {
+                        [subObj addObject:[self dictionaryWithPropertiesOfObject:o]];
+                    }
                 }
                 dict[key] = subObj;
             } else if (
