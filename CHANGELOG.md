@@ -1,3 +1,6 @@
+## 1.23.19 (22.03.2024)
+* Updated native iOS + Android SDKs
+
 ## 1.23.18 (29.02.2024)
 * Updated native Android SDKs
 * Optimized `dictionaryWithPropertiesOfObject` method while the object type is an array in iOS.
