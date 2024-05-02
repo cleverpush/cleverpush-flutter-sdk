@@ -159,7 +159,7 @@
         [CleverPush subscribe:^(NSString *subscriptionId) {
             result(subscriptionId);
         } failure:^(NSError *error) {
-            result(@"");
+            result(error.localizedDescription);
         }];
     });
 }
@@ -213,9 +213,13 @@
 
 - (void)showTopicsDialog:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [CleverPush showTopicsDialog:[self keyWindow] callback:^() {
-            result(nil);
-        }];
+        @try {
+            [CleverPush showTopicsDialog:[self keyWindow] callback:^{
+                result(nil);
+            }];
+        } @catch (NSException *exception) {
+            result(exception.reason);
+        }
     });
 }
 
