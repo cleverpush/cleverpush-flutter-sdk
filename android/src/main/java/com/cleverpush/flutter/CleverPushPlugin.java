@@ -276,7 +276,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
 
             @Override
             public void onFailure(Throwable exception) {
-                replyError(result, "SUBSCRIPTION_FAILED", exception.getMessage(), exception);
+                replySuccess(result, "SUBSCRIPTION_FAILED: " + exception.getMessage());
             }
         }, this.activity);
     }
@@ -376,7 +376,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
               if (deviceToken != null && !deviceToken.equals("")) {
                   replySuccess(reply, deviceToken);
               } else {
-                  replyError(reply, "Device Token", "Device Token is null or empty", null);
+                  replySuccess(reply, "Device Token is null or empty");
               }
           }
         });
@@ -391,7 +391,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
                 }
             });
         } catch (Exception e) {
-            replyError(reply, "showTopicsDialog_FAILED", e.getMessage(), e);
+            replySuccess(reply, "showTopicsDialog_FAILED: " + e.getMessage());
         }
     }
 
@@ -408,6 +408,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             replySuccess(reply, CleverPushSerializer.convertNotificationToMapList(new ArrayList<>(CleverPush.getInstance(context).getNotifications())));
         } catch (JSONException exception) {
             exception.printStackTrace();
+            replySuccess(reply, "Error while getting notification. " + e.getMessage();
         }
     }
 
