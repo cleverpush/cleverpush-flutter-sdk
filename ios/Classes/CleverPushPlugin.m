@@ -251,220 +251,424 @@
 }
 
 - (void)setSubscriptionTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setSubscriptionTopics:call.arguments[@"topics"]];
-    result(nil);
+    @try {
+        [CleverPush setSubscriptionTopics:call.arguments[@"topics"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting subscription topics: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)getAvailableTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSMutableArray *availableTopics = [NSMutableArray new];
-    [CleverPush getAvailableTopics:^(NSArray* channelTopics_) {
-        for (CPChannelTopic *topic in channelTopics_) {
-            NSDictionary *dict = [self dictionaryWithPropertiesOfObject:topic];
-            [availableTopics addObject:dict];
-        }
-        result(availableTopics);
-    }];
+    @try {
+        [CleverPush getAvailableTopics:^(NSArray* channelTopics_) {
+            for (CPChannelTopic *topic in channelTopics_) {
+                NSDictionary *dict = [self dictionaryWithPropertiesOfObject:topic];
+                [availableTopics addObject:dict];
+            }
+            result(availableTopics);
+        }];
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error getting available topics: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)getSubscriptionTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    NSArray *tagIds = [CleverPush getSubscriptionTags];
-    NSMutableArray *list = [NSMutableArray arrayWithArray:tagIds];
-    result(list);
+    @try {
+        NSArray *tagIds = [CleverPush getSubscriptionTags];
+        NSMutableArray *list = [NSMutableArray arrayWithArray:tagIds];
+        result(list);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error getting subscription tags: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)addSubscriptionTag:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush addSubscriptionTag:call.arguments[@"id"]];
-    result(nil);
+    @try {
+        [CleverPush addSubscriptionTag:call.arguments[@"id"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error adding subscription tag: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)addSubscriptionTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSArray *tags = call.arguments[@"ids"];
-    [CleverPush addSubscriptionTags:tags callback:^(NSArray *addedTags) {
-        NSLog(@"%@", addedTags);
-    }];
-    result(nil);
+    @try {
+        [CleverPush addSubscriptionTags:tags callback:^(NSArray *addedTags) {
+            NSLog(@"%@", addedTags);
+        }];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error adding subscription tags: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)removeSubscriptionTag:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush removeSubscriptionTag:call.arguments[@"id"]];
-    result(nil);
+    @try {
+        [CleverPush removeSubscriptionTag:call.arguments[@"id"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error removing subscription tag: %@", exception.reason];
+        result([FlutterError errorWithCode:@"remove_subscription_tag_error" message:errorMessage details:nil]);
+    }
 }
 
 - (void)removeSubscriptionTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSArray *tags = call.arguments[@"ids"];
-    [CleverPush removeSubscriptionTags:tags callback:^(NSArray *removedTags) {
-        NSLog(@"%@", removedTags);
-    }];
-    result(nil);
+    @try {
+        [CleverPush removeSubscriptionTags:tags callback:^(NSArray *removedTags) {
+            NSLog(@"%@", removedTags);
+        }];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error removing subscription tags: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)pushSubscriptionAttributeValue:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush pushSubscriptionAttributeValue:call.arguments[@"id"] value:call.arguments[@"value"]];
-    result(nil);
+    @try {
+        [CleverPush pushSubscriptionAttributeValue:call.arguments[@"id"] value:call.arguments[@"value"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error pushing subscription attribute value: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)pullSubscriptionAttributeValue:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush pullSubscriptionAttributeValue:call.arguments[@"id"] value:call.arguments[@"value"]];
-    result(nil);
+    @try {
+        [CleverPush pullSubscriptionAttributeValue:call.arguments[@"id"] value:call.arguments[@"value"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error pulling subscription attribute value: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)getAvailableTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSMutableArray *availableTags = [NSMutableArray new];
-    [CleverPush getAvailableTags:^(NSArray* channelTags_) {
-        for (CPChannelTag *tag in channelTags_) {
-            NSDictionary *dict = [self dictionaryWithPropertiesOfObject:tag];
-            [availableTags addObject:dict];
-        }
-        result(availableTags);
-    }];
+    @try {
+        [CleverPush getAvailableTags:^(NSArray* channelTags_) {
+            for (CPChannelTag *tag in channelTags_) {
+                NSDictionary *dict = [self dictionaryWithPropertiesOfObject:tag];
+                [availableTags addObject:dict];
+            }
+            result(availableTags);
+        }];
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error getting available tags: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)getSubscriptionAttributes:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    NSDictionary *attributes = [CleverPush getSubscriptionAttributes];
-    result(attributes);
+    @try {
+        NSDictionary *attributes = [CleverPush getSubscriptionAttributes];
+        result(attributes);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error getting subscription attributes: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)setSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setSubscriptionAttribute:call.arguments[@"id"] value:call.arguments[@"value"]];
-    result(nil);
+    @try {
+        [CleverPush setSubscriptionAttribute:call.arguments[@"id"] value:call.arguments[@"value"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting subscription attribute: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)getSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    result([CleverPush getSubscriptionAttribute:call.arguments[@"id"]]);
+    @try {
+        id attribute = [CleverPush getSubscriptionAttribute:call.arguments[@"id"]];
+        result(attribute);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error getting subscription attribute: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)getAvailableAttributes:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush getAvailableAttributes:^(NSMutableArray* attributes_) {
-        NSMutableArray *availableAttributes = [NSMutableArray new];
-        for (NSMutableDictionary* attribute in attributes_) {
-            NSMutableDictionary *dict = [NSMutableDictionary new];
-            [dict setObject:[attribute objectForKey:@"id"] forKey:@"id"];
-            [dict setObject:[attribute objectForKey:@"name"] forKey:@"name"];
-            [availableAttributes addObject:dict];
+        @try {
+            NSMutableArray *availableAttributes = [NSMutableArray new];
+            for (NSMutableDictionary* attribute in attributes_) {
+                NSMutableDictionary *dict = [NSMutableDictionary new];
+                [dict setObject:[attribute objectForKey:@"id"] forKey:@"id"];
+                [dict setObject:[attribute objectForKey:@"name"] forKey:@"name"];
+                [availableAttributes addObject:dict];
+            }
+            result(availableAttributes);
         }
-        result(availableAttributes);
+        @catch (NSException *exception) {
+            NSString *errorMessage = [NSString stringWithFormat:@"Error getting available attributes: %@", exception.reason];
+            result(errorMessage);
+        }
     }];
 }
 
 - (void)setShowNotificationsInForeground:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setShowNotificationsInForeground:[call.arguments[@"show"] boolValue]];
-    result(nil);
+    @try {
+        [CleverPush setShowNotificationsInForeground:[call.arguments[@"show"] boolValue]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting show notifications in foreground: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)setTrackingConsentRequired:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setTrackingConsentRequired:[call.arguments[@"consentRequired"] boolValue]];
-    result(nil);
+    @try {
+        [CleverPush setTrackingConsentRequired:[call.arguments[@"consentRequired"] boolValue]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting tracking consent required: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)setTrackingConsent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setTrackingConsent:[call.arguments[@"hasConsent"] boolValue]];
-    result(nil);
+    @try {
+        [CleverPush setTrackingConsent:[call.arguments[@"hasConsent"] boolValue]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting tracking consent: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)enableAppBanners:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush enableAppBanners];
-    result(nil);
+    @try {
+        [CleverPush enableAppBanners];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error enabling app banners: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)disableAppBanners:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush disableAppBanners];
-    result(nil);
+    @try {
+        [CleverPush disableAppBanners];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error disabling app banners: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)enableDevelopmentMode:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush enableDevelopmentMode];
-    result(nil);
+    @try {
+        [CleverPush enableDevelopmentMode];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error enabling development mode: %@", exception.reason];
+        result(exception);
+    }
 }
 
 - (void)setBrandingColor:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setBrandingColor:[UIColor colorWithHexString:call.arguments[@"color"]]];
-    result(nil);
+    @try {
+        [CleverPush setBrandingColor:[UIColor colorWithHexString:call.arguments[@"color"]]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting branding color: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)initNotificationOpenedHandlerParams {
-    self.hasNotificationOpenedHandler = YES;
-    if (self.coldStartOpenResult) {
-        [self handleNotificationOpened:self.coldStartOpenResult];
-        self.coldStartOpenResult = nil;
+    @try {
+        self.hasNotificationOpenedHandler = YES;
+        if (self.coldStartOpenResult) {
+            [self handleNotificationOpened:self.coldStartOpenResult];
+            self.coldStartOpenResult = nil;
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Error initializing notification opened handler params: %@", exception.reason);
     }
 }
 
 - (void)setLogListener:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setLogListener:^(NSString* message) {
-        NSMutableDictionary *resultDict = [NSMutableDictionary new];
-        resultDict[@"message"] = message;
-        [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
-    }];
-    result(nil);
+    @try {
+        [CleverPush setLogListener:^(NSString* message) {
+            NSMutableDictionary *resultDict = [NSMutableDictionary new];
+            resultDict[@"message"] = message;
+            [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
+        }];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting log listener: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)trackPageView:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush trackPageView:call.arguments[@"url"]];
-    result(nil);
+    @try {
+        [CleverPush trackPageView:call.arguments[@"url"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error tracking page view: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)setAuthorizerToken:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setAuthorizerToken:call.arguments[@"token"]];
-    result(nil);
+    @try {
+        [CleverPush setAuthorizerToken:call.arguments[@"token"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting authorizer token: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)trackEvent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    NSString *eventName = call.arguments[@"eventName"];
-    NSNumber *amount = call.arguments[@"amount"];
-    NSDictionary *properties = call.arguments[@"properties"];
-    if (properties != nil) {
-        [CleverPush trackEvent:eventName properties:properties];
-    } else if (amount != nil) {
-        [CleverPush trackEvent:eventName amount:amount];
-    } else {
-        [CleverPush trackEvent:eventName];
+    @try {
+        NSString *eventName = call.arguments[@"eventName"];
+        NSNumber *amount = call.arguments[@"amount"];
+        NSDictionary *properties = call.arguments[@"properties"];
+        if (properties != nil) {
+            [CleverPush trackEvent:eventName properties:properties];
+        } else if (amount != nil) {
+            [CleverPush trackEvent:eventName amount:amount];
+        } else {
+            [CleverPush trackEvent:eventName];
+        }
+        result(nil);
     }
-    result(nil);
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error tracking event: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)triggerFollowUpEvent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush triggerFollowUpEvent:call.arguments[@"eventName"] parameters:call.arguments[@"parameters"]];
-    result(nil);
+    @try {
+        [CleverPush triggerFollowUpEvent:call.arguments[@"eventName"] parameters:call.arguments[@"parameters"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error triggering follow-up event: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)setSubscriptionLanguage:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setSubscriptionLanguage:call.arguments[@"language"]];
-    result(nil);
+    @try {
+        [CleverPush setSubscriptionLanguage:call.arguments[@"language"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting subscription language: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)setSubscriptionCountry:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setSubscriptionCountry:call.arguments[@"country"]];
-    result(nil);
+    @try {
+        [CleverPush setSubscriptionCountry:call.arguments[@"country"]];
+        result(nil);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error setting subscription country: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)handleSubscribed:(NSString *)result {
-    NSMutableDictionary *resultDict = [NSMutableDictionary new];
-    resultDict[@"subscriptionId"] = result;
-    [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
+    @try {
+        NSMutableDictionary *resultDict = [NSMutableDictionary new];
+        resultDict[@"subscriptionId"] = result;
+        [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error handling subscription: %@", exception.reason];
+        [self.channel invokeMethod:@"CleverPush#handleError" arguments:@{@"error": errorMessage}];
+    }
 }
 
 - (void)handleNotificationReceived:(CPNotificationReceivedResult *)result {
-    NSMutableDictionary *resultDict = [NSMutableDictionary new];
-    resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
-    [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:resultDict];
+    @try {
+        NSMutableDictionary *resultDict = [NSMutableDictionary new];
+        resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
+        [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:resultDict];
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error handling notification received: %@", exception.reason];
+        [self.channel invokeMethod:@"CleverPush#handleError" arguments:@{@"error": errorMessage}];
+    }
 }
 
 - (void)handleNotificationOpened:(CPNotificationOpenedResult *)result {
-    NSMutableDictionary *resultDict = [NSMutableDictionary new];
-    resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
-    [self.channel invokeMethod:@"CleverPush#handleNotificationOpened" arguments:resultDict];
+    @try {
+        NSMutableDictionary *resultDict = [NSMutableDictionary new];
+        resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
+        [self.channel invokeMethod:@"CleverPush#handleNotificationOpened" arguments:resultDict];
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error handling notification opened: %@", exception.reason];
+        [self.channel invokeMethod:@"CleverPush#handleError" arguments:@{@"error": errorMessage}];
+    }
 }
 
 - (void)handleAppBannerShown:(CPAppBanner *)appBanner {
-    NSMutableDictionary *resultDict = [NSMutableDictionary new];
-    resultDict[@"appBanner"] = [self dictionaryWithPropertiesOfObject:appBanner];
-    [self.channel invokeMethod:@"CleverPush#handleAppBannerShown" arguments:resultDict];
+    @try {
+        NSMutableDictionary *resultDict = [NSMutableDictionary new];
+        resultDict[@"appBanner"] = [self dictionaryWithPropertiesOfObject:appBanner];
+        [self.channel invokeMethod:@"CleverPush#handleAppBannerShown" arguments:resultDict];
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error handling app banner shown: %@", exception.reason];
+        [self.channel invokeMethod:@"CleverPush#handleError" arguments:@{@"error": errorMessage}];
+    }
 }
 
 - (void)handleAppBannerOpened:(CPAppBannerAction *)action {
-    NSMutableDictionary *resultDict = [NSMutableDictionary new];
-    resultDict[@"action"] = [self dictionaryWithPropertiesOfObject:action];
-    [self.channel invokeMethod:@"CleverPush#handleAppBannerOpened" arguments:resultDict];
+    @try {
+        NSMutableDictionary *resultDict = [NSMutableDictionary new];
+        resultDict[@"action"] = [self dictionaryWithPropertiesOfObject:action];
+        [self.channel invokeMethod:@"CleverPush#handleAppBannerOpened" arguments:resultDict];
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error handling app banner opened: %@", exception.reason];
+        [self.channel invokeMethod:@"CleverPush#handleError" arguments:@{@"error": errorMessage}];
+    }
 }
 
 - (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj {
