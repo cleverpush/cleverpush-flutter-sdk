@@ -287,86 +287,156 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void enableAppBanners(Result result) {
-        CleverPush.getInstance(context).enableAppBanners();
-        replySuccess(result, null);
+        try {
+            CleverPush.getInstance(context).enableAppBanners();
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while enabling app banners: " + e.getMessage();
+            replySuccess(result, errorMessage);
+        }
     }
 
     private void enableDevelopmentMode(Result result) {
-        CleverPush.getInstance(context).enableDevelopmentMode();
-        replySuccess(result, null);
+        try {
+            CleverPush.getInstance(context).enableDevelopmentMode();
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while development mode: " + e.getMessage();
+            replySuccess(result, errorMessage);
+        }
     }
 
     private void disableAppBanners(Result result) {
-        CleverPush.getInstance(context).disableAppBanners();
-        replySuccess(result, null);
+        try {
+            CleverPush.getInstance(context).disableAppBanners();
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while disabling app banners: " + e.getMessage();
+            replySuccess(result, errorMessage);
+        }
     }
 
     private void setLogListener(Result result) {
-        CleverPush.getInstance(context).setLogListener(new LogListener() {
-            @Override
-            public void log(String message) {
-                HashMap<String, Object> hash = new HashMap<>();
-                hash.put("message", message);
-                invokeMethodOnUiThread("CleverPush#handleLog", hash);
-            }
-        });
-        replySuccess(result, null);
+        try {
+            CleverPush.getInstance(context).setLogListener(new LogListener() {
+                @Override
+                public void log(String message) {
+                    HashMap<String, Object> hash = new HashMap<>();
+                    hash.put("message", message);
+                    invokeMethodOnUiThread("CleverPush#handleLog", hash);
+                }
+            });
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while setting log listener: " + e.getMessage();
+            replySuccess(result, errorMessage);
+        }
     }
 
     private void trackPageView(MethodCall call, Result result) {
-        CleverPush.getInstance(context).trackPageView((String) call.argument("url"));
-        replySuccess(result, null);
+        try {
+            CleverPush.getInstance(context).trackPageView((String) call.argument("url"));
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while trackPageView:" + e.getMessage();
+            replySuccess(result, errorMessage);
+        }
     }
 
     private void setAuthorizerToken(MethodCall call, Result result) {
-        CleverPush.getInstance(context).setAuthorizerToken((String) call.argument("token"));
-        replySuccess(result, null);
+        try {
+            CleverPush.getInstance(context).setAuthorizerToken((String) call.argument("token"));
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while setting authorizer token: " + e.getMessage();
+            replySuccess(result, errorMessage);
+        }
     }
 
     private void trackEvent(MethodCall call, Result result) {
-        String eventName = (String) call.argument("eventName");
-        Double amount = call.argument("amount");
-        Map properties = call.argument("properties");
-        if (properties != null) {
-            CleverPush.getInstance(context).trackEvent(eventName, properties);
-        } else if (amount != null) {
-            CleverPush.getInstance(context).trackEvent(eventName, amount.floatValue());
-        } else {
-            CleverPush.getInstance(context).trackEvent(eventName);
+        try {
+            String eventName = (String) call.argument("eventName");
+            Double amount = call.argument("amount");
+            Map properties = call.argument("properties");
+            if (properties != null) {
+                CleverPush.getInstance(context).trackEvent(eventName, properties);
+            } else if (amount != null) {
+                CleverPush.getInstance(context).trackEvent(eventName, amount.floatValue());
+            } else {
+                CleverPush.getInstance(context).trackEvent(eventName);
+            }
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while trackEvent: " + e.getMessage();
+            replySuccess(result, errorMessage);
         }
-        replySuccess(result, null);
     }
 
     private void triggerFollowUpEvent(MethodCall call, Result result) {
-        CleverPush.getInstance(context).triggerFollowUpEvent((String) call.argument("eventName"), (Map) call.argument("parameters"));
-        replySuccess(result, null);
+        try {
+            CleverPush.getInstance(context).triggerFollowUpEvent((String) call.argument("eventName"), (Map) call.argument("parameters"));
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while triggerFollowUpEvent: " + e.getMessage();
+            replySuccess(result, errorMessage);
+        }
     }
 
     private void setSubscriptionLanguage(MethodCall call, Result result) {
-        CleverPush.getInstance(context).setSubscriptionLanguage((String) call.argument("language"));
-        replySuccess(result, null);
+        try {
+            CleverPush.getInstance(context).setSubscriptionLanguage((String) call.argument("language"));
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while setSubscriptionLanguage: " + e.getMessage();
+            replySuccess(result, errorMessage);
+        }
     }
 
     private void setSubscriptionCountry(MethodCall call, Result result) {
-        CleverPush.getInstance(context).setSubscriptionCountry((String) call.argument("country"));
-        replySuccess(result, null);
+        try {
+            CleverPush.getInstance(context).setSubscriptionCountry((String) call.argument("country"));
+            replySuccess(result, null);
+        } catch (Exception e) {
+            String errorMessage = "Error while setSubscriptionCountry: " + e.getMessage();
+            replySuccess(result, errorMessage);
+        }
     }
 
     private void isSubscribed(Result reply) {
-        replySuccess(reply, CleverPush.getInstance(context).isSubscribed());
+        try {
+            replySuccess(reply, CleverPush.getInstance(context).isSubscribed());
+        } catch (Exception e) {
+            String errorMessage = "Error while checking isSubscribed: " + e.getMessage();
+            replySuccess(reply, errorMessage);
+        }
     }
 
     private void areNotificationsEnabled(Result reply) {
-        replySuccess(reply, CleverPush.getInstance(context).areNotificationsEnabled());
+        try {
+            replySuccess(reply, CleverPush.getInstance(context).areNotificationsEnabled());
+        } catch (Exception e) {
+            String errorMessage = "Error while checking areNotificationsEnabled: " + e.getMessage();
+            replySuccess(reply, errorMessage);
+        }
     }
 
     private void getSubscriptionId(final Result reply) {
-        CleverPush.getInstance(context).getSubscriptionId(new SubscribedListener() {
-          @Override
-          public void subscribed(String subscriptionId) {
-              replySuccess(reply, subscriptionId);
-          }
-        });
+        try {
+            CleverPush.getInstance(context).getSubscriptionId(new SubscribedListener() {
+                @Override
+                public void subscribed(String subscriptionId) {
+                    if (subscriptionId == null || subscriptionId.isEmpty()) {
+                        String message = "Subscription ID is null or empty.";
+                        replySuccess(reply, message);
+                    } else {
+                        replySuccess(reply, subscriptionId);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            String errorMessage = "Error while getSubscriptionId: " + e.getMessage();
+            replySuccess(reply, errorMessage);
+        }
     }
 
     private void getDeviceToken(final Result reply) {
@@ -408,7 +478,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             replySuccess(reply, CleverPushSerializer.convertNotificationToMapList(new ArrayList<>(CleverPush.getInstance(context).getNotifications())));
         } catch (JSONException exception) {
             exception.printStackTrace();
-            replySuccess(reply, "Error while getting notification. " + e.getMessage();
+            replySuccess(reply, "Error while getting notification. " + exception.getMessage());
         }
     }
 
@@ -421,6 +491,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
                     replySuccess(reply, CleverPushSerializer.convertNotificationToMapList(new ArrayList<>(notifications)));
                 } catch (JSONException exception) {
                     exception.printStackTrace();
+                    replySuccess(reply, "Error while getting notification combineWithApi. " + exception.getMessage());
                 }
             }
         });
