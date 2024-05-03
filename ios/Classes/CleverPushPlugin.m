@@ -649,7 +649,7 @@
     }
     @catch (NSException *exception) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error handling subscription: %@", exception.reason];
-        [self.channel invokeMethod:@"CleverPush#handleSubscribedError" arguments:@{@"error": errorMessage}];
+        NSLog(@"CleverPush#handleSubscribedError: %@", errorMessage);
     }
 }
 
@@ -661,7 +661,7 @@
     }
     @catch (NSException *exception) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error handling notification received: %@", exception.reason];
-        [self.channel invokeMethod:@"CleverPush#handleNotificationReceivedError" arguments:@{@"error": errorMessage}];
+        NSLog(@"CleverPush#handleNotificationReceivedError: %@", errorMessage);
     }
 }
 
@@ -673,7 +673,7 @@
     }
     @catch (NSException *exception) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error handling notification opened: %@", exception.reason];
-        [self.channel invokeMethod:@"CleverPush#handleNotificationOpenedError" arguments:@{@"error": errorMessage}];
+        NSLog(@"CleverPush#handleNotificationOpenedError: %@", errorMessage);
     }
 }
 
@@ -685,7 +685,7 @@
     }
     @catch (NSException *exception) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error handling app banner shown: %@", exception.reason];
-        [self.channel invokeMethod:@"CleverPush#handleAppBannerShownError" arguments:@{@"error": errorMessage}];
+        NSLog(@"CleverPush#handleAppBannerShownError: %@", errorMessage);
     }
 }
 
@@ -697,7 +697,7 @@
     }
     @catch (NSException *exception) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error handling app banner opened: %@", exception.reason];
-        [self.channel invokeMethod:@"CleverPush#handleAppBannerOpenedError" arguments:@{@"error": errorMessage}];
+        NSLog(@"CleverPush#handleAppBannerOpenedError: %@", errorMessage);
     }
 }
 
