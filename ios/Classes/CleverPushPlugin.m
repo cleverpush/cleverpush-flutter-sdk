@@ -166,36 +166,52 @@
 
 - (void)unsubscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [CleverPush unsubscribe];
-        result(nil);
+        [CleverPush unsubscribe:^(BOOL success) {
+            if (success) {
+                result(nil);
+            } else {
+                result(@"unsubscribe failure");
+            }
+        }];
     });
 }
 
 - (void)isSubscribed:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    bool subscribed = [CleverPush isSubscribed];
-    result([NSNumber numberWithBool:subscribed]);
+    @try {
+        bool subscribed = [CleverPush isSubscribed];
+        result([NSNumber numberWithBool:subscribed]);
+    } @catch (NSException *exception) {
+        result(exception.reason);
+    }
 }
 
 - (void)areNotificationsEnabled:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush areNotificationsEnabled:^(BOOL enabled) {
-        result([NSNumber numberWithBool:enabled]);
-    }];
+    @try {
+        [CleverPush areNotificationsEnabled:^(BOOL enabled) {
+            result([NSNumber numberWithBool:enabled]);
+        }];
+    } @catch (NSException *exception) {
+        result(exception.reason);
+    }
 }
 
 - (void)getSubscriptionId:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush getSubscriptionId:^(NSString *subscriptionId) {
-        result(subscriptionId);
+        if (subscriptionId != nil && ![subscriptionId isKindOfClass:[NSNull class]] && ![subscriptionId isEqualToString:@""]) {
+            result(subscriptionId);
+        } else {
+            result(@"Subscription ID is null or empty");
+        }
     }];
 }
 
 - (void)getDeviceToken:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush getDeviceToken:^(NSString *deviceToken) {
-      if (deviceToken != nil && ![deviceToken isKindOfClass:[NSNull class]] && ![deviceToken isEqualToString:@""]) {
-        result(deviceToken);
-      } else {
-        NSString *errorMessage = @"Device token is null or empty";
-        result(errorMessage);
-      }
+        if (deviceToken != nil && ![deviceToken isKindOfClass:[NSNull class]] && ![deviceToken isEqualToString:@""]) {
+            result(deviceToken);
+        } else {
+            result(@"Device token is null or empty");
+        }
     }];
 }
 
@@ -218,36 +234,55 @@
                 result(nil);
             }];
         } @catch (NSException *exception) {
-            result(exception.reason);
+            NSString *errorMessage = [NSString stringWithFormat:@"Error showing topics dialog: %@", exception.reason];
+            result(errorMessage);
         }
     });
 }
 
 - (void)getNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    NSArray *storedNotifications = [CleverPush getNotifications];
-    NSMutableArray *notifications = [NSMutableArray array];
-    for (CPNotification *notification in storedNotifications) {
-        NSDictionary *dict = [self dictionaryWithPropertiesOfObject:notification];
-        [notifications addObject:dict];
+    @try {
+        NSArray *storedNotifications = [CleverPush getNotifications];
+        NSMutableArray *notifications = [NSMutableArray array];
+        for (CPNotification *notification in storedNotifications) {
+            NSDictionary *dict = [self dictionaryWithPropertiesOfObject:notification];
+            [notifications addObject:dict];
+        }
+        result(notifications);
     }
-    result(notifications);
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error getting notifications: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)getNotificationsWithApi:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSMutableArray *remoteNotifications = [NSMutableArray new];
-    [CleverPush getNotifications:call.arguments[@"combineWithApi"] callback:^(NSArray* Notifications) {
-        for (CPNotification *notification in Notifications) {
-            NSDictionary *dict = [self dictionaryWithPropertiesOfObject:notification];
-            [remoteNotifications addObject:dict];
-        }
-        result(remoteNotifications);
-    }];
+    @try {
+        [CleverPush getNotifications:call.arguments[@"combineWithApi"] callback:^(NSArray* Notifications) {
+            for (CPNotification *notification in Notifications) {
+                NSDictionary *dict = [self dictionaryWithPropertiesOfObject:notification];
+                [remoteNotifications addObject:dict];
+            }
+            result(remoteNotifications);
+        }];
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error getting notifications: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)getSubscriptionTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    NSMutableArray *topicIds = [CleverPush getSubscriptionTopics];
-    NSMutableArray *list = [NSMutableArray arrayWithArray:topicIds];
-    result(list);
+    @try {
+        NSMutableArray *topicIds = [CleverPush getSubscriptionTopics];
+        NSMutableArray *list = [NSMutableArray arrayWithArray:topicIds];
+        result(list);
+    }
+    @catch (NSException *exception) {
+        NSString *errorMessage = [NSString stringWithFormat:@"Error getting subscription topics: %@", exception.reason];
+        result(errorMessage);
+    }
 }
 
 - (void)setSubscriptionTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
@@ -322,7 +357,7 @@
     }
     @catch (NSException *exception) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error removing subscription tag: %@", exception.reason];
-        result([FlutterError errorWithCode:@"remove_subscription_tag_error" message:errorMessage details:nil]);
+        result(errorMessage);
     }
 }
 
