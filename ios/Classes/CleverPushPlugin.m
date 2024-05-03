@@ -166,13 +166,8 @@
 
 - (void)unsubscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [CleverPush unsubscribe:^(BOOL success) {
-            if (success) {
-                result(nil);
-            } else {
-                result(@"unsubscribe failure");
-            }
-        }];
+        [CleverPush unsubscribe];
+        result(nil);
     });
 }
 
@@ -528,7 +523,7 @@
     }
     @catch (NSException *exception) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error enabling development mode: %@", exception.reason];
-        result(exception);
+        result(errorMessage);
     }
 }
 
