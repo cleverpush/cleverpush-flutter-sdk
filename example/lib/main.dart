@@ -223,6 +223,9 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.pullSubscriptionAttributeValue("ATTRIBUTE_KEY","ATTRIBUTE_VALUE");
   }
 
+  void _showAppBanner() async {
+    CleverPush.shared.showAppBanner("APP_BANNER_ID");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -311,6 +314,10 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Track Event", _trackEvent, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Show App Banner", _showAppBanner, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(
