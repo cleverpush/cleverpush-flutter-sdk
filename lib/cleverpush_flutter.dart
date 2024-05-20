@@ -239,6 +239,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#triggerFollowUpEvent", {'eventName': eventName, 'parameters': parameters});
   }
 
+  Future<dynamic> showAppBanner(String id) async {
+    return await _channel.invokeMethod("CleverPush#showAppBanner", {'id': id});
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (
