@@ -1,3 +1,6 @@
+## 1.23.24 (21.05.2024)
+* Added `showAppBanner` method
+
 ## 1.23.23 (10.05.2024)
 * Updated native iOS + Android SDKs
 
