@@ -12,6 +12,8 @@ class CPNotification extends JSONStringRepresentable {
   Map<String, dynamic>? rawPayload;
   bool? chatNotification;
   bool? silent;
+  String? appBanner;
+  String? inboxAppBanner;
 
   CPNotification(Map<String, dynamic> json) {
     this.rawPayload = json;
@@ -42,6 +44,12 @@ class CPNotification extends JSONStringRepresentable {
     }
     if (json.containsKey('silent')) {
       this.silent = json['silent'] as bool?;
+    }
+    if (json.containsKey('appBanner')) {
+      this.appBanner = json['appBanner'] as String?;
+    }
+    if (json.containsKey('inboxAppBanner')) {
+      this.inboxAppBanner = json['inboxAppBanner'] as String?;
     }
   }
 
