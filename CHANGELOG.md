@@ -1,3 +1,6 @@
+## 1.23.25 (23.05.2024)
+* Added `appBanner` field to CPNotification
+
 ## 1.23.24 (21.05.2024)
 * Added `showAppBanner` method
 
