@@ -1,3 +1,6 @@
+## 1.23.26 (29.05.2024)
+* Updated native iOS + Android SDKs
+
 ## 1.23.25 (23.05.2024)
 * Added `appBanner` field to CPNotification
 
