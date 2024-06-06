@@ -8,8 +8,7 @@
 @property (strong, nonatomic) CPNotificationOpenedResult *coldStartOpenResult;
 @property (strong, nonatomic) NSDictionary *launchOptions;
 @property (nonatomic) BOOL hasNotificationOpenedHandler;
-@property (nonatomic) BOOL flutterEngineReady;
-
+@property (nonatomic) FlutterEngine *flutterEngine;
 @end
 
 @implementation CleverPushPlugin
@@ -34,17 +33,9 @@
 
     CPChatViewFlutterFactory* factory = [[CPChatViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
     [registrar registerViewFactory:factory withId:@"cleverpush-chat-view"];
-
-    [CleverPushPlugin.sharedInstance listenForFlutterEngineLifecycleEvents];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    if (!self.flutterEngineReady) {
-        result([FlutterError errorWithCode:@"ENGINE_NOT_READY"
-                                   message:@"Flutter Engine is not ready yet."
-                                   details:nil]);
-        return;
-    }
     NSLog(@"CleverPush Flutter: handleMethodCall %@", call.method);
     if ([@"CleverPush#init" isEqualToString:call.method])
         [self initCleverPush:call withResult:result];
@@ -132,17 +123,6 @@
         [self showAppBanner:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
-}
-
-- (void)listenForFlutterEngineLifecycleEvents {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(flutterEngineDidBecomeReady:)
-                                                 name:@"FlutterEngineDidBecomeReady"
-                                               object:nil];
-}
-
-- (void)flutterEngineDidBecomeReady:(NSNotification *)notification {
-    self.flutterEngineReady = YES;
 }
 
 - (void)initCleverPush:(FlutterMethodCall *)call withResult:(FlutterResult)result {
@@ -408,12 +388,16 @@
 }
 
 - (void)setLogListener:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setLogListener:^(NSString* message) {
-        NSMutableDictionary *resultDict = [NSMutableDictionary new];
-        resultDict[@"message"] = message;
-        [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
-    }];
-    result(nil);
+    if (self.flutterEngine.run) {
+        [CleverPush setLogListener:^(NSString* message) {
+            NSMutableDictionary *resultDict = [NSMutableDictionary new];
+            resultDict[@"message"] = message;
+            [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
+        }];
+        result(nil);
+    } else {
+        NSLog(@"Flutter engine is not ready yet.");
+    }
 }
 
 - (void)trackPageView:(FlutterMethodCall *)call withResult:(FlutterResult)result {
