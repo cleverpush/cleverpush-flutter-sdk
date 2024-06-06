@@ -9,6 +9,7 @@
 @property (strong, nonatomic) NSDictionary *launchOptions;
 @property (nonatomic) BOOL hasNotificationOpenedHandler;
 @property (nonatomic) FlutterEngine *flutterEngine;
+
 @end
 
 @implementation CleverPushPlugin
