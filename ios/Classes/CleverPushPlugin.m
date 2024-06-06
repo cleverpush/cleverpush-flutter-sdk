@@ -388,7 +388,7 @@
 }
 
 - (void)setLogListener:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    if (self.flutterEngine.run) {
+    if (self.flutterEngine && self.flutterEngine.run) {
         [CleverPush setLogListener:^(NSString* message) {
             NSMutableDictionary *resultDict = [NSMutableDictionary new];
             resultDict[@"message"] = message;
@@ -397,6 +397,9 @@
         result(nil);
     } else {
         NSLog(@"Flutter engine is not ready yet.");
+        result([FlutterError errorWithCode:@"FlutterEngineNotReady"
+                                   message:@"The Flutter engine is not initialized or not running."
+                                   details:nil]);
     }
 }
 
