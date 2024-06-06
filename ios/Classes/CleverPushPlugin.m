@@ -126,6 +126,11 @@
 }
 
 - (void)initCleverPush:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    if (!self.flutterEngine) {
+        self.flutterEngine = [[FlutterEngine alloc] initWithName:@"CleverPushEngine"];
+        [self.flutterEngine run];
+    }
+
     NSString* channelId = call.arguments[@"channelId"];
     BOOL autoRegister = YES;
     if (call.arguments[@"autoRegister"] != nil) {
