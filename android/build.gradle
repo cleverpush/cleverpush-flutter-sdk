@@ -1,5 +1,5 @@
 group 'com.cleverpush.flutter'
-version '1.23.26'
+version '1.23.27'
 
 buildscript {
     repositories {
@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-	api 'com.cleverpush:cleverpush:1.33.20'
+	api 'com.cleverpush:cleverpush:1.33.21'
 }
 
 class DefaultManifestPlaceHolders {
