@@ -166,6 +166,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.setTrackingConsentRequired(call, result);
         } else if (call.method.contentEquals("CleverPush#setTrackingConsent")) {
             this.setTrackingConsent(call, result);
+        } else if (call.method.contentEquals("CleverPush#setIgnoreDisabledNotificationPermission")) {
+            this.setIgnoreDisabledNotificationPermission(call, result);
         } else if (call.method.contentEquals("CleverPush#setBrandingColor")) {
             this.setBrandingColor(call, result);
         } else if (call.method.contentEquals("CleverPush#enableAppBanners")) {
@@ -599,6 +601,12 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     private void setTrackingConsent(MethodCall call, final Result result) {
         Boolean hasConsent = call.argument("hasConsent");
         CleverPush.getInstance(context).setTrackingConsent(hasConsent);
+        replySuccess(result, null);
+    }
+
+    private void setIgnoreDisabledNotificationPermission(MethodCall call, final Result result) {
+        Boolean ignore = call.argument("ignore");
+        CleverPush.getInstance(context).setIgnoreDisabledNotificationPermission(ignore);
         replySuccess(result, null);
     }
 

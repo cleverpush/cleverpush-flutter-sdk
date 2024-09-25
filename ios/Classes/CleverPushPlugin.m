@@ -91,6 +91,8 @@
         [self setTrackingConsentRequired:call withResult:result];
     else if ([@"CleverPush#setTrackingConsent" isEqualToString:call.method])
         [self setTrackingConsent:call withResult:result];
+    else if ([@"CleverPush#setIgnoreDisabledNotificationPermission" isEqualToString:call.method])
+        [self setIgnoreDisabledNotificationPermission:call withResult:result];
     else if ([@"CleverPush#setBrandingColor" isEqualToString:call.method])
         [self setBrandingColor:call withResult:result];
     else if ([@"CleverPush#enableAppBanners" isEqualToString:call.method])
@@ -356,6 +358,11 @@
 
 - (void)setTrackingConsent:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush setTrackingConsent:[call.arguments[@"hasConsent"] boolValue]];
+    result(nil);
+}
+
+- (void)setIgnoreDisabledNotificationPermission:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush setIgnoreDisabledNotificationPermission:[call.arguments[@"ignore"] boolValue]];
     result(nil);
 }
 
