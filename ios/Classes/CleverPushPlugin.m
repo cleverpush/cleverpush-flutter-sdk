@@ -8,6 +8,7 @@
 @property (strong, nonatomic) CPNotificationOpenedResult *coldStartOpenResult;
 @property (strong, nonatomic) NSDictionary *launchOptions;
 @property (nonatomic) BOOL hasNotificationOpenedHandler;
+@property (nonatomic) FlutterEngine *flutterEngine;
 
 @end
 
@@ -128,6 +129,11 @@
 }
 
 - (void)initCleverPush:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    if (!self.flutterEngine) {
+        self.flutterEngine = [[FlutterEngine alloc] initWithName:@"CleverPushEngine"];
+        [self.flutterEngine run];
+    }
+
     NSString* channelId = call.arguments[@"channelId"];
     BOOL autoRegister = YES;
     if (call.arguments[@"autoRegister"] != nil) {
@@ -395,12 +401,19 @@
 }
 
 - (void)setLogListener:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setLogListener:^(NSString* message) {
-        NSMutableDictionary *resultDict = [NSMutableDictionary new];
-        resultDict[@"message"] = message;
-        [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
-    }];
-    result(nil);
+    if (self.flutterEngine && self.flutterEngine.run) {
+        [CleverPush setLogListener:^(NSString* message) {
+            NSMutableDictionary *resultDict = [NSMutableDictionary new];
+            resultDict[@"message"] = message;
+            [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
+        }];
+        result(nil);
+    } else {
+        NSLog(@"Flutter engine is not ready yet.");
+        result([FlutterError errorWithCode:@"FlutterEngineNotReady"
+                                   message:@"The Flutter engine is not initialized or not running."
+                                   details:nil]);
+    }
 }
 
 - (void)trackPageView:(FlutterMethodCall *)call withResult:(FlutterResult)result {
