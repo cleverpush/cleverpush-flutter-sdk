@@ -335,8 +335,9 @@
 }
 
 - (void)setSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setSubscriptionAttribute:call.arguments[@"id"] value:call.arguments[@"value"]];
-    result(nil);
+    [CleverPush setSubscriptionAttribute:call.arguments[@"id"] value:call.arguments[@"value"] callback:^{
+        result(nil);
+    }];
 }
 
 - (void)getSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {
