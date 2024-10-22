@@ -273,29 +273,33 @@
 }
 
 - (void)addSubscriptionTag:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush addSubscriptionTag:call.arguments[@"id"]];
-    result(nil);
+    [CleverPush addSubscriptionTag:call.arguments[@"id"] callback:^(NSString * _Nullable tag) {
+        result(nil);
+    } onFailure:^(NSError * _Nullable error) {
+        result(nil);
+    }];
 }
 
 - (void)addSubscriptionTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSArray *tags = call.arguments[@"ids"];
     [CleverPush addSubscriptionTags:tags callback:^(NSArray *addedTags) {
-        NSLog(@"%@", addedTags);
+        result(nil);
     }];
-    result(nil);
 }
 
 - (void)removeSubscriptionTag:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush removeSubscriptionTag:call.arguments[@"id"]];
-    result(nil);
+    [CleverPush removeSubscriptionTag:call.arguments[@"id"] callback:^(NSString * _Nullable tag) {
+        result(nil);
+    } onFailure:^(NSError * _Nullable error) {
+        result(nil);
+    }];
 }
 
 - (void)removeSubscriptionTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSArray *tags = call.arguments[@"ids"];
     [CleverPush removeSubscriptionTags:tags callback:^(NSArray *removedTags) {
-        NSLog(@"%@", removedTags);
+        result(nil);
     }];
-    result(nil);
 }
 
 - (void)pushSubscriptionAttributeValue:(FlutterMethodCall *)call withResult:(FlutterResult)result {
@@ -325,8 +329,9 @@
 }
 
 - (void)setSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setSubscriptionAttribute:call.arguments[@"id"] value:call.arguments[@"value"]];
-    result(nil);
+    [CleverPush setSubscriptionAttribute:call.arguments[@"id"] value:call.arguments[@"value"] callback:^{
+        result(nil);
+    }];
 }
 
 - (void)getSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {

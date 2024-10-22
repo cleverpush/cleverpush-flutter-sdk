@@ -20,6 +20,7 @@ import com.cleverpush.listener.ChatUrlOpenedListener;
 import com.cleverpush.listener.ChannelAttributesListener;
 import com.cleverpush.listener.ChannelTagsListener;
 import com.cleverpush.listener.ChannelTopicsListener;
+import com.cleverpush.listener.CompletionFailureListener;
 import com.cleverpush.listener.DeviceTokenListener;
 import com.cleverpush.listener.InitializeListener;
 import com.cleverpush.listener.LogListener;
@@ -29,6 +30,7 @@ import com.cleverpush.listener.NotificationsCallbackListener;
 import com.cleverpush.listener.SubscribedCallbackListener;
 import com.cleverpush.listener.SubscribedListener;
 import com.cleverpush.listener.TopicsDialogListener;
+import com.cleverpush.responsehandlers.SetSubscriptionAttributeResponseHandler;
 import com.cleverpush.util.ColorUtils;
 
 import org.json.JSONArray;
@@ -433,8 +435,17 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         }
         String[] topicIds = new String[topics.size()];
         topicIds = topics.toArray(topicIds);
-        CleverPush.getInstance(context).setSubscriptionTopics(topicIds);
-        replySuccess(reply, null);
+        CleverPush.getInstance(context).setSubscriptionTopics(topicIds, new CompletionFailureListener() {
+            @Override
+            public void onComplete() {
+                replySuccess(reply, null);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                replySuccess(reply, null);
+            }
+        });
     }
 
     private void getSubscriptionTopics(Result reply) {
@@ -462,8 +473,17 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             replySuccess(reply, null);
             return;
         }
-        CleverPush.getInstance(context).addSubscriptionTag(id);
-        replySuccess(reply, null);
+        CleverPush.getInstance(context).addSubscriptionTag(id, new CompletionFailureListener() {
+            @Override
+            public void onComplete() {
+                replySuccess(reply, null);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                replySuccess(reply, null);
+            }
+        });
     }
 
     private void removeSubscriptionTag(MethodCall call, Result reply) {
@@ -472,8 +492,18 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             replySuccess(reply, null);
             return;
         }
-        CleverPush.getInstance(context).removeSubscriptionTag(id);
-        replySuccess(reply, null);
+
+        CleverPush.getInstance(context).removeSubscriptionTag(id, new CompletionFailureListener() {
+            @Override
+            public void onComplete() {
+                replySuccess(reply, null);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                replySuccess(reply, null);
+            }
+        });
     }
 
     private void addSubscriptionTags(MethodCall call, Result reply) {
@@ -484,8 +514,19 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         }
         String[] tagIds = new String[ids.size()];
         tagIds = ids.toArray(tagIds);
-        CleverPush.getInstance(context).addSubscriptionTags(tagIds);
-        replySuccess(reply, null);
+        for (String tagId : tagIds) {
+            CleverPush.getInstance(context).addSubscriptionTag(tagId, new CompletionFailureListener() {
+                @Override
+                public void onComplete() {
+                    replySuccess(reply, null);
+                }
+
+                @Override
+                public void onFailure(Exception exception) {
+                    replySuccess(reply, null);
+                }
+            });
+        }
     }
 
     private void removeSubscriptionTags(MethodCall call, Result reply) {
@@ -496,8 +537,20 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         }
         String[] tagIds = new String[ids.size()];
         tagIds = ids.toArray(tagIds);
-        CleverPush.getInstance(context).removeSubscriptionTags(tagIds);
-        replySuccess(reply, null);
+
+        for (String tagId : tagIds) {
+            CleverPush.getInstance(context).removeSubscriptionTag(tagId, new CompletionFailureListener() {
+                @Override
+                public void onComplete() {
+                    replySuccess(reply, null);
+                }
+
+                @Override
+                public void onFailure(Exception exception) {
+                    replySuccess(reply, null);
+                }
+            });
+        }
     }
 
     private void getSubscriptionTags(Result reply) {
