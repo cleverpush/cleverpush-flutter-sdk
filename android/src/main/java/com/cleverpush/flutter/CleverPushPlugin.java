@@ -30,6 +30,7 @@ import com.cleverpush.listener.NotificationsCallbackListener;
 import com.cleverpush.listener.SubscribedCallbackListener;
 import com.cleverpush.listener.SubscribedListener;
 import com.cleverpush.listener.TopicsDialogListener;
+import com.cleverpush.responsehandlers.SetSubscriptionAttributeResponseHandler;
 import com.cleverpush.util.ColorUtils;
 
 import org.json.JSONArray;
@@ -434,8 +435,17 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         }
         String[] topicIds = new String[topics.size()];
         topicIds = topics.toArray(topicIds);
-        CleverPush.getInstance(context).setSubscriptionTopics(topicIds);
-        replySuccess(reply, null);
+        CleverPush.getInstance(context).setSubscriptionTopics(topicIds, new CompletionFailureListener() {
+            @Override
+            public void onComplete() {
+                replySuccess(reply, null);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                replySuccess(reply, null);
+            }
+        });
     }
 
     private void getSubscriptionTopics(Result reply) {
