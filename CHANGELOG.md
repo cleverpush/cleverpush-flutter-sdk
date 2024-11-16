@@ -1,3 +1,7 @@
+## 1.23.35 (16.11.2024)
+* Some futures were resolved too early, this has been fixed.
+* Updated native iOS + Android SDKs
+
 ## 1.23.34 (26.09.2024)
 * Implemented `setIgnoreDisabledNotificationPermission`
 * Updated native iOS + Android SDKs
