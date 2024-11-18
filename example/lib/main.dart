@@ -25,6 +25,9 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.setShowNotificationsInForeground(false);
     CleverPush.shared.enableDevelopmentMode();
 
+    // CleverPush Channel ID
+    await CleverPush.shared.init("CHANNEL_ID", true);
+
     CleverPush.shared
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
       this.setState(() {
@@ -58,9 +61,6 @@ class _MyAppState extends State<MyApp> {
     });
 
     CleverPush.shared.setBrandingColor("#ff0000");
-
-    // CleverPush Channel ID
-    await CleverPush.shared.init("CHANNEL_ID", true);
 
     CleverPush.shared.setChatUrlOpenedHandler((url) {
       Widget continueButton = TextButton(
@@ -244,6 +244,17 @@ class _MyAppState extends State<MyApp> {
                 child: new Table(
                   children: [
                     new TableRow(children: [
+                      new Container(
+                        child: new Text(_debugLabelString),
+                        alignment: Alignment.center,
+                      )
+                    ]),
+                    new TableRow(children: [
+                      Container(
+                        height: 8.0,
+                      )
+                    ]),
+                    new TableRow(children: [
                       new CleverPushButton( "Show Chat View", () {
                         Navigator.pushNamed(context, '/chat');
                       }, true)
@@ -330,17 +341,6 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Pull Subscription Attribute Value", _pullSubscriptionAttributeValue, true)
-                    ]),
-                    new TableRow(children: [
-                      Container(
-                        height: 8.0,
-                      )
-                    ]),
-                    new TableRow(children: [
-                      new Container(
-                        child: new Text(_debugLabelString),
-                        alignment: Alignment.center,
-                      )
                     ]),
                   ],
                 ),

@@ -33,6 +33,14 @@
 
     CPChatViewFlutterFactory* factory = [[CPChatViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
     [registrar registerViewFactory:factory withId:@"cleverpush-chat-view"];
+
+    [registrar addApplicationDelegate:CleverPushPlugin.sharedInstance];
+}
+
+- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
+    CleverPushPlugin.sharedInstance.launchOptions = launchOptions;
+
+    return YES;
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
