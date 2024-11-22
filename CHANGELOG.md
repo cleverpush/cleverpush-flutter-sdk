@@ -1,3 +1,6 @@
+## 1.23.37 (22.11.2024)
+* Updated native iOS + Android SDKs
+
 ## 1.23.36 (18.11.2024)
 * Updated native iOS SDK to fix an issue with opening notifications with action buttons
 
