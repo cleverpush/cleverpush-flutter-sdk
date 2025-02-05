@@ -458,7 +458,9 @@
 - (void)handleSubscribed:(NSString *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"subscriptionId"] = result;
-    [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
+    });
 }
 
 - (void)handleNotificationReceived:(CPNotificationReceivedResult *)result {
