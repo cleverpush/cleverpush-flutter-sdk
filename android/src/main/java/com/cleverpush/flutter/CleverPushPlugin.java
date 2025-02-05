@@ -332,7 +332,7 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     private void trackEvent(MethodCall call, Result result) {
         String eventName = (String) call.argument("eventName");
         Double amount = call.argument("amount");
-        Map properties = call.argument("properties");
+        Map<String, Object> properties = call.argument("properties");
         if (properties != null) {
             CleverPush.getInstance(context).trackEvent(eventName, properties);
         } else if (amount != null) {
@@ -344,7 +344,9 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
     }
 
     private void triggerFollowUpEvent(MethodCall call, Result result) {
-        CleverPush.getInstance(context).triggerFollowUpEvent((String) call.argument("eventName"), (Map) call.argument("parameters"));
+        String eventName = (String) call.argument("eventName");
+        Map<String, String> parameters = call.argument("parameters");
+        CleverPush.getInstance(context).triggerFollowUpEvent(eventName, parameters);
         replySuccess(result, null);
     }
 
