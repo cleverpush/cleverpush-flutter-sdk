@@ -1,3 +1,8 @@
+## 1.23.38 (12.02.2025)
+* Updated native iOS + Android SDKs
+* Resolved Android Type warnings.
+* Resolved accessing push notification data on iOS
+
 ## 1.23.37 (22.11.2024)
 * Updated native iOS + Android SDKs
 
