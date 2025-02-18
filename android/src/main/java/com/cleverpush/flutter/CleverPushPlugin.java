@@ -665,6 +665,12 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
         replySuccess(result, null);
     }
 
+    private void setAutoRequestNotificationPermission(MethodCall call, final Result result) {
+        Boolean autoRequest = call.argument("autoRequest");
+        CleverPush.getInstance(context).setAutoRequestNotificationPermission(autoRequest);
+        replySuccess(result, null);
+    }
+
     private void setBrandingColor(MethodCall call, final Result result) {
         String color = call.argument("color");
         CleverPush.getInstance(context).setBrandingColor(ColorUtils.parseColor(color));

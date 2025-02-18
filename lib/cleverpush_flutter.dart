@@ -205,6 +205,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#setIgnoreDisabledNotificationPermission", {'ignore': ignore});
   }
 
+  Future<dynamic> setAutoRequestNotificationPermission(bool autoRequest) async {
+    return await _channel.invokeMethod("CleverPush#setAutoRequestNotificationPermission", {'autoRequest': autoRequest});
+  }
+
   Future<dynamic> trackPageView(String url) async {
     return await _channel.invokeMethod("CleverPush#trackPageView", {'url': url});
   }
