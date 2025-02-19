@@ -1,3 +1,6 @@
+## 1.23.40 (19.02.2025)
+* Fixed `setAutoRequestNotificationPermission` implementation for Android
+
 ## 1.23.39 (18.02.2025)
 * Added `setAutoRequestNotificationPermission` method
 * Updated native iOS + Android SDKs

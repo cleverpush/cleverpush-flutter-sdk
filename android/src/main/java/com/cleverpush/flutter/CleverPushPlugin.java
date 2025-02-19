@@ -170,6 +170,8 @@ public class CleverPushPlugin extends FlutterRegistrarResponder implements Metho
             this.setTrackingConsent(call, result);
         } else if (call.method.contentEquals("CleverPush#setIgnoreDisabledNotificationPermission")) {
             this.setIgnoreDisabledNotificationPermission(call, result);
+        } else if (call.method.contentEquals("CleverPush#setAutoRequestNotificationPermission")) {
+            this.setAutoRequestNotificationPermission(call, result);
         } else if (call.method.contentEquals("CleverPush#setBrandingColor")) {
             this.setBrandingColor(call, result);
         } else if (call.method.contentEquals("CleverPush#enableAppBanners")) {
