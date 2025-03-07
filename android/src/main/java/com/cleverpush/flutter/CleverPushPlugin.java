@@ -30,7 +30,6 @@ import com.cleverpush.listener.NotificationsCallbackListener;
 import com.cleverpush.listener.SubscribedCallbackListener;
 import com.cleverpush.listener.SubscribedListener;
 import com.cleverpush.listener.TopicsDialogListener;
-import com.cleverpush.responsehandlers.SetSubscriptionAttributeResponseHandler;
 import com.cleverpush.util.ColorUtils;
 
 import org.json.JSONArray;
@@ -51,21 +50,14 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.platform.PlatformViewRegistry;
 
-public class CleverPushPlugin extends FlutterRegistrarResponder implements MethodCallHandler, NotificationOpenedListener, SubscribedListener, FlutterPlugin, ActivityAware {
+public class CleverPushPlugin extends FlutterMessengerResponder implements MethodCallHandler, NotificationOpenedListener, SubscribedListener, FlutterPlugin, ActivityAware {
     private NotificationOpenedResult coldStartNotificationResult;
     private boolean hasSetNotificationOpenedHandler = false;
     private boolean showNotificationsInForeground = true;
     private Context context;
     private Activity activity;
-
-    @SuppressWarnings("deprecation")
-    public static void registerWith(Registrar registrar) {
-        final CleverPushPlugin plugin = new CleverPushPlugin();
-        plugin.onAttachedToEngine(registrar.context(), registrar.messenger());
-    }
 
     @Override
     public void onAttachedToEngine(@NonNull final FlutterPluginBinding binding) {
