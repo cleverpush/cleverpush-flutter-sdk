@@ -527,7 +527,10 @@
                        ) {
                 dict[key] = object;
             } else if ([object isKindOfClass:[NSDate class]]) {
-                NSString *convertedDateString = [NSString stringWithFormat:@"%@", [obj valueForKey:key]];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+                [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+                NSString *convertedDateString = [dateFormatter stringFromDate:[obj valueForKey:key]];
                 [dict setObject:convertedDateString forKey:key];
             }  else if ([object isKindOfClass:[NSURL class]]) {
                 dict[key] = [object absoluteString];
