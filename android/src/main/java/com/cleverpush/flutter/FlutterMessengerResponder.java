@@ -1,17 +1,14 @@
 package com.cleverpush.flutter;
 
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 
 import java.util.HashMap;
 
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.PluginRegistry;
 
-abstract class FlutterRegistrarResponder {
+abstract class FlutterMessengerResponder {
     MethodChannel channel;
-    PluginRegistry.Registrar flutterRegistrar;
 
     void replySuccess(final MethodChannel.Result reply, final Object response) {
         runOnMainThread(new Runnable() {
