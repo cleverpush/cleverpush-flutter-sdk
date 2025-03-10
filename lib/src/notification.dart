@@ -16,7 +16,14 @@ class CPNotification extends JSONStringRepresentable {
 
   CPNotification(Map<String, dynamic> json) {
     this.rawPayload = json;
-    this.id = json['_id'] as String?;
+    
+    // Handle ID field variations between iOS (_id) and Android (id)
+    if (json.containsKey('_id')) {
+      this.id = json['_id'] as String?;
+    } else if (json.containsKey('id')) {
+      this.id = json['id'] as String?;
+    }
+    
     if (json.containsKey('title')) {
       this.title = json['title'] as String?;
     }
