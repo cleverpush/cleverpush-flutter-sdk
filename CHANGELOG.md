@@ -1,3 +1,6 @@
+## 1.24.8 (12.03.2025)
+* Updated native iOS + Android SDKs
+
 ## 1.24.7 (10.03.2025)
 * Fixed `id` field for `getNotifications`
 
