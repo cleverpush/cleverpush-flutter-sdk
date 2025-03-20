@@ -271,11 +271,8 @@
     [CleverPush setSubscriptionTopics:call.arguments[@"topics"] onSuccess:^{
         result(@YES);
     } onFailure:^(NSError * _Nullable error) {
-        if (error) {
-            result(error.localizedDescription);
-        } else {
-            result(nil);
-        }
+        NSString *errorMessage = [NSString stringWithFormat:@"setSubscriptionTopics error %@", error.localizedDescription];
+        result(errorMessage);
     }];
 }
 
@@ -512,7 +509,9 @@
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"failureMessage"] = failureMessage;
     resultDict[@"success"] = @(success);
-    [self.channel invokeMethod:@"CleverPush#handleInitialized" arguments:resultDict];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleInitialized" arguments:resultDict];
+    });
 }
 
 - (void)showAppBanner:(FlutterMethodCall *)call withResult:(FlutterResult)result {
