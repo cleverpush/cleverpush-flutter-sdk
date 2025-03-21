@@ -52,6 +52,26 @@ class _MyAppState extends State<MyApp> {
       print("Subscribed: $subscriptionId");
     });
 
+    CleverPush.shared.setInitializedHandler((bool success, String? failureMessage) {
+      this.setState(() {
+        if (success) {
+          _debugLabelString = "Initialized successfully";
+        } else {
+          _debugLabelString = "Initialization failed: " + (failureMessage ?? "Unknown error");
+        }
+      });
+    });
+
+    CleverPush.shared.setSubscriptionTopicsHandler((bool success, String? failureMessage) {
+      this.setState(() {
+        if (success) {
+          _debugLabelString = "Topic subscribed successfully";
+        } else {
+          _debugLabelString = "Topic subscription failed: " + (failureMessage ?? "Unknown error");
+        }
+      });
+    });
+
     CleverPush.shared.enableAppBanners();
 
     CleverPush.shared.setAppBannerShownHandler((CPAppBanner appBanner) {

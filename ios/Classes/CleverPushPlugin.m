@@ -269,9 +269,11 @@
 
 - (void)setSubscriptionTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush setSubscriptionTopics:call.arguments[@"topics"] onSuccess:^{
+        [self handleSubscriptionTopics:nil success:YES];
         result(@YES);
     } onFailure:^(NSError * _Nullable error) {
-        NSString *errorMessage = [NSString stringWithFormat:@"setSubscriptionTopics error %@", error.localizedDescription];
+        NSString *errorMessage = error.localizedDescription ?: @"Failed to set subscription topics";
+        [self handleSubscriptionTopics:errorMessage success:NO];
         result(errorMessage);
     }];
 }
@@ -511,6 +513,15 @@
     resultDict[@"success"] = @(success);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.channel invokeMethod:@"CleverPush#handleInitialized" arguments:resultDict];
+    });
+}
+
+- (void)handleSubscriptionTopics:(NSString *)failureMessage success:(BOOL)success {
+    NSMutableDictionary *resultDict = [NSMutableDictionary new];
+    resultDict[@"failureMessage"] = failureMessage;
+    resultDict[@"success"] = @(success);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleSubscriptionTopics" arguments:resultDict];
     });
 }
 

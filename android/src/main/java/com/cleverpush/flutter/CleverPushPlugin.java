@@ -454,11 +454,20 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             @Override
             public void onComplete() {
                 replySuccess(reply, null);
+                HashMap<String, Object> hash = new HashMap<>();
+                hash.put("success", true);
+                hash.put("failureMessage", null);
+                invokeMethodOnUiThread("CleverPush#handleSubscriptionTopics", hash);
             }
 
             @Override
             public void onFailure(Exception exception) {
                 replySuccess(reply, null);
+                String errorMessage = exception.getMessage() != null ? exception.getMessage() : "Failed to set subscription topics";
+                HashMap<String, Object> hash = new HashMap<>();
+                hash.put("success", false);
+                hash.put("failureMessage", errorMessage);
+                invokeMethodOnUiThread("CleverPush#handleSubscriptionTopics", hash);
             }
         });
     }

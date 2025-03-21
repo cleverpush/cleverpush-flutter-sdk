@@ -8,7 +8,8 @@ export 'src/app_banner.dart';
 
 typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
-typedef void InitializationResultHandler(bool success, String? failureMessage);
+typedef void InitializationHandler(bool success, String? failureMessage);
+typedef void SubscriptionTopicsHandler(bool success, String? failureMessage);
 typedef void SubscribedHandler(String? subscriptionId);
 typedef void ChatUrlOpenedHandler(String url);
 typedef void AppBannerShownHandler(CPAppBanner appBanner);
@@ -21,7 +22,8 @@ class CleverPush {
   MethodChannel _channel = const MethodChannel('CleverPush');
   NotificationReceivedHandler? _notificationReceivedHandler;
   NotificationOpenedHandler? _notificationOpenedHandler;
-  InitializationResultHandler? _initializedHandler;
+  InitializationHandler? _initializedHandler;
+  SubscriptionTopicsHandler ? _subscriptionTopicsHandler;
   SubscribedHandler? _subscribedHandler;
   ChatUrlOpenedHandler? _chatUrlOpenedHandler;
   AppBannerShownHandler? _appBannerShownHandler;
@@ -71,7 +73,7 @@ class CleverPush {
     _channel.invokeMethod("CleverPush#setLogListener");
   }
 
-  void setInitializedHandler(InitializationResultHandler handler) {
+  void setInitializedHandler(InitializationHandler handler) {
     _initializedHandler = handler;
   }
   
@@ -145,6 +147,10 @@ class CleverPush {
     } else {
       return [];
     }
+  }
+
+  void setSubscriptionTopicsHandler(SubscriptionTopicsHandler handler) {
+    _subscriptionTopicsHandler = handler;
   }
 
   Future<dynamic> setSubscriptionTopics(List<String> topics) async {
@@ -296,6 +302,11 @@ class CleverPush {
         && this._initializedHandler != null
       ) {
         this._initializedHandler!(call.arguments['success'] ?? false, call.arguments['failureMessage']);
+      } else if (
+        call.method == 'CleverPush#handleSubscriptionTopics'
+        && this._subscriptionTopicsHandler != null
+      ) {
+        this._subscriptionTopicsHandler!(call.arguments['success'] ?? false, call.arguments['failureMessage']);
       } else if (
         call.method == 'CleverPush#handleAppBannerOpened'
         && this._appBannerOpenedHandler != null
