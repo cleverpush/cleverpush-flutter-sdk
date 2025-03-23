@@ -23,6 +23,7 @@ class CPNotification extends JSONStringRepresentable {
     } else if (json.containsKey('id')) {
       this.id = json['id'] as String?;
     }
+    this.rawPayload?['id'] = this.id;
     
     if (json.containsKey('title')) {
       this.title = json['title'] as String?;
