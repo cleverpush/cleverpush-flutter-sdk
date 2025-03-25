@@ -155,7 +155,14 @@
         }
     } handleSubscribed:^(NSString *subscriptionId) {
         [self handleSubscribed:subscriptionId];
-    } autoRegister:autoRegister];
+    } autoRegister:autoRegister handleInitialized:^(BOOL success, NSString * _Nullable failureMessage) {
+        if (success) {
+            [self handleInitializationResult:nil success:YES];
+        } else {
+            NSString *errorMessage = failureMessage ?: @"Initialization failed with unknown error.";
+            [self handleInitializationResult:errorMessage success:NO];
+        }
+    }];
 
     [CleverPush setAppBannerShownCallback:^(CPAppBanner *appBanner) {
         [self handleAppBannerShown:appBanner];
@@ -261,8 +268,14 @@
 }
 
 - (void)setSubscriptionTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setSubscriptionTopics:call.arguments[@"topics"]];
-    result(nil);
+    [CleverPush setSubscriptionTopics:call.arguments[@"topics"] onSuccess:^{
+        [self handleSubscriptionTopics:nil success:YES];
+        result(@YES);
+    } onFailure:^(NSError * _Nullable error) {
+        NSString *errorMessage = error.localizedDescription ?: @"Failed to set subscription topics";
+        [self handleSubscriptionTopics:errorMessage success:NO];
+        result(errorMessage);
+    }];
 }
 
 - (void)getAvailableTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
@@ -492,6 +505,24 @@
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"action"] = [self dictionaryWithPropertiesOfObject:action];
     [self.channel invokeMethod:@"CleverPush#handleAppBannerOpened" arguments:resultDict];
+}
+
+- (void)handleInitializationResult:(NSString *)failureMessage success:(BOOL)success {
+    NSMutableDictionary *resultDict = [NSMutableDictionary new];
+    resultDict[@"failureMessage"] = failureMessage;
+    resultDict[@"success"] = @(success);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleInitialized" arguments:resultDict];
+    });
+}
+
+- (void)handleSubscriptionTopics:(NSString *)failureMessage success:(BOOL)success {
+    NSMutableDictionary *resultDict = [NSMutableDictionary new];
+    resultDict[@"failureMessage"] = failureMessage;
+    resultDict[@"success"] = @(success);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleSubscriptionTopics" arguments:resultDict];
+    });
 }
 
 - (void)showAppBanner:(FlutterMethodCall *)call withResult:(FlutterResult)result {

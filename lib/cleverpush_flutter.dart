@@ -8,6 +8,8 @@ export 'src/app_banner.dart';
 
 typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
+typedef void InitializationHandler(bool success, String? failureMessage);
+typedef void SubscriptionTopicsHandler(bool success, String? failureMessage);
 typedef void SubscribedHandler(String? subscriptionId);
 typedef void ChatUrlOpenedHandler(String url);
 typedef void AppBannerShownHandler(CPAppBanner appBanner);
@@ -20,6 +22,8 @@ class CleverPush {
   MethodChannel _channel = const MethodChannel('CleverPush');
   NotificationReceivedHandler? _notificationReceivedHandler;
   NotificationOpenedHandler? _notificationOpenedHandler;
+  InitializationHandler? _initializedHandler;
+  SubscriptionTopicsHandler ? _subscriptionTopicsHandler;
   SubscribedHandler? _subscribedHandler;
   ChatUrlOpenedHandler? _chatUrlOpenedHandler;
   AppBannerShownHandler? _appBannerShownHandler;
@@ -69,6 +73,10 @@ class CleverPush {
     _channel.invokeMethod("CleverPush#setLogListener");
   }
 
+  void setInitializedHandler(InitializationHandler handler) {
+    _initializedHandler = handler;
+  }
+  
   void setBrandingColor(String color) {
     _channel.invokeMethod("CleverPush#setBrandingColor", {'color': color});
   }
@@ -141,8 +149,12 @@ class CleverPush {
     }
   }
 
-  Future<void> setSubscriptionTopics(List<String> topics) async {
-    await _channel.invokeMethod('CleverPush#setSubscriptionTopics', {'topics': topics});
+  void setSubscriptionTopicsHandler(SubscriptionTopicsHandler handler) {
+    _subscriptionTopicsHandler = handler;
+  }
+
+  Future<dynamic> setSubscriptionTopics(List<String> topics) async {
+    return await _channel.invokeMethod('CleverPush#setSubscriptionTopics', {'topics': topics});
   }
 
   Future<List<dynamic>> getAvailableTopics() async {
@@ -285,6 +297,16 @@ class CleverPush {
         this._appBannerShownHandler!(CPAppBanner(
           Map<String, dynamic>.from(call.arguments['appBanner']))
         );
+      } else if (
+        call.method == 'CleverPush#handleInitialized'
+        && this._initializedHandler != null
+      ) {
+        this._initializedHandler!(call.arguments['success'] ?? false, call.arguments['failureMessage']);
+      } else if (
+        call.method == 'CleverPush#handleSubscriptionTopics'
+        && this._subscriptionTopicsHandler != null
+      ) {
+        this._subscriptionTopicsHandler!(call.arguments['success'] ?? false, call.arguments['failureMessage']);
       } else if (
         call.method == 'CleverPush#handleAppBannerOpened'
         && this._appBannerOpenedHandler != null
