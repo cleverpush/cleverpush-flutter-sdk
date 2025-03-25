@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'cleverpush_flutter'
-  s.version          = '1.24.8'
+  s.version          = '1.24.9'
   s.summary          = 'CleverPush Flutter SDK'
   s.description      = 'CleverPush'
   s.homepage         = 'https://cleverpush.com'
