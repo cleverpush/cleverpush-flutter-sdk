@@ -1,5 +1,6 @@
-## 1.24.9 (23.03.2025)
+## 1.24.9 (25.03.2025)
 * Updated native iOS SDK
+* Optimized `init` and `setSubscriptionTopics` error handling.
 
 ## 1.24.8 (12.03.2025)
 * Updated native iOS + Android SDKs
