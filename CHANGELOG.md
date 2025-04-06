@@ -1,3 +1,6 @@
+## 1.24.12 (06.04.2025)
+* Updated native Android SDK
+
 ## 1.24.11 (05.04.2025)
 * Updated native iOS SDK
 
