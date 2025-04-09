@@ -7,8 +7,15 @@
     if (![hexString isKindOfClass:[NSString class]]) {
         return [UIColor blackColor];
     }
-    
-    NSString *colorString = [[hexString stringByReplacingOccurrencesOfString: @"#" withString: @""] uppercaseString];
+
+    NSString *colorString = [[hexString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                              stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    colorString = [[colorString stringByReplacingOccurrencesOfString:@" " withString:@""] uppercaseString];
+
+    if (colorString.length == 0) {
+        return [UIColor blackColor];
+    }
+
     CGFloat alpha, red, blue, green;
     switch ([colorString length]) {
         case 3: // #RGB
@@ -36,8 +43,7 @@
             blue  = [self colorComponentFrom: colorString start: 6 length: 2];
             break;
         default:
-            [NSException raise:@"Invalid color value" format: @"Color value %@ is invalid. It should be a hex value of the form #RBG, #ARGB, #RRGGBB, or #AARRGGBB", hexString];
-            break;
+            return [UIColor blackColor];
     }
     return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
 }
