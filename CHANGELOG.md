@@ -1,3 +1,6 @@
+## 1.24.13 (09.04.2025)
+* Optimize the `colorWithHexString` function to prevent crashes when providing an invalid color code in iOS.
+
 ## 1.24.12 (06.04.2025)
 * Updated native Android SDK
 
