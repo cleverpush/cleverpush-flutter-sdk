@@ -172,6 +172,10 @@
         [self handleAppBannerOpened:action];
     }];
 
+    [CleverPush setAppBannerClosedCallback:^() {
+        [self handleAppBannerClosed];
+    }];
+
     result(nil);
 }
 
@@ -505,6 +509,10 @@
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"action"] = [self dictionaryWithPropertiesOfObject:action];
     [self.channel invokeMethod:@"CleverPush#handleAppBannerOpened" arguments:resultDict];
+}
+
+- (void)handleAppBannerClosed {
+    [self.channel invokeMethod:@"CleverPush#handleAppBannerClosed" arguments:nil];
 }
 
 - (void)handleInitializationResult:(NSString *)failureMessage success:(BOOL)success {

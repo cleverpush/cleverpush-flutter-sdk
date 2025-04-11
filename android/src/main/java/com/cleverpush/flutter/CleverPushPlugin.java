@@ -14,6 +14,7 @@ import com.cleverpush.Notification;
 import com.cleverpush.NotificationOpenedResult;
 import com.cleverpush.banner.models.Banner;
 import com.cleverpush.banner.models.BannerAction;
+import com.cleverpush.listener.AppBannerClosedListener;
 import com.cleverpush.listener.AppBannerOpenedListener;
 import com.cleverpush.listener.AppBannerShownListener;
 import com.cleverpush.listener.ChatUrlOpenedListener;
@@ -282,6 +283,13 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
                 HashMap<String, Object> hash = new HashMap<>();
                 hash.put("action", CleverPushSerializer.convertAppBannerActionToMap(action));
                 invokeMethodOnUiThread("CleverPush#handleAppBannerOpened", hash);
+            }
+        });
+
+        cleverPush.setAppBannerClosedListener(new AppBannerClosedListener() {
+            @Override
+            public void closed() {
+                invokeMethodOnUiThread("CleverPush#handleAppBannerClosed", null);
             }
         });
     }
