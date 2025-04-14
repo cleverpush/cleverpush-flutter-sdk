@@ -70,7 +70,7 @@ class CleverPush {
     _appBannerOpenedHandler = handler;
   }
 
-  set setAppBannerClosedHandler(AppBannerClosedHandler handler) {
+  void setAppBannerClosedHandler(AppBannerClosedHandler handler) {
     _appBannerClosedHandler = handler;
   }
 
