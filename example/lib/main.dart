@@ -76,13 +76,13 @@ class _MyAppState extends State<MyApp> {
       print("Banner action URL: \n${action.url}");
     });
 
-    CleverPush.shared.setAppBannerClosedHandler = () {
+    CleverPush.shared.setAppBannerClosedHandler(() {
       setState(() {
         _debugLabelString = "APP BANNER CLOSED";
       });
 
       print("App banner was closed");
-    };
+    });
 
     CleverPush.shared.enableAppBanners();
 
