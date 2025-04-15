@@ -1,3 +1,6 @@
+## 1.24.14 (15.04.2025)
+* Resolved the issue where `setSubscriptionTopics` and `getSubscriptionTopics` should not be updated if the API call fails in iOS.
+
 ## 1.24.13 (09.04.2025)
 * Optimize the `colorWithHexString` function to prevent crashes when providing an invalid color code in iOS.
 
