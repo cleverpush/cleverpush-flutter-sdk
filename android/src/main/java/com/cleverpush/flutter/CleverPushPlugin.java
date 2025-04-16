@@ -191,7 +191,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             this.pushSubscriptionAttributeValue(call, result);
         } else if (call.method.contentEquals("CleverPush#pullSubscriptionAttributeValue")) {
             this.pullSubscriptionAttributeValue(call, result);
-        }  else if (call.method.contentEquals("CleverPush#showAppBanner")) {
+        } else if (call.method.contentEquals("CleverPush#showAppBanner")) {
             this.showAppBanner(call, result);
         } else {
             replyNotImplemented(result);
@@ -739,7 +739,11 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
     private void showAppBanner(MethodCall call, final Result result) {
         String id = call.argument("id");
-        CleverPush.getInstance(context).showAppBanner(id);
-        replySuccess(result, null);
+        CleverPush.getInstance(context).showAppBanner(id, new AppBannerClosedListener() {
+            @Override
+            public void closed() {
+                replySuccess(result, null);
+            }
+        });
     }
 }
