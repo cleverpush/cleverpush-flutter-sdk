@@ -526,8 +526,9 @@
 }
 
 - (void)showAppBanner:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush showAppBanner:call.arguments[@"id"]];
-    result(nil);
+    [CleverPush showAppBanner:call.arguments[@"id"] appBannerClosedCallback:^{
+        result(nil);
+    }];
 }
 
 - (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj {
