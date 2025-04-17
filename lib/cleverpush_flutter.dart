@@ -14,7 +14,6 @@ typedef void SubscribedHandler(String? subscriptionId);
 typedef void ChatUrlOpenedHandler(String url);
 typedef void AppBannerShownHandler(CPAppBanner appBanner);
 typedef void AppBannerOpenedHandler(CPAppBannerAction action);
-typedef void AppBannerClosedHandler();
 typedef void LogHandler(String message);
 
 class CleverPush {
@@ -29,7 +28,6 @@ class CleverPush {
   ChatUrlOpenedHandler? _chatUrlOpenedHandler;
   AppBannerShownHandler? _appBannerShownHandler;
   AppBannerOpenedHandler? _appBannerOpenedHandler;
-  AppBannerClosedHandler? _appBannerClosedHandler;
   LogHandler? _logHandler;
 
   CleverPush() {
@@ -261,9 +259,20 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#triggerFollowUpEvent", {'eventName': eventName, 'parameters': parameters});
   }
 
-  Future<dynamic> showAppBanner(String id, [AppBannerClosedHandler? closedHandler]) async {
-    _appBannerClosedHandler = closedHandler;
-    return await _channel.invokeMethod("CleverPush#showAppBanner", {'id': id});
+  Future<void> showAppBanner(String id, [void Function()? closedHandler]) async {
+    if (closedHandler != null) {
+      _channel.setMethodCallHandler((call) async {
+        if (call.method == 'CleverPush#handleAppBannerClosed') {
+          closedHandler();
+          _channel.setMethodCallHandler(_handleMethod);
+        } else {
+          return _handleMethod(call);
+        }
+        return null;
+      });
+    }
+    
+    await _channel.invokeMethod("CleverPush#showAppBanner", {'id': id});
   }
 
   Future<Null> _handleMethod(MethodCall call) async {
@@ -317,11 +326,6 @@ class CleverPush {
         this._appBannerOpenedHandler!(CPAppBannerAction(
           Map<String, dynamic>.from(call.arguments['action']))
         );
-      } else if (
-        call.method == 'CleverPush#handleAppBannerClosed'
-        && this._appBannerClosedHandler != null
-      ) {
-        this._appBannerClosedHandler!();
       } else if (
         call.method == 'CleverPush#handleLog'
         && this._logHandler != null
