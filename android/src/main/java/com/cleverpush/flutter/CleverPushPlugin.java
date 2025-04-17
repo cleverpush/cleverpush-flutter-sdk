@@ -742,6 +742,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         CleverPush.getInstance(context).showAppBanner(id, new AppBannerClosedListener() {
             @Override
             public void closed() {
+                invokeMethodOnUiThread("CleverPush#handleAppBannerClosed", null);
                 replySuccess(result, null);
             }
         });

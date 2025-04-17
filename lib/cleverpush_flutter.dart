@@ -14,6 +14,7 @@ typedef void SubscribedHandler(String? subscriptionId);
 typedef void ChatUrlOpenedHandler(String url);
 typedef void AppBannerShownHandler(CPAppBanner appBanner);
 typedef void AppBannerOpenedHandler(CPAppBannerAction action);
+typedef void AppBannerClosedHandler();
 typedef void LogHandler(String message);
 
 class CleverPush {
@@ -28,6 +29,7 @@ class CleverPush {
   ChatUrlOpenedHandler? _chatUrlOpenedHandler;
   AppBannerShownHandler? _appBannerShownHandler;
   AppBannerOpenedHandler? _appBannerOpenedHandler;
+  AppBannerClosedHandler? _appBannerClosedHandler;
   LogHandler? _logHandler;
 
   CleverPush() {
@@ -259,7 +261,8 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#triggerFollowUpEvent", {'eventName': eventName, 'parameters': parameters});
   }
 
-  Future<dynamic> showAppBanner(String id) async {
+  Future<dynamic> showAppBanner(String id, [AppBannerClosedHandler? closedHandler]) async {
+    _appBannerClosedHandler = closedHandler;
     return await _channel.invokeMethod("CleverPush#showAppBanner", {'id': id});
   }
 
@@ -314,6 +317,11 @@ class CleverPush {
         this._appBannerOpenedHandler!(CPAppBannerAction(
           Map<String, dynamic>.from(call.arguments['action']))
         );
+      } else if (
+        call.method == 'CleverPush#handleAppBannerClosed'
+        && this._appBannerClosedHandler != null
+      ) {
+        this._appBannerClosedHandler!();
       } else if (
         call.method == 'CleverPush#handleLog'
         && this._logHandler != null
