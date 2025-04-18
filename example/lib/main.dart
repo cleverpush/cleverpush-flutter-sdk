@@ -22,11 +22,11 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
-    CleverPush.shared.setShowNotificationsInForeground(false);
+    CleverPush.shared.setShowNotificationsInForeground(true);
     CleverPush.shared.enableDevelopmentMode();
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("CHANNEL_ID", true);
+    await CleverPush.shared.init("zETeJFCgzbcfeLdaJ", true);
 
     CleverPush.shared
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
@@ -142,6 +142,9 @@ class _MyAppState extends State<MyApp> {
     this.setState(() {
       _debugLabelString = notifications.length.toString();
     });
+
+    List<String> topics = ['Q9fWZPyPKM6CkPj5R'];
+    CleverPush.shared.setSubscriptionTopics(topics);
   }
 
   void _getNotificationsWithApi() async {
@@ -172,7 +175,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _setSubscriptionTopics() {
-    List<String> topics = ['hello', 'world'];
+    List<String> topics = ['HQhgSWgohtCweTBeF', 'KNep6X3kjofTMEs3Q'];
     CleverPush.shared.setSubscriptionTopics(topics);
   }
 
@@ -249,6 +252,15 @@ class _MyAppState extends State<MyApp> {
 
   void _showAppBanner() async {
     CleverPush.shared.showAppBanner("APP_BANNER_ID");
+  }
+
+  void _showAppBannerWithCall() async {
+    CleverPush.shared.showAppBannerWithClosedHandler("APP_BANNER_ID", () {
+      this.setState(() {
+        _debugLabelString = "APP BANNER CLOSED";
+      });
+      print("APP BANNER CLOSED");
+    });
   }
 
   @override
@@ -353,6 +365,10 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Show App Banner", _showAppBanner, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Show App Banner With Close Callback", _showAppBannerWithCall, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(
