@@ -263,6 +263,18 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#showAppBanner", {'id': id});
   }
 
+  Future<void> showAppBannerWithClosedHandler(String id, [void Function()? closedHandler]) async {
+    if (closedHandler == null) {
+      return await showAppBanner(id);
+    }
+    
+    return await _channel.invokeMethod("CleverPush#showAppBannerWithClosedHandler", {
+      'id': id
+    }).then((_) {
+      closedHandler();
+    });
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (
