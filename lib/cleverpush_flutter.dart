@@ -259,13 +259,9 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#triggerFollowUpEvent", {'eventName': eventName, 'parameters': parameters});
   }
 
-  Future<dynamic> showAppBanner(String id) async {
-    return await _channel.invokeMethod("CleverPush#showAppBanner", {'id': id});
-  }
-
-  Future<void> showAppBannerWithClosedHandler(String id, [void Function()? closedHandler]) async {
+  Future<dynamic> showAppBanner(String id, [void Function()? closedHandler]) async {
     if (closedHandler == null) {
-      return await showAppBanner(id);
+      return await _channel.invokeMethod("CleverPush#showAppBanner", {'id': id});
     }
     
     return await _channel.invokeMethod("CleverPush#showAppBannerWithClosedHandler", {
