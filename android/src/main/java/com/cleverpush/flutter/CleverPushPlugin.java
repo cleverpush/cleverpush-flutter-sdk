@@ -191,7 +191,8 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             this.pushSubscriptionAttributeValue(call, result);
         } else if (call.method.contentEquals("CleverPush#pullSubscriptionAttributeValue")) {
             this.pullSubscriptionAttributeValue(call, result);
-        } else if (call.method.contentEquals("CleverPush#showAppBanner")) {
+        } else if (call.method.contentEquals("CleverPush#showAppBanner")
+                || call.method.contentEquals("CleverPush#showAppBannerWithClosedHandler")) {
             this.showAppBanner(call, result);
         } else {
             replyNotImplemented(result);

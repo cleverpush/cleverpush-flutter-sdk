@@ -22,11 +22,11 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     if (!mounted) return;
 
-    CleverPush.shared.setShowNotificationsInForeground(true);
+    CleverPush.shared.setShowNotificationsInForeground(false);
     CleverPush.shared.enableDevelopmentMode();
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("zETeJFCgzbcfeLdaJ", true);
+    await CleverPush.shared.init("CHANNEL_ID", true);
 
     CleverPush.shared
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
@@ -142,9 +142,6 @@ class _MyAppState extends State<MyApp> {
     this.setState(() {
       _debugLabelString = notifications.length.toString();
     });
-
-    List<String> topics = ['Q9fWZPyPKM6CkPj5R'];
-    CleverPush.shared.setSubscriptionTopics(topics);
   }
 
   void _getNotificationsWithApi() async {
@@ -175,7 +172,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _setSubscriptionTopics() {
-    List<String> topics = ['HQhgSWgohtCweTBeF', 'KNep6X3kjofTMEs3Q'];
+    List<String> topics = ['TOPIC_ID1', 'TOPIC_ID2'];
     CleverPush.shared.setSubscriptionTopics(topics);
   }
 
@@ -254,8 +251,8 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.showAppBanner("APP_BANNER_ID");
   }
 
-  void _showAppBannerWithCall() async {
-    CleverPush.shared.showAppBannerWithClosedHandler("APP_BANNER_ID", () {
+  void _showAppBannerWithCallback() async {
+    CleverPush.shared.showAppBanner("APP_BANNER_ID", () {
       this.setState(() {
         _debugLabelString = "APP BANNER CLOSED";
       });
@@ -368,7 +365,7 @@ class _MyAppState extends State<MyApp> {
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(
-                          "Show App Banner With Close Callback", _showAppBannerWithCall, true)
+                          "Show App Banner With Callback", _showAppBannerWithCallback, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(
