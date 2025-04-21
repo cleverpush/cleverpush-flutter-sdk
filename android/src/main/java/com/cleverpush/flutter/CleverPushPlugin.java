@@ -14,6 +14,7 @@ import com.cleverpush.Notification;
 import com.cleverpush.NotificationOpenedResult;
 import com.cleverpush.banner.models.Banner;
 import com.cleverpush.banner.models.BannerAction;
+import com.cleverpush.listener.AppBannerClosedListener;
 import com.cleverpush.listener.AppBannerOpenedListener;
 import com.cleverpush.listener.AppBannerShownListener;
 import com.cleverpush.listener.ChatUrlOpenedListener;
@@ -190,7 +191,8 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             this.pushSubscriptionAttributeValue(call, result);
         } else if (call.method.contentEquals("CleverPush#pullSubscriptionAttributeValue")) {
             this.pullSubscriptionAttributeValue(call, result);
-        }  else if (call.method.contentEquals("CleverPush#showAppBanner")) {
+        } else if (call.method.contentEquals("CleverPush#showAppBanner")
+                || call.method.contentEquals("CleverPush#showAppBannerWithClosedHandler")) {
             this.showAppBanner(call, result);
         } else {
             replyNotImplemented(result);
@@ -738,7 +740,17 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
     private void showAppBanner(MethodCall call, final Result result) {
         String id = call.argument("id");
-        CleverPush.getInstance(context).showAppBanner(id);
-        replySuccess(result, null);
+        
+        if (call.method.contentEquals("CleverPush#showAppBannerWithClosedHandler")) {
+            CleverPush.getInstance(context).showAppBanner(id, new AppBannerClosedListener() {
+                @Override
+                public void closed() {
+                    replySuccess(result, null);
+                }
+            });
+        } else {
+            CleverPush.getInstance(context).showAppBanner(id);
+            replySuccess(result, null);
+        }
     }
 }

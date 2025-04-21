@@ -133,6 +133,8 @@
       [self pullSubscriptionAttributeValue:call withResult:result];
     else if ([@"CleverPush#showAppBanner" isEqualToString:call.method])
         [self showAppBanner:call withResult:result];
+    else if ([@"CleverPush#showAppBannerWithClosedHandler" isEqualToString:call.method])
+        [self showAppBanner:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -526,8 +528,14 @@
 }
 
 - (void)showAppBanner:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush showAppBanner:call.arguments[@"id"]];
-    result(nil);
+    if ([call.method isEqualToString:@"CleverPush#showAppBannerWithClosedHandler"]) {
+        [CleverPush showAppBanner:call.arguments[@"id"] appBannerClosedCallback:^{
+            result(nil);
+        }];
+    } else {
+        [CleverPush showAppBanner:call.arguments[@"id"]];
+        result(nil);
+    }
 }
 
 - (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj {

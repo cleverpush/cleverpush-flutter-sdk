@@ -72,6 +72,10 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
+    CleverPush.shared.setAppBannerOpenedHandler((CPAppBannerAction action) {
+      print("Banner action URL: \n${action.url}");
+    });
+
     CleverPush.shared.enableAppBanners();
 
     CleverPush.shared.setAppBannerShownHandler((CPAppBanner appBanner) {
@@ -168,7 +172,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _setSubscriptionTopics() {
-    List<String> topics = ['hello', 'world'];
+    List<String> topics = ['TOPIC_ID1', 'TOPIC_ID2'];
     CleverPush.shared.setSubscriptionTopics(topics);
   }
 
@@ -245,6 +249,15 @@ class _MyAppState extends State<MyApp> {
 
   void _showAppBanner() async {
     CleverPush.shared.showAppBanner("APP_BANNER_ID");
+  }
+
+  void _showAppBannerWithCallback() async {
+    CleverPush.shared.showAppBanner("APP_BANNER_ID", () {
+      this.setState(() {
+        _debugLabelString = "APP BANNER CLOSED";
+      });
+      print("APP BANNER CLOSED");
+    });
   }
 
   @override
@@ -349,6 +362,10 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Show App Banner", _showAppBanner, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Show App Banner With Callback", _showAppBannerWithCallback, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(
