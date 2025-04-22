@@ -247,6 +247,14 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.pullSubscriptionAttributeValue("ATTRIBUTE_KEY","ATTRIBUTE_VALUE");
   }
 
+  void _showTopicsDialogWithClosedHandler() async {
+    CleverPush.shared.showTopicsDialog(() {
+      this.setState(() {
+        _debugLabelString = "TOPICS DIALOG CLOSED";
+      });
+    });
+  }
+
   void _showAppBanner() async {
     CleverPush.shared.showAppBanner("APP_BANNER_ID");
   }
@@ -310,6 +318,10 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Show topics dialog", _handleTopicsDialog, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Show topics dialog with closed handler", _showTopicsDialogWithClosedHandler, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(

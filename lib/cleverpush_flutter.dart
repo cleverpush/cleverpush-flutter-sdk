@@ -118,8 +118,14 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#areNotificationsEnabled");
   }
 
-  Future<void> showTopicsDialog() async {
-    return await _channel.invokeMethod("CleverPush#showTopicsDialog");
+  Future<void> showTopicsDialog([void Function()? closedHandler]) async {
+    if (closedHandler == null) {
+      return await _channel.invokeMethod("CleverPush#showTopicsDialog");
+    }
+    
+    return await _channel.invokeMethod("CleverPush#showTopicsDialogWithClosedHandler").then((_) {
+      closedHandler();
+    });
   }
 
   Future<List<CPNotification>> getNotifications() async {

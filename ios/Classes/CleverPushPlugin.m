@@ -61,6 +61,8 @@
         [self getDeviceToken:call withResult:result];
     else if ([@"CleverPush#showTopicsDialog" isEqualToString:call.method])
         [self showTopicsDialog:call withResult:result];
+    else if ([@"CleverPush#showTopicsDialogWithClosedHandler" isEqualToString:call.method])
+        [self showTopicsDialog:call withResult:result];
     else if ([@"CleverPush#getNotifications" isEqualToString:call.method])
         [self getNotifications:call withResult:result];
     else if ([@"CleverPush#getNotificationsWithApi" isEqualToString:call.method])
@@ -93,7 +95,7 @@
         [self setSubscriptionAttribute:call withResult:result];
     else if ([@"CleverPush#initNotificationOpenedHandlerParams" isEqualToString:call.method])
         [self initNotificationOpenedHandlerParams];
-    else if ([@"CleverPush#setShowNotificationsInForeground" isEqualToString:call.method])
+    else if ([@"CleverPush#setShowNotificationsInForeground" isEqualToString:call.method])\
         [self setShowNotificationsInForeground:call withResult:result];
     else if ([@"CleverPush#setTrackingConsentRequired" isEqualToString:call.method])
         [self setTrackingConsentRequired:call withResult:result];

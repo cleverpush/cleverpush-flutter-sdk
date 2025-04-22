@@ -121,7 +121,8 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             this.getSubscriptionId(result);
         } else if (call.method.contentEquals("CleverPush#getDeviceToken")) {
             this.getDeviceToken(result);
-        } else if (call.method.contentEquals("CleverPush#showTopicsDialog")) {
+        } else if (call.method.contentEquals("CleverPush#showTopicsDialog") || 
+                   call.method.contentEquals("CleverPush#showTopicsDialogWithClosedHandler")) {
             this.showTopicsDialog(call, result);
         } else if (call.method.contentEquals("CleverPush#initNotificationOpenedHandlerParams")) {
             this.initNotificationOpenedHandlerParams();
