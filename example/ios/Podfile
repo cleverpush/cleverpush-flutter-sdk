@@ -46,5 +46,5 @@ end
 target 'CleverPushNotificationServiceExtension' do
   use_frameworks!
 
-  pod 'CleverPush'
+  pod 'CleverPush/CleverPushExtension'
 end

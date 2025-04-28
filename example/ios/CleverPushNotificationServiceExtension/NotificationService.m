@@ -1,4 +1,4 @@
-#import <CleverPush/CleverPush.h>
+#import <CleverPushExtension/CleverPushExtension.h>
 
 #import "NotificationService.h"
 
@@ -17,13 +17,13 @@
     self.contentHandler = contentHandler;
     self.bestAttemptContent = [request.content mutableCopy];
 
-    [CleverPush didReceiveNotificationExtensionRequest:self.receivedRequest withMutableNotificationContent:self.bestAttemptContent];
+    [CleverPushExtension didReceiveNotificationExtensionRequest:self.receivedRequest withMutableNotificationContent:self.bestAttemptContent];
 
     self.contentHandler(self.bestAttemptContent);
 }
 
 - (void)serviceExtensionTimeWillExpire {
-    [CleverPush serviceExtensionTimeWillExpireRequest:self.receivedRequest withMutableNotificationContent:self.bestAttemptContent];
+    [CleverPushExtension serviceExtensionTimeWillExpireRequest:self.receivedRequest withMutableNotificationContent:self.bestAttemptContent];
 
     self.contentHandler(self.bestAttemptContent);
 }
