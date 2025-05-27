@@ -237,12 +237,12 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         cleverPush.init(channelId, receivedListener, this, this, autoRegister, new InitializeListener() {
             @Override
             public void onInitialized() {
+                replySuccess(reply, null);
             }
 
             @Override
             public void onInitializationSuccess() {
                 InitializeListener.super.onInitializationSuccess();
-                replySuccess(reply, null);
                 HashMap<String, Object> hash = new HashMap<>();
                 hash.put("success", true);
                 hash.put("failureMessage", null);
@@ -252,7 +252,6 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             @Override
             public void onInitializationFailure(Throwable throwable) {
                 InitializeListener.super.onInitializationFailure(throwable);
-                replySuccess(reply, throwable.getMessage());
                 HashMap<String, Object> hash = new HashMap<>();
                 hash.put("success", false);
                 hash.put("failureMessage", throwable.getMessage() != null ? throwable.getMessage() : "Initialization failed with unknown error.");
