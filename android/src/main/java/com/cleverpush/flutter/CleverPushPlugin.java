@@ -447,7 +447,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
     private void setSubscriptionTopics(MethodCall call, Result reply) {
         List<String> topics = call.argument("topics");
         if (topics == null) {
-            replySuccess(reply, null);
+            replySuccess(reply, false);
             return;
         }
         String[] topicIds = new String[topics.size()];
@@ -455,7 +455,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         CleverPush.getInstance(context).setSubscriptionTopics(topicIds, new CompletionFailureListener() {
             @Override
             public void onComplete() {
-                replySuccess(reply, null);
+                replySuccess(reply, true);
                 HashMap<String, Object> hash = new HashMap<>();
                 hash.put("success", true);
                 hash.put("failureMessage", null);
@@ -464,8 +464,8 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
             @Override
             public void onFailure(Exception exception) {
-                replySuccess(reply, null);
                 String errorMessage = exception.getMessage() != null ? exception.getMessage() : "Failed to set subscription topics";
+                replySuccess(reply, errorMessage);
                 HashMap<String, Object> hash = new HashMap<>();
                 hash.put("success", false);
                 hash.put("failureMessage", errorMessage);
