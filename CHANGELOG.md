@@ -1,3 +1,8 @@
+## 1.24.15 (30.05.2025)
+* Created a new method `showAppBanner` with `AppBannerClosedListener`.
+* Fixed an issue where `setSubscriptionTopics` always returned `null` on Android.
+* Updated native iOS + Android SDKs
+
 ## 1.24.14 (15.04.2025)
 * Resolved the issue where `setSubscriptionTopics` and `getSubscriptionTopics` should not be updated if the API call fails in iOS.
 
