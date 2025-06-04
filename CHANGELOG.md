@@ -1,3 +1,6 @@
+## 1.24.16 (04.06.2025)
+* Optimized `init`
+
 ## 1.24.15 (30.05.2025)
 * Created a new method `showAppBanner` with `AppBannerClosedListener`.
 * Fixed an issue where `setSubscriptionTopics` always returned `null` on Android.
