@@ -1,3 +1,6 @@
+## 1.24.17 (06.06.2025)
+* implemented `setMaximumNotificationCount` method
+
 ## 1.24.16 (04.06.2025)
 * Optimized `init`
 
