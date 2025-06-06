@@ -237,6 +237,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#setSubscriptionCountry", {'country': country});
   }
 
+  Future<dynamic> setMaximumNotificationCount(int count) async {
+    return await _channel.invokeMethod("CleverPush#setMaximumNotificationCount", {'count': count});
+  }
+
   Future<dynamic> pushSubscriptionAttributeValue(String id, String value) async {
     return await _channel.invokeMethod("CleverPush#pushSubscriptionAttributeValue", {'id': id, 'value': value});
   }
