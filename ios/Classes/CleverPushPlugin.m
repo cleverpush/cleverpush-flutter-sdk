@@ -135,6 +135,8 @@
         [self showAppBanner:call withResult:result];
     else if ([@"CleverPush#showAppBannerWithClosedHandler" isEqualToString:call.method])
         [self showAppBanner:call withResult:result];
+    else if ([@"CleverPush#setMaximumNotificationCount" isEqualToString:call.method])
+        [self setMaximumNotificationCount:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -474,6 +476,11 @@
 
 - (void)setSubscriptionCountry:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush setSubscriptionCountry:call.arguments[@"country"]];
+    result(nil);
+}
+
+- (void)setMaximumNotificationCount:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush setMaximumNotificationCount:[call.arguments[@"count"] intValue]];
     result(nil);
 }
 

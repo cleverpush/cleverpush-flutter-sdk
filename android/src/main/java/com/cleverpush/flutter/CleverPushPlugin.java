@@ -194,6 +194,8 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         } else if (call.method.contentEquals("CleverPush#showAppBanner")
                 || call.method.contentEquals("CleverPush#showAppBannerWithClosedHandler")) {
             this.showAppBanner(call, result);
+        } else if (call.method.contentEquals("CleverPush#setMaximumNotificationCount")) {
+            this.setMaximumNotificationCount(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -371,6 +373,11 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
     private void setSubscriptionCountry(MethodCall call, Result result) {
         CleverPush.getInstance(context).setSubscriptionCountry((String) call.argument("country"));
+        replySuccess(result, null);
+    }
+
+    private void setMaximumNotificationCount(MethodCall call, Result result) {
+        CleverPush.getInstance(context).setMaximumNotificationCount((int) call.argument("count"));
         replySuccess(result, null);
     }
 
