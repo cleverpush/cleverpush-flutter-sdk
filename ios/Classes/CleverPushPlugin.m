@@ -574,6 +574,7 @@
                 dict[key] = object;
             } else if ([object isKindOfClass:[NSDate class]]) {
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
                 [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
                 [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
                 NSString *convertedDateString = [dateFormatter stringFromDate:[obj valueForKey:key]];
