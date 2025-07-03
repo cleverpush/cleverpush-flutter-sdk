@@ -7,17 +7,11 @@ import com.cleverpush.banner.models.BannerAction;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
 
 class CleverPushSerializer {
     private static HashMap<String, Object> convertNotificationToMap(Notification payload) throws JSONException {
@@ -29,24 +23,7 @@ class CleverPushSerializer {
         hash.put("url", payload.getUrl());
         hash.put("iconUrl", payload.getIconUrl());
         hash.put("mediaUrl", payload.getMediaUrl());
-        String createdAtRaw = payload.getCreatedAt();
-        try {
-            if (createdAtRaw != null && !createdAtRaw.isEmpty()) {
-                Date parsedDate = tryParseDate(createdAtRaw);
-                if (parsedDate != null) {
-                    SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-                    iso8601Format.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    hash.put("createdAt", iso8601Format.format(parsedDate));
-                } else {
-                    hash.put("createdAt", createdAtRaw);
-                }
-            } else {
-                hash.put("createdAt", null);
-            }
-        } catch (Exception e) {
-            hash.put("createdAt", createdAtRaw);
-            Log.e("CleverPush", "Error while converting date to ISO format. " + e.getMessage(), e);
-        }
+        hash.put("createdAt", payload.getCreatedAt());
         hash.put("chatNotification",payload.isChatNotification());
         hash.put("appBanner", payload.getAppBanner());
 
@@ -168,7 +145,7 @@ class CleverPushSerializer {
         HashMap<String, Object> hash = new HashMap<>();
 
         if (object == null || object == JSONObject.NULL) {
-            return hash;
+          return hash;
         }
 
         Iterator<String> keys = object.keys();
@@ -208,26 +185,5 @@ class CleverPushSerializer {
         }
 
         return list;
-    }
-
-    private static Date tryParseDate(String dateStr) {
-        List<String> formats = Arrays.asList(
-                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                "yyyy-MM-dd HH:mm:ss",
-                "MMM dd, yyyy hh:mm:ss a",
-                "MMM dd, yyyy hh:mm a",
-                "yyyy-MM-dd"
-        );
-
-        for (String format : formats) {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
-                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-                return sdf.parse(dateStr);
-            } catch (Exception ignored) {}
-        }
-
-        return null;
     }
 }
