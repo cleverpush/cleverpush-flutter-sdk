@@ -1,3 +1,6 @@
+## 1.24.18 (07.07.2025)
+* createdAt date should be in ISO format in `getNotifications` method.
+
 ## 1.24.17 (06.06.2025)
 * implemented `setMaximumNotificationCount` method
 
