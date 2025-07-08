@@ -1,5 +1,5 @@
 group 'com.cleverpush.flutter'
-version '1.24.18'
+version '1.24.18.1'
 
 buildscript {
     repositories {
