@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-	api 'com.cleverpush:cleverpush:1.35.02'
+	api 'com.cleverpush:cleverpush:1.35.2'
 }
 
 class DefaultManifestPlaceHolders {
