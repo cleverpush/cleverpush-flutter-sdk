@@ -1,3 +1,6 @@
+## 1.24.19 (08.07.2025)
+* Updated native iOS + Android SDKs
+
 ## 1.24.18 (07.07.2025)
 * createdAt date should be in ISO format in `getNotifications` method.
 
