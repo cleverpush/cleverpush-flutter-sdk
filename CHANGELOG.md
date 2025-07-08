@@ -1,6 +1,3 @@
-## 1.24.18.1 (08.07.2025)
-* Fixed issue with maven version number, that resulted in failing codemagic builds
-
 ## 1.24.18 (07.07.2025)
 * createdAt date should be in ISO format in `getNotifications` method.
 
