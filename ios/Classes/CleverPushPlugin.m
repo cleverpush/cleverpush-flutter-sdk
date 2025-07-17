@@ -435,7 +435,9 @@
     [CleverPush setLogListener:^(NSString* message) {
         NSMutableDictionary *resultDict = [NSMutableDictionary new];
         resultDict[@"message"] = message;
-        [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
+        });
     }];
     result(nil);
 }
@@ -495,25 +497,33 @@
 - (void)handleNotificationReceived:(CPNotificationReceivedResult *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
-    [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:resultDict];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:resultDict];
+    });
 }
 
 - (void)handleNotificationOpened:(CPNotificationOpenedResult *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
-    [self.channel invokeMethod:@"CleverPush#handleNotificationOpened" arguments:resultDict];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleNotificationOpened" arguments:resultDict];
+    });
 }
 
 - (void)handleAppBannerShown:(CPAppBanner *)appBanner {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"appBanner"] = [self dictionaryWithPropertiesOfObject:appBanner];
-    [self.channel invokeMethod:@"CleverPush#handleAppBannerShown" arguments:resultDict];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleAppBannerShown" arguments:resultDict];
+    });
 }
 
 - (void)handleAppBannerOpened:(CPAppBannerAction *)action {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"action"] = [self dictionaryWithPropertiesOfObject:action];
-    [self.channel invokeMethod:@"CleverPush#handleAppBannerOpened" arguments:resultDict];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleAppBannerOpened" arguments:resultDict];
+    });
 }
 
 - (void)handleInitializationResult:(NSString *)failureMessage success:(BOOL)success {
