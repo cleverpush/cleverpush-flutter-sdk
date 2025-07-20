@@ -80,10 +80,6 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        CleverPush.getInstance(binding.getApplicationContext()).removeNotificationReceivedListener();
-        CleverPush.getInstance(binding.getApplicationContext()).removeNotificationOpenedListener();
-        CleverPush.getInstance(binding.getApplicationContext()).removeSubscribedListener();
-        context = null;
     }
 
     @Override
