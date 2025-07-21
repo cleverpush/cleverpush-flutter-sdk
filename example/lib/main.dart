@@ -25,9 +25,6 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.setShowNotificationsInForeground(false);
     CleverPush.shared.enableDevelopmentMode();
 
-    // CleverPush Channel ID
-    await CleverPush.shared.init("CHANNEL_ID", true);
-
     CleverPush.shared
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
       this.setState(() {
@@ -76,13 +73,16 @@ class _MyAppState extends State<MyApp> {
       print("Banner action URL: \n${action.url}");
     });
 
-    CleverPush.shared.enableAppBanners();
-
     CleverPush.shared.setAppBannerShownHandler((CPAppBanner appBanner) {
       this.setState(() {
         _debugLabelString = "APP BANNER SHOWN: " + appBanner.name!;
       });
     });
+
+    // CleverPush Channel ID
+    await CleverPush.shared.init("CHANNEL_ID", true);
+
+    CleverPush.shared.enableAppBanners();
 
     CleverPush.shared.setBrandingColor("#ff0000");
 

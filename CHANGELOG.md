@@ -1,3 +1,6 @@
+## 1.24.21 (21.07.2025)
+* Fixed an issue where `setNotificationReceivedHandler`, `setNotificationOpenedHandler`, and `setSubscribedHandler` were not working when using WorkManager.
+
 ## 1.24.20 (11.07.2025)
 * Updated native iOS + Android SDKs
 
