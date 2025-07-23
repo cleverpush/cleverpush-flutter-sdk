@@ -1,3 +1,6 @@
+## 1.24.22 (23.07.2025)
+* Updated Android Gradle Plugin and dependencies to support API Level 35
+
 ## 1.24.21 (21.07.2025)
 * Fixed an issue where `setNotificationReceivedHandler`, `setNotificationOpenedHandler`, and `setSubscribedHandler` were not working when using WorkManager.
 
