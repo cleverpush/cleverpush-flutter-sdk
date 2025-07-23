@@ -17,7 +17,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
     namespace "com.cleverpush.example"
 
-    compileSdkVersion 33
+    compileSdkVersion 34
 
 	compileOptions {
 		targetCompatibility = "8"
@@ -29,7 +29,7 @@ android {
 
     defaultConfig {
         applicationId "com.cleverpush.example"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
