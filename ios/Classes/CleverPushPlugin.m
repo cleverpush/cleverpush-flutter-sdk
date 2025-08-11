@@ -137,6 +137,10 @@
         [self showAppBanner:call withResult:result];
     else if ([@"CleverPush#setMaximumNotificationCount" isEqualToString:call.method])
         [self setMaximumNotificationCount:call withResult:result];
+    else if ([@"CleverPush#setNotificationRead" isEqualToString:call.method])
+        [self setNotificationRead:call withResult:result];
+    else if ([@"CleverPush#getNotificationRead" isEqualToString:call.method])
+        [self getNotificationRead:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -553,6 +557,20 @@
         [CleverPush showAppBanner:call.arguments[@"id"]];
         result(nil);
     }
+}
+
+- (void)setNotificationRead:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSString *notificationId = call.arguments[@"notificationId"];
+    BOOL read = [call.arguments[@"read"] boolValue];
+
+    [CleverPush setNotificationRead:notificationId read:read];
+    result(nil);
+}
+
+- (void)getNotificationRead:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSString *notificationId = call.arguments[@"notificationId"];
+    BOOL notificationRead = [CleverPush getNotificationRead:notificationId];
+    result([NSNumber numberWithBool:notificationRead]);
 }
 
 - (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj {

@@ -1,4 +1,5 @@
 import 'json.dart';
+import 'package:flutter/services.dart';
 
 class CPNotification extends JSONStringRepresentable {
   String? id;
@@ -13,6 +14,9 @@ class CPNotification extends JSONStringRepresentable {
   bool? chatNotification;
   bool? silent;
   String? appBanner;
+  bool? read;
+
+  static const MethodChannel _channel = MethodChannel('CleverPush');
 
   CPNotification(Map<String, dynamic> json) {
     this.rawPayload = json;
@@ -54,6 +58,27 @@ class CPNotification extends JSONStringRepresentable {
     }
     if (json.containsKey('appBanner')) {
       this.appBanner = json['appBanner'] as String?;
+    }
+
+    if (json.containsKey('read')) {
+      this.read = json['read'] as bool?;
+      if (this.id != null) {
+        _channel.invokeMethod("CleverPush#getNotificationRead", {
+          'notificationId': this.id
+        }).then((value) {
+          this.read = value as bool?;
+        });
+      }
+    }
+  }
+
+  Future<void> setRead(bool read) async {
+    if (this.id != null) {
+      await _channel.invokeMethod("CleverPush#setNotificationRead", {
+        'read': read,
+        'notificationId': this.id
+      });
+      this.read = read;
     }
   }
 
