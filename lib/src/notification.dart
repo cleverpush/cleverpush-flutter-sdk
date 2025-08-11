@@ -62,6 +62,13 @@ class CPNotification extends JSONStringRepresentable {
 
     if (json.containsKey('read')) {
       this.read = json['read'] as bool?;
+      if (this.id != null) {
+        _channel.invokeMethod("CleverPush#getNotificationRead", {
+          'notificationId': this.id
+        }).then((value) {
+          this.read = value as bool?;
+        });
+      }
     }
   }
 
@@ -73,17 +80,6 @@ class CPNotification extends JSONStringRepresentable {
       });
       this.read = read;
     }
-  }
-
-  Future<bool?> getRead() async {
-    if (this.id != null) {
-      bool? notificationRead = await _channel.invokeMethod("CleverPush#getNotificationRead", {
-        'notificationId': this.id
-      });
-      this.read = notificationRead;
-      return notificationRead;
-    }
-    return this.read;
   }
 
   String jsonRepresentation() => convertToJsonString(this.rawPayload);
