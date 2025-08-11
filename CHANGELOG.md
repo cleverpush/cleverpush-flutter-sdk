@@ -1,3 +1,7 @@
+## 1.24.23 (11.08.2025)
+* Added `setRead` methods to the `Notification` class, allowing notifications to be marked as read or unread.
+* Updated native iOS + Android SDKs
+
 ## 1.24.22 (23.07.2025)
 * Updated Android Gradle Plugin and dependencies to support API Level 35
 

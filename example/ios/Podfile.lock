@@ -3,7 +3,7 @@ PODS:
     - CleverPush/CleverPush (= 1.34.24)
   - CleverPush/CleverPush (1.34.24)
   - CleverPush/CleverPushExtension (1.34.24)
-  - cleverpush_flutter (1.24.22):
+  - cleverpush_flutter (1.24.23):
     - CleverPush (= 1.34.24)
     - Flutter
   - Flutter (1.0.0)
