@@ -35,6 +35,10 @@ class _MyAppState extends State<MyApp> {
 
     CleverPush.shared
         .setNotificationOpenedHandler((CPNotificationOpenedResult result) {
+      //Mark Notification as Read
+      /*if (result.notification != null) {
+        result.notification!.setRead(true);
+      }*/
       this.setState(() {
         _debugLabelString =
             "Notification opened: \n${result.notification!.jsonRepresentation().replaceAll("\\n", "\n")}";

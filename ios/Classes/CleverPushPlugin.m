@@ -563,13 +563,13 @@
     NSString *notificationId = call.arguments[@"notificationId"];
     BOOL read = [call.arguments[@"read"] boolValue];
 
-    [[CleverPush sharedInstance] setNotificationRead:notificationId read:read];
+    [CleverPush setNotificationRead:notificationId read:read];
     result(nil);
 }
 
 - (void)getNotificationRead:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSString *notificationId = call.arguments[@"notificationId"];
-    BOOL notificationRead = [[CleverPush sharedInstance] getNotificationRead:notificationId];
+    BOOL notificationRead = [CleverPush getNotificationRead:notificationId];
     result([NSNumber numberWithBool:notificationRead]);
 }
 
