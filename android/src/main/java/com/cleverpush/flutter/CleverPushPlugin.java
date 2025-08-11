@@ -192,6 +192,10 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             this.showAppBanner(call, result);
         } else if (call.method.contentEquals("CleverPush#setMaximumNotificationCount")) {
             this.setMaximumNotificationCount(call, result);
+        }  else if (call.method.contentEquals("CleverPush#setNotificationRead")) {
+            this.setNotificationRead(call, result);
+        }  else if (call.method.contentEquals("CleverPush#getNotificationRead")) {
+            this.getNotificationRead(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -754,5 +758,18 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             CleverPush.getInstance(context).showAppBanner(id);
             replySuccess(result, null);
         }
+    }
+
+    private void setNotificationRead(MethodCall call, final Result result) {
+        Boolean read = call.argument("read");
+        String notificationId = call.argument("notificationId");
+        CleverPush.getInstance(context).setNotificationRead(read, notificationId);
+        replySuccess(result, null);
+    }
+
+    private void getNotificationRead(MethodCall call, final Result result) {
+        String notificationId = call.argument("notificationId");
+        Boolean notificationRead = CleverPush.getInstance(context).getNotificationRead(notificationId);
+        replySuccess(result, notificationRead);
     }
 }

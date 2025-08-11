@@ -26,6 +26,7 @@ class CleverPushSerializer {
         hash.put("createdAt", payload.getCreatedAt());
         hash.put("chatNotification",payload.isChatNotification());
         hash.put("appBanner", payload.getAppBanner());
+        hash.put("read", payload.getRead());
 
         ArrayList<HashMap> buttons = new ArrayList<>();
 
