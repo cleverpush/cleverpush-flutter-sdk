@@ -63,7 +63,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
     @Override
     public void onAttachedToEngine(@NonNull final FlutterPluginBinding binding) {
         onAttachedToEngine(binding.getApplicationContext(), binding.getBinaryMessenger());
-        initPlatformViews(binding.getPlatformViewRegistry());
+        initPlatformViews(binding.getPlatformViewRegistry(), binding.getBinaryMessenger());
     }
 
     private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
@@ -74,8 +74,9 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         channel.setMethodCallHandler(this);
     }
 
-    private void initPlatformViews(PlatformViewRegistry registry) {
+    private void initPlatformViews(PlatformViewRegistry registry, BinaryMessenger messenger) {
         registry.registerViewFactory("cleverpush-chat-view", new CleverPushChatViewFactory());
+        registry.registerViewFactory("cleverpush-story-view", new CleverPushStoryViewFactory(messenger));
     }
 
     @Override
@@ -400,13 +401,13 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
     private void getDeviceToken(final Result reply) {
         CleverPush.getInstance(context).getDeviceToken(new DeviceTokenListener() {
-          @Override
-          public void complete(String deviceToken) {
-              if (deviceToken != null && !deviceToken.equals("")) {
-                  replySuccess(reply, deviceToken);
-              } else {
-                  replySuccess(reply, "Device Token is null or empty");
-              }
+            @Override
+            public void complete(String deviceToken) {
+                if (deviceToken != null && !deviceToken.equals("")) {
+                    replySuccess(reply, deviceToken);
+                } else {
+                    replySuccess(reply, "Device Token is null or empty");
+                }
           }
         });
     }
@@ -414,9 +415,9 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
     private void showTopicsDialog(MethodCall call, final Result reply) {
         CleverPush.getInstance(context).showTopicsDialog(this.activity, new TopicsDialogListener() {
             @Override
-              public void callback(boolean accepted) {
-                  replySuccess(reply, null);
-              }
+            public void callback(boolean accepted) {
+                replySuccess(reply, null);
+            }
         });
     }
 

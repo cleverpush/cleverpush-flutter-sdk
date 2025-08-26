@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
 import 'package:cleverpush_flutter/cleverpush_chat_view.dart';
+import 'package:cleverpush_flutter/cleverpush_story_view.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -12,6 +13,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _debugLabelString = "";
+  bool _isInitialized = false;
 
   @override
   void initState() {
@@ -55,6 +57,7 @@ class _MyAppState extends State<MyApp> {
 
     CleverPush.shared.setInitializedHandler((bool success, String? failureMessage) {
       this.setState(() {
+        _isInitialized = success;
         if (success) {
           _debugLabelString = "Initialized successfully";
         } else {
@@ -84,7 +87,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("CHANNEL_ID", true);
+    await CleverPush.shared.init("zETeJFCgzbcfeLdaJ", true);
 
     CleverPush.shared.enableAppBanners();
 
@@ -286,6 +289,69 @@ class _MyAppState extends State<MyApp> {
                         alignment: Alignment.center,
                       )
                     ]),
+                    new TableRow(children: [
+                      Container(
+                        height: 190,
+                        child: _isInitialized
+                            ? CleverPushStoryView(
+                          // CORE ATTRIBUTES
+                          widgetId: 'CyELm3daayQGuSGTD', // Replace with your actual widget ID
+                          storyViewHeight: CleverPushStoryViewSize.wrapContent,
+                          storyViewWidth: CleverPushStoryViewSize.matchParent,
+                          onOpened: (url) {
+                            // Handle opened URL
+                            print('CleverPush storyView opened: ${url.toString()}');
+                          },
+                          darkModeEnabled: false,
+
+                          // BACKGROUND & TEXT COLORS
+                          backgroundColor: "#A4BD87",
+                          backgroundColorDarkMode: "#A4BD87",
+                          textColor: "#000000",
+                          textColorDarkMode: "#FFFFFF",
+
+                          // TITLE ATTRIBUTES
+                          titleVisibility: CleverPushVisibility.visible,
+                          titlePosition: CleverPushStoryTitlePosition.positionInsideBottom,
+                          titleTextSize: 38,
+                          titleMinTextSize: 35,
+                          titleMaxTextSize: 40,
+
+                          // STORY ICON ATTRIBUTES
+                          storyIconHeight: 90,
+                          storyIconHeightPercentage: 75,
+                          storyIconWidth: 85,
+                          storyIconCornerRadius: 30.0,
+                          storyIconSpace: 0.0,
+                          storyIconShadow: false,
+
+                          // BORDER ATTRIBUTES
+                          borderVisibility: CleverPushVisibility.visible,
+                          borderMargin: 4,
+                          borderWidth: 5,
+                          borderColor: "#A2A4A5",
+                          borderColorDarkMode: "#FFC107",
+                          borderColorLoading: "#B66C54",
+                          borderColorLoadingDarkMode: "#4CAF50",
+
+                          // SUB STORY UNREAD COUNT ATTRIBUTES
+                          subStoryUnreadCountVisibility: CleverPushVisibility.visible,
+                          subStoryUnreadCountBackgroundColor: "#C62828",
+                          subStoryUnreadCountBackgroundColorDarkMode: "#000000",
+                          subStoryUnreadCountTextColor: "#FFFFFF",
+                          subStoryUnreadCountTextColorDarkMode: "#FFFFFF",
+                          subStoryUnreadCountBadgeHeight: 65,
+                          subStoryUnreadCountBadgeWidth: 65,
+
+                          // BEHAVIOR ATTRIBUTES
+                          restrictToItems: 3,
+                          closeButtonPosition: CleverPushStoryCloseButtonPosition.left,
+                          sortToLastIndex: CleverPushStorySortToLastIndex.positionDefault,
+                        )
+                            : Center(child: Text('Initializing...')),
+                      ),
+                    ]),
+
                     new TableRow(children: [
                       Container(
                         height: 8.0,
