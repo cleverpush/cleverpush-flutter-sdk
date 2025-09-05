@@ -5,7 +5,6 @@ import 'package:flutter/gestures.dart';
 
 /// Story view size (height/width)
 enum CleverPushStoryViewSize {
-  fillParent,   // -1
   matchParent,  // -1
   wrapContent,  // -2
 }
@@ -13,7 +12,6 @@ enum CleverPushStoryViewSize {
 extension CleverPushStoryViewSizeExtension on CleverPushStoryViewSize {
   int get toNativeValue {
     switch (this) {
-      case CleverPushStoryViewSize.fillParent:
       case CleverPushStoryViewSize.matchParent:
         return -1;
       case CleverPushStoryViewSize.wrapContent:
@@ -24,9 +22,8 @@ extension CleverPushStoryViewSizeExtension on CleverPushStoryViewSize {
 
 /// Visibility options
 enum CleverPushVisibility {
-  visible,     // 0
-  invisible,   // 4
-  gone,        // 8
+  visible,     // 0 (Android), true (iOS)
+  gone,        // 8 (Android), false (iOS)
 }
 
 extension CleverPushVisibilityExtension on CleverPushVisibility {
@@ -34,31 +31,52 @@ extension CleverPushVisibilityExtension on CleverPushVisibility {
     switch (this) {
       case CleverPushVisibility.visible:
         return 0;
-      case CleverPushVisibility.invisible:
-        return 4;
       case CleverPushVisibility.gone:
         return 8;
     }
+  }
+
+  dynamic get toPlatformValue {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      switch (this) {
+        case CleverPushVisibility.visible:
+          return true;
+        case CleverPushVisibility.gone:
+          return false;
+      }
+    }
+    return toNativeValue;
   }
 }
 
 /// Title position
 enum CleverPushStoryTitlePosition {
-  positionDefault,       // 0
-  positionInsideBottom,  // 1
-  positionInsideTop,     // 2
+  positionDefault,       // 0 (Android), 0 (iOS)
+  positionInsideBottom,  // 1 (Android), 2 (iOS)
+  positionInsideTop,     // 2 (Android), 1 (iOS)
 }
 
 extension CleverPushStoryTitlePositionExtension
 on CleverPushStoryTitlePosition {
   int get toNativeValue {
-    switch (this) {
-      case CleverPushStoryTitlePosition.positionDefault:
-        return 0;
-      case CleverPushStoryTitlePosition.positionInsideBottom:
-        return 1;
-      case CleverPushStoryTitlePosition.positionInsideTop:
-        return 2;
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      switch (this) {
+        case CleverPushStoryTitlePosition.positionDefault:
+          return 0;
+        case CleverPushStoryTitlePosition.positionInsideTop:
+          return 1;
+        case CleverPushStoryTitlePosition.positionInsideBottom:
+          return 2;
+      }
+    } else {
+      switch (this) {
+        case CleverPushStoryTitlePosition.positionDefault:
+          return 0;
+        case CleverPushStoryTitlePosition.positionInsideBottom:
+          return 1;
+        case CleverPushStoryTitlePosition.positionInsideTop:
+          return 2;
+      }
     }
   }
 }
@@ -212,7 +230,7 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
       'storyViewHeight': widget.storyViewHeight?.toNativeValue,
       'storyViewWidth': widget.storyViewWidth?.toNativeValue,
       'fontFamily': widget.fontFamily,
-      'titleVisibility': widget.titleVisibility?.toNativeValue,
+      'titleVisibility': widget.titleVisibility?.toPlatformValue,
       'titlePosition': widget.titlePosition?.toNativeValue,
       'titleTextSize': widget.titleTextSize,
       'titleMinTextSize': widget.titleMinTextSize,
@@ -223,14 +241,14 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
       'storyIconCornerRadius': widget.storyIconCornerRadius,
       'storyIconSpace': widget.storyIconSpace,
       'storyIconShadow': widget.storyIconShadow,
-      'borderVisibility': widget.borderVisibility?.toNativeValue,
+      'borderVisibility': widget.borderVisibility?.toPlatformValue,
       'borderMargin': widget.borderMargin,
       'borderWidth': widget.borderWidth,
       'borderColor': widget.borderColor,
       'borderColorDarkMode': widget.borderColorDarkMode,
       'borderColorLoading': widget.borderColorLoading,
       'borderColorLoadingDarkMode': widget.borderColorLoadingDarkMode,
-      'subStoryUnreadCountVisibility': widget.subStoryUnreadCountVisibility?.toNativeValue,
+      'subStoryUnreadCountVisibility': widget.subStoryUnreadCountVisibility?.toPlatformValue,
       'subStoryUnreadCountBackgroundColor': widget.subStoryUnreadCountBackgroundColor,
       'subStoryUnreadCountBackgroundColorDarkMode': widget.subStoryUnreadCountBackgroundColorDarkMode,
       'subStoryUnreadCountTextColor': widget.subStoryUnreadCountTextColor,

@@ -2,6 +2,7 @@
 #import "CleverPushPlugin.h"
 #import <CleverPush/CPStoryView.h>
 #import <UIKit/UIKit.h>
+#import "UIColor+HexString.h"
 
 @implementation CPStoryViewFlutterFactory {
     NSObject<FlutterBinaryMessenger>* _messenger;
@@ -32,19 +33,32 @@
 @implementation CPStoryViewFlutter {
     CPStoryView *_storyView;
     id<NSObject> _appearanceObserver;
+    FlutterMethodChannel *_channel;
 }
 
 #pragma mark - Helper Methods
-- (UIColor *)colorFromFlutterColor:(NSNumber *)colorValue {
-    if (!colorValue || ![colorValue isKindOfClass:[NSNumber class]]) {
+- (UIColor *)colorFromFlutterColor:(id)colorValue {
+    if (!colorValue || colorValue == (id)kCFNull) {
         return nil;
     }
 
-    NSInteger color = [colorValue integerValue];
-    return [UIColor colorWithRed:((color >> 16) & 0xFF) / 255.0
-                           green:((color >> 8) & 0xFF) / 255.0
-                            blue:(color & 0xFF) / 255.0
-                           alpha:((color >> 24) & 0xFF) / 255.0];
+    // Support NSNumber (ARGB or RGBA int) and NSString (hex like #RRGGBB or #AARRGGBB)
+    if ([colorValue isKindOfClass:[NSNumber class]]) {
+        NSInteger color = [((NSNumber *)colorValue) integerValue];
+        CGFloat alpha = ((color >> 24) & 0xFF) / 255.0;
+        CGFloat red = ((color >> 16) & 0xFF) / 255.0;
+        CGFloat green = ((color >> 8) & 0xFF) / 255.0;
+        CGFloat blue = (color & 0xFF) / 255.0;
+        return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+    }
+
+    if ([colorValue isKindOfClass:[NSString class]]) {
+        NSString *hexString = (NSString *)colorValue;
+        UIColor *parsed = [UIColor colorWithHexString:hexString];
+        return parsed;
+    }
+
+    return nil;
 }
 
 - (BOOL)boolFromParams:(NSDictionary *)params key:(NSString *)key defaultValue:(BOOL)defaultValue {
@@ -78,6 +92,10 @@
 
     if (self = [super init]) {
         [self setupDarkModeDetection];
+
+        // Create a dedicated channel for this PlatformView instance to communicate with Dart
+        NSString *channelName = [NSString stringWithFormat:@"cleverpush-story-view_%lld", viewId];
+        _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:messenger];
 
         if (args && [args isKindOfClass:[NSDictionary class]]) {
             NSDictionary *params = (NSDictionary *)args;
@@ -195,20 +213,33 @@
                 unreadStoryCountVisibility = [params[@"unreadStoryCountVisibility"] boolValue];
             }
 
+            // Support both legacy keys and Flutter SDK keys (subStory* vs unread*)
             if (params[@"unreadStoryCountBackgroundColor"]) {
+                
+                
                 unreadStoryCountBackgroundColor = [self colorFromFlutterColor:params[@"unreadStoryCountBackgroundColor"]] ?: unreadStoryCountBackgroundColor;
+            } else if (params[@"subStoryUnreadCountBackgroundColor"]) {
+                unreadStoryCountBackgroundColor = [self colorFromFlutterColor:params[@"subStoryUnreadCountBackgroundColor"]] ?: unreadStoryCountBackgroundColor;
             }
 
             if (params[@"unreadStoryCountTextColor"]) {
                 unreadStoryCountTextColor = [self colorFromFlutterColor:params[@"unreadStoryCountTextColor"]] ?: unreadStoryCountTextColor;
+            } else if (params[@"subStoryUnreadCountTextColor"]) {
+                unreadStoryCountTextColor = [self colorFromFlutterColor:params[@"subStoryUnreadCountTextColor"]] ?: unreadStoryCountTextColor;
             }
 
+            // Map Flutter key `closeButtonPosition` to native `storyViewCloseButtonPosition` if needed
             if (params[@"storyViewCloseButtonPosition"] && [params[@"storyViewCloseButtonPosition"] isKindOfClass:[NSNumber class]]) {
                 storyViewCloseButtonPosition = [params[@"storyViewCloseButtonPosition"] integerValue];
+            } else if (params[@"closeButtonPosition"] && [params[@"closeButtonPosition"] isKindOfClass:[NSNumber class]]) {
+                storyViewCloseButtonPosition = [params[@"closeButtonPosition"] integerValue];
             }
 
+            // Map Flutter key `titlePosition` to native `storyViewTextPosition` if needed
             if (params[@"storyViewTextPosition"] && [params[@"storyViewTextPosition"] isKindOfClass:[NSNumber class]]) {
                 storyViewTextPosition = [params[@"storyViewTextPosition"] integerValue];
+            } else if (params[@"titlePosition"] && [params[@"titlePosition"] isKindOfClass:[NSNumber class]]) {
+                storyViewTextPosition = [params[@"titlePosition"] integerValue];
             }
 
             if (params[@"storyWidgetShareButtonVisibility"] && [params[@"storyWidgetShareButtonVisibility"] isKindOfClass:[NSNumber class]]) {
@@ -241,10 +272,14 @@
 
             if (params[@"unreadStoryCountBackgroundColorDarkMode"]) {
                 unreadStoryCountBackgroundColorDarkMode = [self colorFromFlutterColor:params[@"unreadStoryCountBackgroundColorDarkMode"]] ?: unreadStoryCountBackgroundColorDarkMode;
+            } else if (params[@"subStoryUnreadCountBackgroundColorDarkMode"]) {
+                unreadStoryCountBackgroundColorDarkMode = [self colorFromFlutterColor:params[@"subStoryUnreadCountBackgroundColorDarkMode"]] ?: unreadStoryCountBackgroundColorDarkMode;
             }
 
             if (params[@"unreadStoryCountTextColorDarkMode"]) {
                 unreadStoryCountTextColorDarkMode = [self colorFromFlutterColor:params[@"unreadStoryCountTextColorDarkMode"]] ?: unreadStoryCountTextColorDarkMode;
+            } else if (params[@"subStoryUnreadCountTextColorDarkMode"]) {
+                unreadStoryCountTextColorDarkMode = [self colorFromFlutterColor:params[@"subStoryUnreadCountTextColorDarkMode"]] ?: unreadStoryCountTextColorDarkMode;
             }
 
             if (params[@"autoTrackShown"] && [params[@"autoTrackShown"] isKindOfClass:[NSNumber class]]) {
@@ -255,15 +290,15 @@
                                                       backgroundColor:backgroundColor textColor:textColor fontFamily:fontFamily borderColor:borderColor borderColorLoading:borderColorLoading titleVisibility:titleVisibility titleTextSize:titleTextSize storyIconHeight:storyIconHeight storyIconWidth:storyIconWidth storyIconCornerRadius:storyIconCornerRadius storyIconSpacing:storyIconSpacing storyIconBorderVisibility:storyIconBorderVisibility storyIconBorderMargin:storyIconBorderMargin storyIconBorderWidth:storyIconBorderWidth storyIconShadow:storyIconShadow storyRestrictToItems:storyRestrictToItems unreadStoryCountVisibility:unreadStoryCountVisibility unreadStoryCountBackgroundColor:unreadStoryCountBackgroundColor unreadStoryCountTextColor:unreadStoryCountTextColor storyViewCloseButtonPosition:storyViewCloseButtonPosition storyViewTextPosition:storyViewTextPosition storyWidgetShareButtonVisibility:storyWidgetShareButtonVisibility sortToLastIndex:sortToLastIndex allowAutoRotation:allowAutoRotation borderColorDarkMode:borderColorDarkMode borderColorLoadingDarkMode:borderColorLoadingDarkMode backgroundColorDarkMode:backgroundColorDarkMode textColorDarkMode:textColorDarkMode unreadStoryCountBackgroundColorDarkMode:unreadStoryCountBackgroundColorDarkMode unreadStoryCountTextColorDarkMode:unreadStoryCountTextColorDarkMode autoTrackShown:autoTrackShown widgetId:params[@"widgetId"]];
 
             _storyView.openedCallback = ^(NSURL *url, void (^finishedCallback)(void)) {
-                NSMutableDictionary *resultDict = [NSMutableDictionary new];
-                resultDict[@"url"] = url.absoluteString;
+                NSString *openedUrl = url.absoluteString ?: @"";
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[[CleverPushPlugin sharedInstance] channel] invokeMethod:@"CleverPush#handleStoryOpened" arguments:resultDict];
+                    if (self->_channel) {
+                        [self->_channel invokeMethod:@"onOpened" arguments:openedUrl];
+                    }
+                    if (finishedCallback) {
+                        finishedCallback();
+                    }
                 });
-
-                if (finishedCallback) {
-                    finishedCallback();
-                }
             };
         }
     }

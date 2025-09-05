@@ -269,6 +269,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return new MaterialApp(
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
@@ -291,7 +292,7 @@ class _MyAppState extends State<MyApp> {
                     ]),
                     new TableRow(children: [
                       Container(
-                        height: 190,
+                        height: 120,
                         child: _isInitialized
                             ? CleverPushStoryView(
                           // CORE ATTRIBUTES
@@ -302,13 +303,13 @@ class _MyAppState extends State<MyApp> {
                             // Handle opened URL
                             print('CleverPush storyView opened: ${url.toString()}');
                           },
-                          darkModeEnabled: false,
+                          darkModeEnabled: isDarkMode,
 
                           // BACKGROUND & TEXT COLORS
                           backgroundColor: "#A4BD87",
                           backgroundColorDarkMode: "#A4BD87",
                           textColor: "#000000",
-                          textColorDarkMode: "#FFFFFF",
+                          textColorDarkMode: "#2196F3",
 
                           // TITLE ATTRIBUTES
                           titleVisibility: CleverPushVisibility.visible,
@@ -329,7 +330,7 @@ class _MyAppState extends State<MyApp> {
                           borderVisibility: CleverPushVisibility.visible,
                           borderMargin: 4,
                           borderWidth: 5,
-                          borderColor: "#A2A4A5",
+                          borderColor: "#2196F3",
                           borderColorDarkMode: "#FFC107",
                           borderColorLoading: "#B66C54",
                           borderColorLoadingDarkMode: "#4CAF50",
@@ -345,7 +346,7 @@ class _MyAppState extends State<MyApp> {
 
                           // BEHAVIOR ATTRIBUTES
                           restrictToItems: 3,
-                          closeButtonPosition: CleverPushStoryCloseButtonPosition.left,
+                          closeButtonPosition: CleverPushStoryCloseButtonPosition.right,
                           sortToLastIndex: CleverPushStorySortToLastIndex.positionDefault,
                         )
                             : Center(child: Text('Initializing...')),
