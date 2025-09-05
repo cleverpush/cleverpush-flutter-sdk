@@ -222,15 +222,14 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
                 if (appIsOpen) {
                     try {
-                      invokeMethodOnUiThread("CleverPush#handleNotificationReceived", CleverPushSerializer.convertNotificationOpenResultToMap(result));
+                        invokeMethodOnUiThread("CleverPush#handleNotificationReceived", CleverPushSerializer.convertNotificationOpenResultToMap(result));
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage());
+                        Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage(), e);
                     }
                 }
 
                 if (showNotificationsInForeground) {
-                  return true;
+                    return true;
                 }
 
                 return !appIsOpen;
@@ -392,10 +391,10 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
     private void getSubscriptionId(final Result reply) {
         CleverPush.getInstance(context).getSubscriptionId(new SubscribedListener() {
-          @Override
-          public void subscribed(String subscriptionId) {
-              replySuccess(reply, subscriptionId);
-          }
+            @Override
+            public void subscribed(String subscriptionId) {
+                replySuccess(reply, subscriptionId);
+            }
         });
     }
 
@@ -408,7 +407,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
                 } else {
                     replySuccess(reply, "Device Token is null or empty");
                 }
-          }
+            }
         });
     }
 
@@ -747,7 +746,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
     private void showAppBanner(MethodCall call, final Result result) {
         String id = call.argument("id");
-        
+
         if (call.method.contentEquals("CleverPush#showAppBannerWithClosedHandler")) {
             CleverPush.getInstance(context).showAppBanner(id, new AppBannerClosedListener() {
                 @Override
