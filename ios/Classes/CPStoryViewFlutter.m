@@ -193,20 +193,20 @@
 
             storyIconBorderVisibility = [self boolFromParams:params key:@"storyIconBorderVisibility" defaultValue:storyIconBorderVisibility];
 
-            if (params[@"storyIconBorderMargin"] && [params[@"storyIconBorderMargin"] isKindOfClass:[NSNumber class]]) {
-                storyIconBorderMargin = [params[@"storyIconBorderMargin"] integerValue];
+            if (params[@"borderMargin"] && [params[@"borderMargin"] isKindOfClass:[NSNumber class]]) {
+                storyIconBorderMargin = [params[@"borderMargin"] integerValue];
             }
 
-            if (params[@"storyIconBorderWidth"] && [params[@"storyIconBorderWidth"] isKindOfClass:[NSNumber class]]) {
-                storyIconBorderWidth = [params[@"storyIconBorderWidth"] integerValue];
+            if (params[@"borderWidth"] && [params[@"borderWidth"] isKindOfClass:[NSNumber class]]) {
+                storyIconBorderWidth = [params[@"borderWidth"] integerValue];
             }
 
             if (params[@"storyIconShadow"] && [params[@"storyIconShadow"] isKindOfClass:[NSNumber class]]) {
                 storyIconShadow = [params[@"storyIconShadow"] boolValue];
             }
 
-            if (params[@"storyRestrictToItems"] && [params[@"storyRestrictToItems"] isKindOfClass:[NSNumber class]]) {
-                storyRestrictToItems = [params[@"storyRestrictToItems"] integerValue];
+            if (params[@"restrictToItems"] && [params[@"restrictToItems"] isKindOfClass:[NSNumber class]]) {
+                storyRestrictToItems = [params[@"restrictToItems"] integerValue];
             }
 
             if (params[@"unreadStoryCountVisibility"] && [params[@"unreadStoryCountVisibility"] isKindOfClass:[NSNumber class]]) {

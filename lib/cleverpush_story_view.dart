@@ -115,6 +115,18 @@ on CleverPushStorySortToLastIndex {
         return 1;
     }
   }
+
+  dynamic get toPlatformValue {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      switch (this) {
+        case CleverPushStorySortToLastIndex.positionDefault:
+          return false;
+        case CleverPushStorySortToLastIndex.positionEnd:
+          return true;
+      }
+    }
+    return toNativeValue;
+  }
 }
 
 class CleverPushStoryView extends StatefulWidget {
@@ -221,6 +233,24 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.maybeOf(context);
+    final double textScale = media?.textScaleFactor ?? 1.0;
+    final double devicePixelRatio = media?.devicePixelRatio ?? 2.0;
+    const double baseFactor = 13 / 38; // Anchor example: Android 38 -> iOS 13
+    final double dynamicFactor = (baseFactor * (2.0 / devicePixelRatio)) / textScale;
+    int? _normalizeTitleSize(int? androidSize) {
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        int computed = (androidSize! * dynamicFactor).round();
+        if (widget.storyIconHeight != null) {
+          final int maxByIcon = (widget.storyIconHeight! * 0.5).round();
+          if (computed > maxByIcon) computed = maxByIcon;
+        }
+        return computed;
+      } else if (defaultTargetPlatform == TargetPlatform.android) {
+        return androidSize;
+      }
+      return null;
+    }
     final Map<String, dynamic> creationParams = <String, dynamic>{
       'widgetId': widget.widgetId,
       'backgroundColor': widget.backgroundColor,
@@ -232,7 +262,7 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
       'fontFamily': widget.fontFamily,
       'titleVisibility': widget.titleVisibility?.toPlatformValue,
       'titlePosition': widget.titlePosition?.toNativeValue,
-      'titleTextSize': widget.titleTextSize,
+      'titleTextSize': _normalizeTitleSize(widget.titleTextSize),
       'titleMinTextSize': widget.titleMinTextSize,
       'titleMaxTextSize': widget.titleMaxTextSize,
       'storyIconHeight': widget.storyIconHeight,
@@ -242,6 +272,7 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
       'storyIconSpace': widget.storyIconSpace,
       'storyIconShadow': widget.storyIconShadow,
       'borderVisibility': widget.borderVisibility?.toPlatformValue,
+      'storyIconBorderVisibility': widget.borderVisibility?.toPlatformValue,
       'borderMargin': widget.borderMargin,
       'borderWidth': widget.borderWidth,
       'borderColor': widget.borderColor,
@@ -249,6 +280,7 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
       'borderColorLoading': widget.borderColorLoading,
       'borderColorLoadingDarkMode': widget.borderColorLoadingDarkMode,
       'subStoryUnreadCountVisibility': widget.subStoryUnreadCountVisibility?.toPlatformValue,
+      'unreadStoryCountVisibility': widget.subStoryUnreadCountVisibility?.toPlatformValue,
       'subStoryUnreadCountBackgroundColor': widget.subStoryUnreadCountBackgroundColor,
       'subStoryUnreadCountBackgroundColorDarkMode': widget.subStoryUnreadCountBackgroundColorDarkMode,
       'subStoryUnreadCountTextColor': widget.subStoryUnreadCountTextColor,
@@ -257,7 +289,7 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
       'subStoryUnreadCountBadgeWidth': widget.subStoryUnreadCountBadgeWidth,
       'restrictToItems': widget.restrictToItems,
       'closeButtonPosition': widget.closeButtonPosition?.toNativeValue,
-      'sortToLastIndex': widget.sortToLastIndex?.toNativeValue,
+      'sortToLastIndex': widget.sortToLastIndex?.toPlatformValue,
       'darkModeEnabled': widget.darkModeEnabled,
       'storyWidgetShareButtonVisibility': widget.storyWidgetShareButtonVisibility,
       'allowAutoRotation': widget.allowAutoRotation,

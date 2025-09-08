@@ -1,7 +1,6 @@
 #import <Flutter/Flutter.h>
 #import <UIKit/UIKit.h>
-#import <CleverPush/CPStoryViewFlutter.h>
-#import <CleverPush/CPStoryViewFl>
+#import <CleverPush/CleverPush.h>
 
 @interface CPStoryViewFlutterFactory : NSObject <FlutterPlatformViewFactory>
 - (instancetype _Nullable)initWithMessenger:(NSObject<FlutterBinaryMessenger>* _Nullable)messenger;
