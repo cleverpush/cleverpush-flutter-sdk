@@ -269,7 +269,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return new MaterialApp(
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
