@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/gestures.dart';
 
 /// Story view size (height/width)
 enum CleverPushStoryViewSize {
@@ -57,7 +57,7 @@ enum CleverPushStoryTitlePosition {
 }
 
 extension CleverPushStoryTitlePositionExtension
-on CleverPushStoryTitlePosition {
+    on CleverPushStoryTitlePosition {
   int get toNativeValue {
     if (defaultTargetPlatform == TargetPlatform.iOS) {
       switch (this) {
@@ -88,7 +88,7 @@ enum CleverPushStoryCloseButtonPosition {
 }
 
 extension CleverPushStoryCloseButtonPositionExtension
-on CleverPushStoryCloseButtonPosition {
+    on CleverPushStoryCloseButtonPosition {
   int get toNativeValue {
     switch (this) {
       case CleverPushStoryCloseButtonPosition.left:
@@ -101,12 +101,12 @@ on CleverPushStoryCloseButtonPosition {
 
 /// Sort to last index
 enum CleverPushStorySortToLastIndex {
-  positionDefault, // 0
-  positionEnd,     // 1
+  positionDefault, // 0 (Android), false (iOS)
+  positionEnd,     // 1 (Android), true (iOS)
 }
 
 extension CleverPushStorySortToLastIndexExtension
-on CleverPushStorySortToLastIndex {
+    on CleverPushStorySortToLastIndex {
   int get toNativeValue {
     switch (this) {
       case CleverPushStorySortToLastIndex.positionDefault:
@@ -135,8 +135,10 @@ class CleverPushStoryView extends StatefulWidget {
   final String? backgroundColorDarkMode;
   final String? textColor;
   final String? textColorDarkMode;
-  final CleverPushStoryViewSize? storyViewHeight;
-  final CleverPushStoryViewSize? storyViewWidth;
+  final Object? storyViewHeightAndroid;
+  final Object? storyViewWidthAndroid;
+  final int? storyViewHeightiOS;
+  final int? storyViewWidthiOS;
   final String? fontFamily;
   final CleverPushVisibility? titleVisibility;
   final CleverPushStoryTitlePosition? titlePosition;
@@ -179,8 +181,10 @@ class CleverPushStoryView extends StatefulWidget {
     this.backgroundColorDarkMode,
     this.textColor,
     this.textColorDarkMode,
-    this.storyViewHeight,
-    this.storyViewWidth,
+    this.storyViewHeightAndroid,
+    this.storyViewWidthAndroid,
+    this.storyViewHeightiOS,
+    this.storyViewWidthiOS,
     this.fontFamily,
     this.titleVisibility,
     this.titlePosition,
@@ -215,7 +219,13 @@ class CleverPushStoryView extends StatefulWidget {
     this.storyWidgetShareButtonVisibility,
     this.allowAutoRotation,
     this.autoTrackShown,
-  }) : super(key: key);
+  })  : assert(storyViewHeightAndroid == null ||
+            storyViewHeightAndroid is int ||
+            storyViewHeightAndroid is CleverPushStoryViewSize),
+        assert(storyViewWidthAndroid == null ||
+            storyViewWidthAndroid is int ||
+            storyViewWidthAndroid is CleverPushStoryViewSize),
+        super(key: key);
 
   @override
   _CleverPushStoryViewState createState() => _CleverPushStoryViewState();
@@ -237,8 +247,9 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
     final double textScale = media?.textScaleFactor ?? 1.0;
     final double devicePixelRatio = media?.devicePixelRatio ?? 2.0;
     const double baseFactor = 13 / 38; // Anchor example: Android 38 -> iOS 13
-    final double dynamicFactor = (baseFactor * (2.0 / devicePixelRatio)) / textScale;
-    int? _normalizeTitleSize(int? androidSize) {
+    final double dynamicFactor =
+        (baseFactor * (2.0 / devicePixelRatio)) / textScale;
+    int? _iOSNormalizeTitleSize(int? androidSize) {
       if (defaultTargetPlatform == TargetPlatform.iOS) {
         int computed = (androidSize! * dynamicFactor).round();
         if (widget.storyIconHeight != null) {
@@ -251,18 +262,28 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
       }
       return null;
     }
+
+    int? _androidViewDimension(Object? value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is CleverPushStoryViewSize) return value.toNativeValue;
+      return null;
+    }
+
     final Map<String, dynamic> creationParams = <String, dynamic>{
       'widgetId': widget.widgetId,
       'backgroundColor': widget.backgroundColor,
       'backgroundColorDarkMode': widget.backgroundColorDarkMode,
       'textColor': widget.textColor,
       'textColorDarkMode': widget.textColorDarkMode,
-      'storyViewHeight': widget.storyViewHeight?.toNativeValue,
-      'storyViewWidth': widget.storyViewWidth?.toNativeValue,
+      'storyViewHeightAndroid': _androidViewDimension(widget.storyViewHeightAndroid),
+      'storyViewWidthAndroid': _androidViewDimension(widget.storyViewWidthAndroid),
+      'storyViewHeightiOS': widget.storyViewHeightiOS,
+      'storyViewWidthiOS': widget.storyViewWidthiOS,
       'fontFamily': widget.fontFamily,
       'titleVisibility': widget.titleVisibility?.toPlatformValue,
       'titlePosition': widget.titlePosition?.toNativeValue,
-      'titleTextSize': _normalizeTitleSize(widget.titleTextSize),
+      'titleTextSize': _iOSNormalizeTitleSize(widget.titleTextSize),
       'titleMinTextSize': widget.titleMinTextSize,
       'titleMaxTextSize': widget.titleMaxTextSize,
       'storyIconHeight': widget.storyIconHeight,
@@ -295,7 +316,7 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
       'allowAutoRotation': widget.allowAutoRotation,
       'autoTrackShown': widget.autoTrackShown,
     };
-    
+
     creationParams.removeWhere((key, value) => value == null);
 
     if (defaultTargetPlatform == TargetPlatform.android) {
@@ -310,7 +331,7 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
         onPlatformViewCreated: _onPlatformViewCreated,
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return UiKitView(
+      final Widget platformView = UiKitView(
         viewType: 'cleverpush-story-view',
         layoutDirection: TextDirection.ltr,
         creationParams: creationParams,
@@ -320,6 +341,16 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
         },
         onPlatformViewCreated: _onPlatformViewCreated,
       );
+      final double? _width = widget.storyViewWidthiOS?.toDouble();
+      final double? _height = widget.storyViewHeightiOS?.toDouble();
+      if (_width != null || _height != null) {
+        return SizedBox(
+          width: _width,
+          height: _height,
+          child: platformView,
+        );
+      }
+      return platformView;
     }
 
     return const Text('StoryView is only available on Android and iOS.');

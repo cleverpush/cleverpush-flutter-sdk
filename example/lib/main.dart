@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("zETeJFCgzbcfeLdaJ", true);
+    await CleverPush.shared.init("CHANNEL_ID", true);
 
     CleverPush.shared.enableAppBanners();
 
@@ -292,75 +292,17 @@ class _MyAppState extends State<MyApp> {
                     ]),
                     new TableRow(children: [
                       Container(
-                        height: 120,
-                        child: _isInitialized
-                            ? CleverPushStoryView(
-                          // CORE ATTRIBUTES
-                          widgetId: 'CyELm3daayQGuSGTD', // Replace with your actual widget ID
-                          storyViewHeight: CleverPushStoryViewSize.wrapContent,
-                          storyViewWidth: CleverPushStoryViewSize.matchParent,
-                          onOpened: (url) {
-                            // Handle opened URL
-                            print('CleverPush storyView opened: ${url.toString()}');
-                          },
-                          darkModeEnabled: isDarkMode,
-
-                          // BACKGROUND & TEXT COLORS
-                          backgroundColor: "#A4BD87",
-                          backgroundColorDarkMode: "#A4BD87",
-                          textColor: "#000000",
-                          textColorDarkMode: "#2196F3",
-
-                          // TITLE ATTRIBUTES
-                          titleVisibility: CleverPushVisibility.visible,
-                          titlePosition: CleverPushStoryTitlePosition.positionInsideBottom,
-                          titleTextSize: 38,
-                          titleMinTextSize: 35,
-                          titleMaxTextSize: 40,
-
-                          // STORY ICON ATTRIBUTES
-                          storyIconHeight: 90,
-                          storyIconHeightPercentage: 75,
-                          storyIconWidth: 85,
-                          storyIconCornerRadius: 30.0,
-                          storyIconSpace: 0.0,
-                          storyIconShadow: false,
-
-                          // BORDER ATTRIBUTES
-                          borderVisibility: CleverPushVisibility.visible,
-                          borderMargin: 4,
-                          borderWidth: 5,
-                          borderColor: "#2196F3",
-                          borderColorDarkMode: "#FFC107",
-                          borderColorLoading: "#B66C54",
-                          borderColorLoadingDarkMode: "#4CAF50",
-
-                          // SUB STORY UNREAD COUNT ATTRIBUTES
-                          subStoryUnreadCountVisibility: CleverPushVisibility.visible,
-                          subStoryUnreadCountBackgroundColor: "#C62828",
-                          subStoryUnreadCountBackgroundColorDarkMode: "#000000",
-                          subStoryUnreadCountTextColor: "#FFFFFF",
-                          subStoryUnreadCountTextColorDarkMode: "#FFFFFF",
-                          subStoryUnreadCountBadgeHeight: 65,
-                          subStoryUnreadCountBadgeWidth: 65,
-
-                          // BEHAVIOR ATTRIBUTES
-                          restrictToItems: 3,
-                          closeButtonPosition: CleverPushStoryCloseButtonPosition.right,
-                          sortToLastIndex: CleverPushStorySortToLastIndex.positionDefault,
-                        )
-                            : Center(child: Text('Initializing...')),
-                      ),
-                    ]),
-
-                    new TableRow(children: [
-                      Container(
                         height: 8.0,
                       )
                     ]),
                     new TableRow(children: [
                       new CleverPushButton( "Show Chat View", () {
                         Navigator.pushNamed(context, '/chat');
+                      }, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton("Show Story View", () {
+                        Navigator.pushNamed(context, '/story');
                       }, true)
                     ]),
                     new TableRow(children: [
@@ -454,6 +396,71 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             ),
+          );
+        },
+        '/story': (BuildContext context) {
+          final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+          return new Scaffold(
+            appBar: AppBar(
+              title: const Text('Story View'),
+            ),
+            body: _isInitialized
+                ? CleverPushStoryView(
+                    widgetId: 'WIDGET_ID',
+                    storyViewHeightAndroid: CleverPushStoryViewSize.wrapContent,
+                    storyViewWidthAndroid: CleverPushStoryViewSize.matchParent,
+                    storyViewHeightiOS: 130,
+                    storyViewWidthiOS: MediaQuery.of(context).size.width.toInt(),
+                    onOpened: (url) {
+                      print('CleverPush storyView opened: ${url.toString()}');
+                    },
+                    darkModeEnabled: isDarkMode,
+
+                    // BACKGROUND & TEXT COLORS
+                    backgroundColor: "#A4BD87",
+                    backgroundColorDarkMode: "#A4BD87",
+                    textColor: "#000000",
+                    textColorDarkMode: "#2196F3",
+
+                    // TITLE ATTRIBUTES
+                    titleVisibility: CleverPushVisibility.visible,
+                    titlePosition: CleverPushStoryTitlePosition.positionInsideBottom,
+                    titleTextSize: 38,
+                    titleMinTextSize: 35,
+                    titleMaxTextSize: 40,
+
+                    // STORY ICON ATTRIBUTES
+                    storyIconHeight: 90,
+                    storyIconHeightPercentage: 75,
+                    storyIconWidth: 85,
+                    storyIconCornerRadius: 30.0,
+                    storyIconSpace: 0.0,
+                    storyIconShadow: false,
+
+                    // BORDER ATTRIBUTES
+                    borderVisibility: CleverPushVisibility.visible,
+                    borderMargin: 4,
+                    borderWidth: 5,
+                    borderColor: "#2196F3",
+                    borderColorDarkMode: "#FFC107",
+                    borderColorLoading: "#B66C54",
+                    borderColorLoadingDarkMode: "#4CAF50",
+
+                    // SUB STORY UNREAD COUNT ATTRIBUTES
+                    subStoryUnreadCountVisibility: CleverPushVisibility.visible,
+                    subStoryUnreadCountBackgroundColor: "#C62828",
+                    subStoryUnreadCountBackgroundColorDarkMode: "#000000",
+                    subStoryUnreadCountTextColor: "#FFFFFF",
+                    subStoryUnreadCountTextColorDarkMode: "#FFFFFF",
+                    subStoryUnreadCountBadgeHeight: 65,
+                    subStoryUnreadCountBadgeWidth: 65,
+
+                    // BEHAVIOR ATTRIBUTES
+                    restrictToItems: 3,
+                    closeButtonPosition: CleverPushStoryCloseButtonPosition.right,
+                    sortToLastIndex: CleverPushStorySortToLastIndex.positionDefault,
+                  )
+                : Center(child: Text('Initializing...')),
           );
         },
         '/chat': (BuildContext context) {

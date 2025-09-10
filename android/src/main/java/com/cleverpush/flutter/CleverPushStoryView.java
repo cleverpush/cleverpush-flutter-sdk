@@ -48,11 +48,11 @@ class CleverPushStoryView implements PlatformView, MethodChannel.MethodCallHandl
     if (params.containsKey("textColorDarkMode")) {
       storyView.setTextColorDarkMode(Color.parseColor((String) params.get("textColorDarkMode")));
     }
-    if (params.containsKey("storyViewHeight")) {
-      storyView.setStoryViewHeight((int) params.get("storyViewHeight"));
+    if (params.containsKey("storyViewHeightAndroid")) {
+      storyView.setStoryViewHeight((int) params.get("storyViewHeightAndroid"));
     }
-    if (params.containsKey("storyViewWidth")) {
-      storyView.setStoryViewWidth((int) params.get("storyViewWidth"));
+    if (params.containsKey("storyViewWidthAndroid")) {
+      storyView.setStoryViewWidth((int) params.get("storyViewWidthAndroid"));
     }
     if (params.containsKey("fontFamily")) {
       storyView.setFontFamily((String) params.get("fontFamily"));
