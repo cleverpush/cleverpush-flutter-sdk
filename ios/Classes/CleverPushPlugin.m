@@ -1,5 +1,6 @@
 #import "CleverPushPlugin.h"
 #import "CPChatViewFlutter.h"
+#import "CPStoryViewFlutter.h"
 #import "UIColor+HexString.h"
 #import <objc/runtime.h>
 
@@ -33,6 +34,9 @@
 
     CPChatViewFlutterFactory* factory = [[CPChatViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
     [registrar registerViewFactory:factory withId:@"cleverpush-chat-view"];
+
+    CPStoryViewFlutterFactory* storyFactory = [[CPStoryViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
+    [registrar registerViewFactory:storyFactory withId:@"cleverpush-story-view"];
 
     [registrar addApplicationDelegate:CleverPushPlugin.sharedInstance];
 }

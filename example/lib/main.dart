@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
 import 'package:cleverpush_flutter/cleverpush_chat_view.dart';
+import 'package:cleverpush_flutter/cleverpush_story_view.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -12,6 +13,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _debugLabelString = "";
+  bool _isInitialized = false;
 
   @override
   void initState() {
@@ -55,6 +57,7 @@ class _MyAppState extends State<MyApp> {
 
     CleverPush.shared.setInitializedHandler((bool success, String? failureMessage) {
       this.setState(() {
+        _isInitialized = success;
         if (success) {
           _debugLabelString = "Initialized successfully";
         } else {
@@ -297,6 +300,11 @@ class _MyAppState extends State<MyApp> {
                       }, true)
                     ]),
                     new TableRow(children: [
+                      new CleverPushButton("Show Story View", () {
+                        Navigator.pushNamed(context, '/story');
+                      }, true)
+                    ]),
+                    new TableRow(children: [
                       new CleverPushButton("Subscribe", _handleSubscribe, true)
                     ]),
                     new TableRow(children: [
@@ -387,6 +395,71 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             ),
+          );
+        },
+        '/story': (BuildContext context) {
+          final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+          return new Scaffold(
+            appBar: AppBar(
+              title: const Text('Story View'),
+            ),
+            body: _isInitialized
+                ? CleverPushStoryView(
+                    widgetId: 'WIDGET_ID',
+                    storyViewHeightAndroid: CleverPushStoryViewSize.wrapContent,
+                    storyViewWidthAndroid: CleverPushStoryViewSize.matchParent,
+                    storyViewHeightiOS: 130,
+                    storyViewWidthiOS: MediaQuery.of(context).size.width.toInt(),
+                    onOpened: (url) {
+                      print('CleverPush storyView opened: ${url.toString()}');
+                    },
+                    darkModeEnabled: isDarkMode,
+
+                    // BACKGROUND & TEXT COLORS
+                    backgroundColor: "#A4BD87",
+                    backgroundColorDarkMode: "#A4BD87",
+                    textColor: "#000000",
+                    textColorDarkMode: "#2196F3",
+
+                    // TITLE ATTRIBUTES
+                    titleVisibility: CleverPushVisibility.visible,
+                    titlePosition: CleverPushStoryTitlePosition.positionInsideBottom,
+                    titleTextSize: 38,
+                    titleMinTextSize: 35,
+                    titleMaxTextSize: 40,
+
+                    // STORY ICON ATTRIBUTES
+                    storyIconHeight: 90,
+                    storyIconHeightPercentage: 75,
+                    storyIconWidth: 85,
+                    storyIconCornerRadius: 30.0,
+                    storyIconSpace: 0.0,
+                    storyIconShadow: false,
+
+                    // BORDER ATTRIBUTES
+                    borderVisibility: CleverPushVisibility.visible,
+                    borderMargin: 4,
+                    borderWidth: 5,
+                    borderColor: "#2196F3",
+                    borderColorDarkMode: "#FFC107",
+                    borderColorLoading: "#B66C54",
+                    borderColorLoadingDarkMode: "#4CAF50",
+
+                    // SUB STORY UNREAD COUNT ATTRIBUTES
+                    subStoryUnreadCountVisibility: CleverPushVisibility.visible,
+                    subStoryUnreadCountBackgroundColor: "#C62828",
+                    subStoryUnreadCountBackgroundColorDarkMode: "#000000",
+                    subStoryUnreadCountTextColor: "#FFFFFF",
+                    subStoryUnreadCountTextColorDarkMode: "#FFFFFF",
+                    subStoryUnreadCountBadgeHeight: 65,
+                    subStoryUnreadCountBadgeWidth: 65,
+
+                    // BEHAVIOR ATTRIBUTES
+                    restrictToItems: 3,
+                    closeButtonPosition: CleverPushStoryCloseButtonPosition.right,
+                    sortToLastIndex: CleverPushStorySortToLastIndex.positionDefault,
+                  )
+                : Center(child: Text('Initializing...')),
           );
         },
         '/chat': (BuildContext context) {

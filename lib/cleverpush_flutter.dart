@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 export 'src/notification.dart';
 export 'src/app_banner.dart';
+export 'package:cleverpush_flutter/cleverpush_story_view.dart';
 
 typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
 typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);

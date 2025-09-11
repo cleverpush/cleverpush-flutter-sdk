@@ -63,7 +63,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
     @Override
     public void onAttachedToEngine(@NonNull final FlutterPluginBinding binding) {
         onAttachedToEngine(binding.getApplicationContext(), binding.getBinaryMessenger());
-        initPlatformViews(binding.getPlatformViewRegistry());
+        initPlatformViews(binding.getPlatformViewRegistry(), binding.getBinaryMessenger());
     }
 
     private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
@@ -74,8 +74,9 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         channel.setMethodCallHandler(this);
     }
 
-    private void initPlatformViews(PlatformViewRegistry registry) {
+    private void initPlatformViews(PlatformViewRegistry registry, BinaryMessenger messenger) {
         registry.registerViewFactory("cleverpush-chat-view", new CleverPushChatViewFactory());
+        registry.registerViewFactory("cleverpush-story-view", new CleverPushStoryViewFactory(messenger));
     }
 
     @Override
@@ -221,15 +222,14 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
                 if (appIsOpen) {
                     try {
-                      invokeMethodOnUiThread("CleverPush#handleNotificationReceived", CleverPushSerializer.convertNotificationOpenResultToMap(result));
+                        invokeMethodOnUiThread("CleverPush#handleNotificationReceived", CleverPushSerializer.convertNotificationOpenResultToMap(result));
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage());
+                        Log.e("CleverPush", "Encountered an error attempting to convert CPNotification object to map: " + e.getMessage(), e);
                     }
                 }
 
                 if (showNotificationsInForeground) {
-                  return true;
+                    return true;
                 }
 
                 return !appIsOpen;
@@ -391,32 +391,32 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
     private void getSubscriptionId(final Result reply) {
         CleverPush.getInstance(context).getSubscriptionId(new SubscribedListener() {
-          @Override
-          public void subscribed(String subscriptionId) {
-              replySuccess(reply, subscriptionId);
-          }
+            @Override
+            public void subscribed(String subscriptionId) {
+                replySuccess(reply, subscriptionId);
+            }
         });
     }
 
     private void getDeviceToken(final Result reply) {
         CleverPush.getInstance(context).getDeviceToken(new DeviceTokenListener() {
-          @Override
-          public void complete(String deviceToken) {
-              if (deviceToken != null && !deviceToken.equals("")) {
-                  replySuccess(reply, deviceToken);
-              } else {
-                  replySuccess(reply, "Device Token is null or empty");
-              }
-          }
+            @Override
+            public void complete(String deviceToken) {
+                if (deviceToken != null && !deviceToken.equals("")) {
+                    replySuccess(reply, deviceToken);
+                } else {
+                    replySuccess(reply, "Device Token is null or empty");
+                }
+            }
         });
     }
 
     private void showTopicsDialog(MethodCall call, final Result reply) {
         CleverPush.getInstance(context).showTopicsDialog(this.activity, new TopicsDialogListener() {
             @Override
-              public void callback(boolean accepted) {
-                  replySuccess(reply, null);
-              }
+            public void callback(boolean accepted) {
+                replySuccess(reply, null);
+            }
         });
     }
 
@@ -746,7 +746,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
 
     private void showAppBanner(MethodCall call, final Result result) {
         String id = call.argument("id");
-        
+
         if (call.method.contentEquals("CleverPush#showAppBannerWithClosedHandler")) {
             CleverPush.getInstance(context).showAppBanner(id, new AppBannerClosedListener() {
                 @Override
