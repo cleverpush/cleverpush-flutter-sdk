@@ -1,10 +1,10 @@
 PODS:
-  - CleverPush (1.34.24):
-    - CleverPush/CleverPush (= 1.34.24)
-  - CleverPush/CleverPush (1.34.24)
-  - CleverPush/CleverPushExtension (1.34.24)
-  - cleverpush_flutter (1.24.23):
-    - CleverPush (= 1.34.24)
+  - CleverPush (1.34.26):
+    - CleverPush/CleverPush (= 1.34.26)
+  - CleverPush/CleverPush (1.34.26)
+  - CleverPush/CleverPushExtension (1.34.26)
+  - cleverpush_flutter (1.24.24):
+    - CleverPush (= 1.34.26)
     - Flutter
   - Flutter (1.0.0)
 
@@ -24,8 +24,8 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  CleverPush: 1e823605b314ade1070ca9354f88d9299ef3f3b3
-  cleverpush_flutter: 4b0b8963fafdea7abfbc338e2f44b9870aa1a6c4
+  CleverPush: af89289efb8c7c6adcd1468c4835335f9470cbab
+  cleverpush_flutter: b8a5a10884e632a04c3c9ce44891cdcf3c58736b
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
 
 PODFILE CHECKSUM: 73fed6ca4417c06a8c5d57f12c621d3468f0e3b5

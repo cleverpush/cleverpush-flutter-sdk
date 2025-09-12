@@ -1,3 +1,6 @@
+## 1.24.24 (12.09.2025)
+* Implemented `StoryView` for Android and iOS.
+
 ## 1.24.23 (11.08.2025)
 * Added `setRead` methods to the `Notification` class, allowing notifications to be marked as read or unread.
 * Updated native iOS + Android SDKs
