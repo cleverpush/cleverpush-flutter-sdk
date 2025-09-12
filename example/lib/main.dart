@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
 import 'package:cleverpush_flutter/cleverpush_chat_view.dart';
-import 'package:cleverpush_flutter/cleverpush_story_view.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());

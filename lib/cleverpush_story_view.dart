@@ -244,7 +244,8 @@ class _CleverPushStoryViewState extends State<CleverPushStoryView> {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.maybeOf(context);
-    final double textScale = media?.textScaleFactor ?? 1.0;
+    final textScaler = media?.textScaler ?? const TextScaler.linear(1.0);
+    final double textScale = textScaler.scale(16.0) / 16.0;
     final double devicePixelRatio = media?.devicePixelRatio ?? 2.0;
     const double baseFactor = 13 / 38; // Anchor example: Android 38 -> iOS 13
     final double dynamicFactor =
