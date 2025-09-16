@@ -1,3 +1,6 @@
+## 1.24.25 (16.09.2025)
+* Updated native iOS + Android SDKs
+
 ## 1.24.24 (12.09.2025)
 * Implemented `StoryView` for Android and iOS.
 
