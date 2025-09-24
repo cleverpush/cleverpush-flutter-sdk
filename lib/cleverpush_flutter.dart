@@ -12,6 +12,7 @@ typedef void NotificationOpenedHandler(CPNotificationOpenedResult openedResult);
 typedef void InitializationHandler(bool success, String? failureMessage);
 typedef void SubscriptionTopicsHandler(bool success, String? failureMessage);
 typedef void SubscribedHandler(String? subscriptionId);
+typedef void SubscriptionHandler(bool success, String? subscriptionId, String? failureMessage);
 typedef void ChatUrlOpenedHandler(String url);
 typedef void AppBannerShownHandler(CPAppBanner appBanner);
 typedef void AppBannerOpenedHandler(CPAppBannerAction action);
@@ -26,6 +27,7 @@ class CleverPush {
   InitializationHandler? _initializedHandler;
   SubscriptionTopicsHandler ? _subscriptionTopicsHandler;
   SubscribedHandler? _subscribedHandler;
+  SubscriptionHandler? _subscriptionHandler;
   ChatUrlOpenedHandler? _chatUrlOpenedHandler;
   AppBannerShownHandler? _appBannerShownHandler;
   AppBannerOpenedHandler? _appBannerOpenedHandler;
@@ -55,6 +57,10 @@ class CleverPush {
 
   void setSubscribedHandler(SubscribedHandler handler) {
     _subscribedHandler = handler;
+  }
+
+  void setSubscriptionHandler(SubscriptionHandler handler) {
+    _subscriptionHandler = handler;
   }
 
   void setChatUrlOpenedHandler(ChatUrlOpenedHandler handler) {
@@ -290,6 +296,15 @@ class CleverPush {
         && this._subscribedHandler != null
       ) {
         this._subscribedHandler!(call.arguments['subscriptionId']);
+      } else if (
+        call.method == 'CleverPush#handleSubscriptionResult'
+        && this._subscriptionHandler != null
+      ) {
+        this._subscriptionHandler!(
+          call.arguments['success'] ?? false, 
+          call.arguments['subscriptionId'], 
+          call.arguments['failureMessage']
+        );
       } else if (
         call.method == 'CleverPush#handleNotificationOpened'
         && this._notificationOpenedHandler != null
