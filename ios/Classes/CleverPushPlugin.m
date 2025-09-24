@@ -502,6 +502,7 @@
     resultDict[@"subscriptionId"] = result;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
+        [self handleSubscriptionResult:YES subscriptionId:result failureMessage:nil];
     });
 }
 
