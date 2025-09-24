@@ -729,6 +729,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         HashMap<String, Object> hash = new HashMap<>();
         hash.put("subscriptionId", subscriptionId);
         invokeMethodOnUiThread("CleverPush#handleSubscribed", hash);
+        handleSubscriptionResult(true, subscriptionId, null);
     }
 
     private void handleSubscriptionResult(boolean success, String subscriptionId, String failureMessage) {
