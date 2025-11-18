@@ -1,8 +1,8 @@
-import 'json.dart';
 import 'package:flutter/foundation.dart';
 
-class CPTopic extends JSONStringRepresentable {
+import 'json.dart';
 
+class CPTopic extends JSONStringRepresentable {
   String? id;
   String? name;
   String? parentTopicId;
@@ -81,21 +81,24 @@ class CPTopic extends JSONStringRepresentable {
       defaultUnchecked: defaultUnchecked ?? this.defaultUnchecked,
       fcmBroadcastTopic: fcmBroadcastTopic ?? this.fcmBroadcastTopic,
       externalId: externalId ?? this.externalId,
-      customData: customData ?? (this.customData != null ? Map<String, dynamic>.from(this.customData!) : null),
+      customData: customData ??
+          (this.customData != null
+              ? Map<String, dynamic>.from(this.customData!)
+              : null),
     );
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is CPTopic
-        && other.id == id
-        && other.name == name
-        && other.parentTopicId == parentTopicId
-        && other.defaultUnchecked == defaultUnchecked
-        && other.fcmBroadcastTopic == fcmBroadcastTopic
-        && other.externalId == externalId
-        && mapEquals(other.customData, customData);
+    return other is CPTopic &&
+        other.id == id &&
+        other.name == name &&
+        other.parentTopicId == parentTopicId &&
+        other.defaultUnchecked == defaultUnchecked &&
+        other.fcmBroadcastTopic == fcmBroadcastTopic &&
+        other.externalId == externalId &&
+        mapEquals(other.customData, customData);
   }
 
   @override
@@ -107,7 +110,11 @@ class CPTopic extends JSONStringRepresentable {
       defaultUnchecked,
       fcmBroadcastTopic,
       externalId,
-      customData == null ? null : Object.hashAll(customData!.entries.map((e) => Object.hash(e.key, e.value))),
+      customData == null
+          ? null
+          : Object.hashAllUnordered(
+              customData!.entries.map((e) => Object.hash(e.key, e.value)),
+            ),
     );
   }
 
