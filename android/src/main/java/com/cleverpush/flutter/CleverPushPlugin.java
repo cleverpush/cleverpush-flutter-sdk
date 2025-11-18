@@ -491,7 +491,7 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             @Override
             public void ready(Set<ChannelTopic> channelTopics) {
                 try {
-                    replySuccess(reply, CleverPushSerializer.convertChannelTopicToMapList(new ArrayList<>(channelTopics)));
+                    replySuccess(reply, CleverPushSerializer.convertTopicToMapList(new ArrayList<>(channelTopics)));
                 } catch (JSONException exception) {
                     exception.printStackTrace();
                 }

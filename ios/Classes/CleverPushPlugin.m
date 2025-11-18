@@ -23,7 +23,7 @@
     return sharedInstance;
 }
 
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
++ (void)registerWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
     CleverPushPlugin.sharedInstance.hasNotificationOpenedHandler = NO;
 
     CleverPushPlugin.sharedInstance.channel = [FlutterMethodChannel
@@ -32,22 +32,22 @@
 
     [registrar addMethodCallDelegate:CleverPushPlugin.sharedInstance channel:CleverPushPlugin.sharedInstance.channel];
 
-    CPChatViewFlutterFactory* factory = [[CPChatViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
+    CPChatViewFlutterFactory *factory = [[CPChatViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
     [registrar registerViewFactory:factory withId:@"cleverpush-chat-view"];
 
-    CPStoryViewFlutterFactory* storyFactory = [[CPStoryViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
+    CPStoryViewFlutterFactory *storyFactory = [[CPStoryViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
     [registrar registerViewFactory:storyFactory withId:@"cleverpush-story-view"];
 
     [registrar addApplicationDelegate:CleverPushPlugin.sharedInstance];
 }
 
-- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     CleverPushPlugin.sharedInstance.launchOptions = launchOptions;
 
     return YES;
 }
 
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+- (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSLog(@"CleverPush Flutter: handleMethodCall %@", call.method);
     if ([@"CleverPush#init" isEqualToString:call.method])
         [self initCleverPush:call withResult:result];
@@ -81,11 +81,11 @@
         [self getSubscriptionTags:call withResult:result];
     else if ([@"CleverPush#addSubscriptionTag" isEqualToString:call.method])
         [self addSubscriptionTag:call withResult:result];
-    else if ([@"CleverPush#addSubscriptionTags" isEqualToString:call.method]) 
+    else if ([@"CleverPush#addSubscriptionTags" isEqualToString:call.method])
         [self addSubscriptionTags:call withResult:result];
     else if ([@"CleverPush#removeSubscriptionTag" isEqualToString:call.method])
         [self removeSubscriptionTag:call withResult:result];
-    else if ([@"CleverPush#removeSubscriptionTags" isEqualToString:call.method]) 
+    else if ([@"CleverPush#removeSubscriptionTags" isEqualToString:call.method])
         [self removeSubscriptionTags:call withResult:result];
     else if ([@"CleverPush#getAvailableTags" isEqualToString:call.method])
         [self getAvailableTags:call withResult:result];
@@ -118,23 +118,23 @@
     else if ([@"CleverPush#enableDevelopmentMode" isEqualToString:call.method])
         [self enableDevelopmentMode:call withResult:result];
     else if ([@"CleverPush#setLogListener" isEqualToString:call.method])
-      [self setLogListener:call withResult:result];
+        [self setLogListener:call withResult:result];
     else if ([@"CleverPush#trackPageView" isEqualToString:call.method])
-      [self trackPageView:call withResult:result];
+        [self trackPageView:call withResult:result];
     else if ([@"CleverPush#setAuthorizerToken" isEqualToString:call.method])
-      [self setAuthorizerToken:call withResult:result];
+        [self setAuthorizerToken:call withResult:result];
     else if ([@"CleverPush#trackEvent" isEqualToString:call.method])
-      [self trackEvent:call withResult:result];
+        [self trackEvent:call withResult:result];
     else if ([@"CleverPush#triggerFollowUpEvent" isEqualToString:call.method])
-      [self triggerFollowUpEvent:call withResult:result];
+        [self triggerFollowUpEvent:call withResult:result];
     else if ([@"CleverPush#setSubscriptionLanguage" isEqualToString:call.method])
-      [self setSubscriptionLanguage:call withResult:result];
+        [self setSubscriptionLanguage:call withResult:result];
     else if ([@"CleverPush#setSubscriptionCountry" isEqualToString:call.method])
-      [self setSubscriptionCountry:call withResult:result];
+        [self setSubscriptionCountry:call withResult:result];
     else if ([@"CleverPush#pushSubscriptionAttributeValue" isEqualToString:call.method])
-      [self pushSubscriptionAttributeValue:call withResult:result];
+        [self pushSubscriptionAttributeValue:call withResult:result];
     else if ([@"CleverPush#pullSubscriptionAttributeValue" isEqualToString:call.method])
-      [self pullSubscriptionAttributeValue:call withResult:result];
+        [self pullSubscriptionAttributeValue:call withResult:result];
     else if ([@"CleverPush#showAppBanner" isEqualToString:call.method])
         [self showAppBanner:call withResult:result];
     else if ([@"CleverPush#showAppBannerWithClosedHandler" isEqualToString:call.method])
@@ -153,7 +153,7 @@
     NSString* channelId = call.arguments[@"channelId"];
     BOOL autoRegister = YES;
     if (call.arguments[@"autoRegister"] != nil) {
-      autoRegister = [call.arguments[@"autoRegister"] boolValue];
+        autoRegister = [call.arguments[@"autoRegister"] boolValue];
     }
 
     [CleverPush initWithLaunchOptions:self.launchOptions channelId:channelId
@@ -223,16 +223,17 @@
 
 - (void)getDeviceToken:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush getDeviceToken:^(NSString *deviceToken) {
-      if (deviceToken != nil && ![deviceToken isKindOfClass:[NSNull class]] && ![deviceToken isEqualToString:@""]) {
-        result(deviceToken);
-      } else {
-        NSString *errorMessage = @"Device token is null or empty";
-        result(errorMessage);
-      }
+        if (deviceToken != nil && ![deviceToken isKindOfClass:[NSNull class]] &&
+            ![deviceToken isEqualToString:@""]) {
+            result(deviceToken);
+        } else {
+            NSString *errorMessage = @"Device token is null or empty";
+            result(errorMessage);
+        }
     }];
 }
 
-- (UIWindow*)keyWindow {
+- (UIWindow *)keyWindow {
     UIWindow *foundWindow = nil;
     NSArray *windows = [[UIApplication sharedApplication] windows];
     for (UIWindow *window in windows) {
@@ -264,7 +265,7 @@
 
 - (void)getNotificationsWithApi:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSMutableArray *remoteNotifications = [NSMutableArray new];
-    [CleverPush getNotifications:call.arguments[@"combineWithApi"] callback:^(NSArray* Notifications) {
+    [CleverPush getNotifications:call.arguments[@"combineWithApi"] callback:^(NSArray *Notifications) {
         for (CPNotification *notification in Notifications) {
             NSDictionary *dict = [self dictionaryWithPropertiesOfObject:notification];
             [remoteNotifications addObject:dict];
@@ -292,9 +293,9 @@
 
 - (void)getAvailableTopics:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSMutableArray *availableTopics = [NSMutableArray new];
-    [CleverPush getAvailableTopics:^(NSArray* channelTopics_) {
+    [CleverPush getAvailableTopics:^(NSArray *channelTopics_) {
         for (CPChannelTopic *topic in channelTopics_) {
-            NSDictionary *dict = [self dictionaryWithPropertiesOfObject:topic];
+            NSDictionary *dict = [self convertChannelTopicToDictionary:topic];
             [availableTopics addObject:dict];
         }
         result(availableTopics);
@@ -308,7 +309,7 @@
 }
 
 - (void)addSubscriptionTag:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush addSubscriptionTag:call.arguments[@"id"] callback:^(NSString * _Nullable tag) {
+    [CleverPush addSubscriptionTag:call.arguments[@"id"] callback:^(NSString *_Nullable tag) {
         result(nil);
     } onFailure:^(NSError * _Nullable error) {
         result(nil);
@@ -323,7 +324,7 @@
 }
 
 - (void)removeSubscriptionTag:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush removeSubscriptionTag:call.arguments[@"id"] callback:^(NSString * _Nullable tag) {
+    [CleverPush removeSubscriptionTag:call.arguments[@"id"] callback:^(NSString *_Nullable tag) {
         result(nil);
     } onFailure:^(NSError * _Nullable error) {
         result(nil);
@@ -349,7 +350,7 @@
 
 - (void)getAvailableTags:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSMutableArray *availableTags = [NSMutableArray new];
-    [CleverPush getAvailableTags:^(NSArray* channelTags_) {
+    [CleverPush getAvailableTags:^(NSArray *channelTags_) {
         for (CPChannelTag *tag in channelTags_) {
             NSDictionary *dict = [self dictionaryWithPropertiesOfObject:tag];
             [availableTags addObject:dict];
@@ -374,9 +375,9 @@
 }
 
 - (void)getAvailableAttributes:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush getAvailableAttributes:^(NSMutableArray* attributes_) {
+    [CleverPush getAvailableAttributes:^(NSMutableArray *attributes_) {
         NSMutableArray *availableAttributes = [NSMutableArray new];
-        for (NSMutableDictionary* attribute in attributes_) {
+        for (NSMutableDictionary *attribute in attributes_) {
             NSMutableDictionary *dict = [NSMutableDictionary new];
             [dict setObject:[attribute objectForKey:@"id"] forKey:@"id"];
             [dict setObject:[attribute objectForKey:@"name"] forKey:@"name"];
@@ -440,7 +441,7 @@
 }
 
 - (void)setLogListener:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [CleverPush setLogListener:^(NSString* message) {
+    [CleverPush setLogListener:^(NSString *message) {
         NSMutableDictionary *resultDict = [NSMutableDictionary new];
         resultDict[@"message"] = message;
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -577,12 +578,53 @@
     result([NSNumber numberWithBool:notificationRead]);
 }
 
-- (NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj {
+- (NSDictionary *)convertChannelTopicToDictionary:(id)topic {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+
+    id topicId = nil;
+    @try { topicId = [topic valueForKey:@"id"]; } @catch (NSException *e) {}
+    if (!topicId) {
+        @try { topicId = [topic valueForKey:@"_id"]; } @catch (NSException *e) {}
+    }
+    if (!topicId) {
+        @try { topicId = [topic valueForKey:@"topicId"]; } @catch (NSException *e) {}
+    }
+    if (topicId) { dict[@"id"] = topicId; }
+
+    id name = nil;
+    @try { name = [topic valueForKey:@"name"]; } @catch (NSException *e) {}
+    if (name) { dict[@"name"] = name; }
+
+    id parentTopicId = nil;
+    @try { parentTopicId = [topic valueForKey:@"parentTopicId"]; } @catch (NSException *e) {}
+    if (parentTopicId) { dict[@"parentTopicId"] = parentTopicId; }
+
+    id defaultUnchecked = nil;
+    @try { defaultUnchecked = [topic valueForKey:@"defaultUnchecked"]; } @catch (NSException *e) {}
+    if (defaultUnchecked) { dict[@"defaultUnchecked"] = defaultUnchecked; }
+
+    id fcmBroadcastTopic = nil;
+    @try { fcmBroadcastTopic = [topic valueForKey:@"fcmBroadcastTopic"]; } @catch (
+            NSException *e) {}
+    if (fcmBroadcastTopic) { dict[@"fcmBroadcastTopic"] = fcmBroadcastTopic; }
+
+    id externalId = nil;
+    @try { externalId = [topic valueForKey:@"externalId"]; } @catch (NSException *e) {}
+    if (externalId) { dict[@"externalId"] = externalId; }
+
+    id customData = nil;
+    @try { customData = [topic valueForKey:@"customData"]; } @catch (NSException *e) {}
+    if (customData) { dict[@"customData"] = customData; }
+
+    return dict;
+}
+
+- (NSDictionary *)dictionaryWithPropertiesOfObject:(id)obj {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    
+
     unsigned count;
     objc_property_t *properties = class_copyPropertyList([obj class], &count);
-    
+
     for (int i = 0; i < count; i++) {
         NSString *key = [NSString stringWithUTF8String:property_getName(properties[i])];
         id object = [obj valueForKey:key];
@@ -599,10 +641,10 @@
                 }
                 dict[key] = subObj;
             } else if (
-                       [object isKindOfClass:[NSString class]]
-                       || [object isKindOfClass:[NSNumber class]]
-                       || [object isKindOfClass:[NSDictionary class]]
-                       ) {
+                    [object isKindOfClass:[NSString class]]
+                    || [object isKindOfClass:[NSNumber class]]
+                    || [object isKindOfClass:[NSDictionary class]]
+                    ) {
                 dict[key] = object;
             } else if ([object isKindOfClass:[NSDate class]]) {
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -611,7 +653,7 @@
                 [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
                 NSString *convertedDateString = [dateFormatter stringFromDate:[obj valueForKey:key]];
                 [dict setObject:convertedDateString forKey:key];
-            }  else if ([object isKindOfClass:[NSURL class]]) {
+            } else if ([object isKindOfClass:[NSURL class]]) {
                 dict[key] = [object absoluteString];
             }
         }

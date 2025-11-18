@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:cleverpush_flutter/src/notification.dart';
 import 'package:cleverpush_flutter/src/app_banner.dart';
+import 'package:cleverpush_flutter/src/topic.dart';
 import 'package:flutter/services.dart';
 
 export 'src/notification.dart';
 export 'src/app_banner.dart';
+export 'src/topic.dart';
 export 'package:cleverpush_flutter/cleverpush_story_view.dart';
 
 typedef void NotificationReceivedHandler(CPNotificationReceivedResult receivedResult);
@@ -158,8 +160,10 @@ class CleverPush {
     return await _channel.invokeMethod('CleverPush#setSubscriptionTopics', {'topics': topics});
   }
 
-  Future<List<dynamic>> getAvailableTopics() async {
-    return await _channel.invokeMethod("CleverPush#getAvailableTopics");
+  Future<List<CPTopic>> getAvailableTopics() async {
+    final List<dynamic>? topics = await _channel.invokeMethod("CleverPush#getAvailableTopics");
+    if (topics == null) return [];
+    return topics.map((topic) => CPTopic(Map<String, dynamic>.from(topic))).toList();
   }
 
   Future<List<dynamic>> getSubscriptionTopics() async {

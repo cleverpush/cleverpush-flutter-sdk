@@ -91,23 +91,30 @@ class CleverPushSerializer {
         return notificationMapList;
     }
 
-    static ArrayList<HashMap> convertChannelTopicToMapList(ArrayList<ChannelTopic> channelTopics) throws JSONException {
-        ArrayList<HashMap> availableTopics = new ArrayList<>();
-        for (int i = 0; i < channelTopics.size(); i++) {
-            HashMap<String, Object> hash = new HashMap<>();
+    private static HashMap<String, Object> convertChannelTopicToMapList(ChannelTopic channelTopics) throws JSONException {
+        HashMap<String, Object> hash = new HashMap<>();
 
-            hash.put("id", channelTopics.get(i).getId());
-            hash.put("name", channelTopics.get(i).getName());
-            hash.put("parentTopicId", channelTopics.get(i).getParentTopicId());
-            hash.put("defaultUnchecked", channelTopics.get(i).getDefaultUnchecked());
-            hash.put("fcmBroadcastTopic", channelTopics.get(i).getFcmBroadcastTopic());
-            hash.put("externalId", channelTopics.get(i).getExternalId());
-            if (channelTopics.get(i).getCustomData() != null){
-                hash.put("customData", channelTopics.get(i).getCustomData());
-            }
-            availableTopics.add(hash);
+        hash.put("id", channelTopics.getId());
+        hash.put("name", channelTopics.getName());
+        hash.put("parentTopicId", channelTopics.getParentTopicId());
+        hash.put("defaultUnchecked", channelTopics.getDefaultUnchecked());
+        hash.put("fcmBroadcastTopic", channelTopics.getFcmBroadcastTopic());
+        hash.put("externalId", channelTopics.getExternalId());
+        if (channelTopics.getCustomData() != null) {
+            hash.put("customData", channelTopics.getCustomData());
         }
-        return availableTopics;
+
+        return hash;
+    }
+
+    static ArrayList<HashMap> convertTopicToMapList(ArrayList<ChannelTopic> topics) throws JSONException {
+        ArrayList<HashMap> topicMapList = new ArrayList<>();
+        for (int i = 0; i < topics.size(); i++) {
+            HashMap<String, Object> hash = convertChannelTopicToMapList(topics.get(i));
+            topicMapList.add(hash);
+        }
+
+        return topicMapList;
     }
 
     static ArrayList<HashMap> convertChannelTagToMapList(ArrayList<ChannelTag> channelTags) throws JSONException {
