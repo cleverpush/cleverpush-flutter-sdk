@@ -34,7 +34,7 @@ class CPTopic extends JSONStringRepresentable {
     if (json.containsKey('customData')) {
       final value = json['customData'];
       if (value is Map) {
-        this.customData = Map<String, dynamic>.from(value as Map);
+        this.customData = Map<String, dynamic>.from(value);
       }
     }
   }
