@@ -116,14 +116,3 @@ class CPTopic extends JSONStringRepresentable {
 
   String jsonRepresentation() => convertToJsonString(this.toMap());
 }
-
-/*
-*
-*   private String id;
-  private String name;
-  private String parentTopicId;
-  private Boolean defaultUnchecked;
-  private String fcmBroadcastTopic;
-  private String externalId;
-  private Map<String, String> customData;
-* */

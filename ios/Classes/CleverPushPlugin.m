@@ -295,7 +295,7 @@
     NSMutableArray *availableTopics = [NSMutableArray new];
     [CleverPush getAvailableTopics:^(NSArray *channelTopics_) {
         for (CPChannelTopic *topic in channelTopics_) {
-            NSDictionary *dict = [self convertChannelTopicToDictionary:topic];
+            NSDictionary *dict = [self dictionaryWithPropertiesOfObject:topic];
             [availableTopics addObject:dict];
         }
         result(availableTopics);
@@ -576,47 +576,6 @@
     NSString *notificationId = call.arguments[@"notificationId"];
     BOOL notificationRead = [CleverPush getNotificationRead:notificationId];
     result([NSNumber numberWithBool:notificationRead]);
-}
-
-- (NSDictionary *)convertChannelTopicToDictionary:(id)topic {
-    NSMutableDictionary *dict = [NSMutableDictionary new];
-
-    id topicId = nil;
-    @try { topicId = [topic valueForKey:@"id"]; } @catch (NSException *e) {}
-    if (!topicId) {
-        @try { topicId = [topic valueForKey:@"_id"]; } @catch (NSException *e) {}
-    }
-    if (!topicId) {
-        @try { topicId = [topic valueForKey:@"topicId"]; } @catch (NSException *e) {}
-    }
-    if (topicId) { dict[@"id"] = topicId; }
-
-    id name = nil;
-    @try { name = [topic valueForKey:@"name"]; } @catch (NSException *e) {}
-    if (name) { dict[@"name"] = name; }
-
-    id parentTopicId = nil;
-    @try { parentTopicId = [topic valueForKey:@"parentTopicId"]; } @catch (NSException *e) {}
-    if (parentTopicId) { dict[@"parentTopicId"] = parentTopicId; }
-
-    id defaultUnchecked = nil;
-    @try { defaultUnchecked = [topic valueForKey:@"defaultUnchecked"]; } @catch (NSException *e) {}
-    if (defaultUnchecked) { dict[@"defaultUnchecked"] = defaultUnchecked; }
-
-    id fcmBroadcastTopic = nil;
-    @try { fcmBroadcastTopic = [topic valueForKey:@"fcmBroadcastTopic"]; } @catch (
-            NSException *e) {}
-    if (fcmBroadcastTopic) { dict[@"fcmBroadcastTopic"] = fcmBroadcastTopic; }
-
-    id externalId = nil;
-    @try { externalId = [topic valueForKey:@"externalId"]; } @catch (NSException *e) {}
-    if (externalId) { dict[@"externalId"] = externalId; }
-
-    id customData = nil;
-    @try { customData = [topic valueForKey:@"customData"]; } @catch (NSException *e) {}
-    if (customData) { dict[@"customData"] = customData; }
-
-    return dict;
 }
 
 - (NSDictionary *)dictionaryWithPropertiesOfObject:(id)obj {
