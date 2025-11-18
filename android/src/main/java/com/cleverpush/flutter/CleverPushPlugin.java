@@ -293,12 +293,15 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         CleverPush.getInstance(context).subscribe(new SubscribedCallbackListener() {
             @Override
             public void onSuccess(String subscriptionId) {
+                handleSubscriptionResult(true, subscriptionId, null);
                 replySuccess(result, subscriptionId);
             }
 
             @Override
             public void onFailure(Throwable exception) {
-                replySuccess(result, "");
+                String errorMessage = exception.getMessage() != null ? exception.getMessage() : "Unknown subscription error";
+                handleSubscriptionResult(false, null, errorMessage);
+                replySuccess(result, errorMessage);
             }
         }, this.activity);
     }
@@ -726,6 +729,15 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         HashMap<String, Object> hash = new HashMap<>();
         hash.put("subscriptionId", subscriptionId);
         invokeMethodOnUiThread("CleverPush#handleSubscribed", hash);
+        handleSubscriptionResult(true, subscriptionId, null);
+    }
+
+    private void handleSubscriptionResult(boolean success, String subscriptionId, String failureMessage) {
+        HashMap<String, Object> hash = new HashMap<>();
+        hash.put("success", success);
+        hash.put("subscriptionId", subscriptionId);
+        hash.put("failureMessage", failureMessage);
+        invokeMethodOnUiThread("CleverPush#handleSubscriptionResult", hash);
     }
 
     @Override

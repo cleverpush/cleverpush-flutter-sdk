@@ -190,9 +190,12 @@
 - (void)subscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     dispatch_async(dispatch_get_main_queue(), ^{
         [CleverPush subscribe:^(NSString *subscriptionId) {
+            [self handleSubscriptionResult:YES subscriptionId:subscriptionId failureMessage:nil];
             result(subscriptionId);
         } failure:^(NSError *error) {
-            result(@"");
+            NSString *errorMessage = error.localizedDescription ?: @"Unknown subscription error";
+            [self handleSubscriptionResult:NO subscriptionId:nil failureMessage:errorMessage];
+            result(errorMessage);
         }];
     });
 }
@@ -500,6 +503,17 @@
     resultDict[@"subscriptionId"] = result;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
+        [self handleSubscriptionResult:YES subscriptionId:result failureMessage:nil];
+    });
+}
+
+- (void)handleSubscriptionResult:(BOOL)success subscriptionId:(NSString *)subscriptionId failureMessage:(NSString *)failureMessage {
+    NSMutableDictionary *resultDict = [NSMutableDictionary new];
+    resultDict[@"success"] = @(success);
+    resultDict[@"subscriptionId"] = subscriptionId;
+    resultDict[@"failureMessage"] = failureMessage;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.channel invokeMethod:@"CleverPush#handleSubscriptionResult" arguments:resultDict];
     });
 }
 
