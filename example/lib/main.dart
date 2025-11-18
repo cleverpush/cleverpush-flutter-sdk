@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:cleverpush_flutter/cleverpush_flutter.dart';
+
 import 'package:cleverpush_flutter/cleverpush_chat_view.dart';
+import 'package:cleverpush_flutter/cleverpush_flutter.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -183,12 +184,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _getAvailableTopics() async {
-    var topicIds = await CleverPush.shared.getAvailableTopics();
-    if (topicIds.isNotEmpty) {
-      print(topicIds[0]);
+    var topics = await CleverPush.shared.getAvailableTopics();
+    if (topics.isNotEmpty) {
+      print(topics[0]);
     }
     this.setState(() {
-      _debugLabelString = topicIds.length.toString();
+      _debugLabelString = topics.length.toString();
     });
   }
 
