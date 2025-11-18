@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("zETeJFCgzbcfeLdaJ", true);
+    await CleverPush.shared.init("CHANNEL_ID", true);
 
     CleverPush.shared.enableAppBanners();
 
@@ -185,58 +185,11 @@ class _MyAppState extends State<MyApp> {
 
   void _getAvailableTopics() async {
     var topics = await CleverPush.shared.getAvailableTopics();
-    String topicIdsString = "";
-    for (var i = 0; i < topics.length; i++) {
-      if (topicIdsString.isEmpty) {
-        print(topics[i].name ?? topics[i].id);
-      } else {
-        print(topics[i].name ?? topics[i].id);
-      }
+    if (topics.isNotEmpty) {
+      print(topics[0]);
     }
     this.setState(() {
       _debugLabelString = topics.length.toString();
-    });
-  }
-
-  void _demoTopicModelMethods() async {
-    final topics = await CleverPush.shared.getAvailableTopics();
-    if (topics.isEmpty) {
-      this.setState(() {
-        _debugLabelString = 'No topics available';
-      });
-      return;
-    }
-
-    final t = topics.first;
-
-    // toString
-    final toStringValue = t.toString();
-
-    // jsonRepresentation
-    final jsonStr = t.jsonRepresentation();
-
-    // toMap
-    final map = t.toMap();
-
-    // copyWith
-    final renamed = t.copyWith(name: '${t.name ?? t.id ?? 'Topic'} (Copy)');
-
-    // equality + hashCode (via Set uniqueness)
-    final same = CPTopic.fromMap(t.toMap());
-    final equals = t == same;
-    final uniqueCount = {t, same}.length;
-
-    // copyWith with customData change
-    final withCustom = t.copyWith(customData: {'sample': 1});
-
-    this.setState(() {
-      _debugLabelString = 'toString: $toStringValue\n'
-          'json: $jsonStr\n'
-          'map.keys: ${map.keys.toList()}\n'
-          'copyWith.name: ${renamed.name}\n'
-          'equalsClone: $equals\n'
-          'uniqueInSet: $uniqueCount\n'
-          'customData: ${withCustom.customData}';
     });
   }
 
@@ -389,10 +342,6 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Get Available Topics", _getAvailableTopics, true)
-                    ]),
-                    new TableRow(children: [
-                      new CleverPushButton("Demo Topic Model Methods",
-                          _demoTopicModelMethods, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(
