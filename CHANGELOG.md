@@ -1,3 +1,8 @@
+## 1.24.26 (18.11.2025)
+* Implemented `SubscriptionHandler` to provide success and failure results during the subscription flow.
+* Added a `CPTopic` class for topics, including implementations for `hashCode`, `equals`, `toString`, `copyWith`, and additional helper methods.
+* Updated native iOS + Android SDKs
+
 ## 1.24.25 (16.09.2025)
 * Updated native iOS + Android SDKs
 
