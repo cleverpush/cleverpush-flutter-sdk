@@ -21,6 +21,8 @@ class CPTopic extends JSONStringRepresentable {
     }
     if (json.containsKey('parentTopicId')) {
       this.parentTopicId = json['parentTopicId'] as String?;
+    } else if (json.containsKey('parentTopic')) {
+      this.parentTopicId = json['parentTopic'] as String?;
     }
     if (json.containsKey('defaultUnchecked')) {
       this.defaultUnchecked = json['defaultUnchecked'] as bool?;
