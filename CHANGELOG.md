@@ -1,3 +1,7 @@
+## 1.24.29 (22.12.2025)
+* Fixed a CPTopic mapping issue (parentTopic on iOS vs parentTopicId on Android) to ensure compatibility with both payloads.
+* Updated native iOS + Android SDKs
+
 ## 1.24.28 (05.12.2025)
 * Updated native iOS + Android SDKs
 
