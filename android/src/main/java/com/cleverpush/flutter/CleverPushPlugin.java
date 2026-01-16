@@ -202,6 +202,10 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
           this.removeNotification(call, result);
         } else if (call.method.contentEquals("CleverPush#clearNotificationsFromNotificationCenter")) {
           this.clearNotificationsFromNotificationCenter(call, result);
+        } else if (call.method.contentEquals("CleverPush#setHandleUniversalLinksInAppForDomains")) {
+          replySuccess(result, null);
+        } else if (call.method.contentEquals("CleverPush#getHandleUniversalLinksInAppForDomains")) {
+          replySuccess(result, null);
         } else {
             replyNotImplemented(result);
         }

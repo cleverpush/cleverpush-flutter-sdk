@@ -150,6 +150,10 @@
         [self removeNotification:call withResult:result];
     else if ([@"CleverPush#clearNotificationsFromNotificationCenter" isEqualToString:call.method])
         [self clearNotificationsFromNotificationCenter:call withResult:result];
+    else if ([@"CleverPush#setHandleUniversalLinksInAppForDomains" isEqualToString:call.method])
+        [self setHandleUniversalLinksInAppForDomains:call withResult:result];
+    else if ([@"CleverPush#getHandleUniversalLinksInAppForDomains" isEqualToString:call.method])
+        [self getHandleUniversalLinksInAppForDomains:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -613,6 +617,21 @@
         [center removeAllDeliveredNotifications];
         result(nil);
     });
+}
+
+- (void)setHandleUniversalLinksInAppForDomains:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    id domainsArg = call.arguments[@"domains"];
+    NSArray<NSString *> *domains = nil;
+    if (domainsArg != nil && ![domainsArg isKindOfClass:[NSNull class]]) {
+        domains = (NSArray<NSString *> *)domainsArg;
+    }
+    [CleverPush setHandleUniversalLinksInAppForDomains:domains];
+    result(nil);
+}
+
+- (void)getHandleUniversalLinksInAppForDomains:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSArray<NSString *> *domains = [CleverPush getHandleUniversalLinksInAppForDomains];
+    result(domains);
 }
 
 - (NSDictionary *)dictionaryWithPropertiesOfObject:(id)obj {
