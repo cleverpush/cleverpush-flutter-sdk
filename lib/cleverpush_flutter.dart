@@ -286,6 +286,21 @@ class CleverPush {
     });
   }
 
+  Future<void> removeNotification(String notificationId, {
+    bool removeFromNotificationCenter = false,}) {
+    return _channel.invokeMethod(
+      'CleverPush#removeNotification',
+      {
+        'notificationId': notificationId,
+        'removeFromNotificationCenter': removeFromNotificationCenter,
+      },
+    );
+  }
+
+  Future<dynamic> clearNotificationsFromNotificationCenter() async {
+    return await _channel.invokeMethod("CleverPush#clearNotificationsFromNotificationCenter");
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (

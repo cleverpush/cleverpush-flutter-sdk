@@ -14,6 +14,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _debugLabelString = "";
   bool _isInitialized = false;
+  String? _lastOpenedNotificationId;
 
   @override
   void initState() {
@@ -29,6 +30,8 @@ class _MyAppState extends State<MyApp> {
 
     CleverPush.shared
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
+      _lastOpenedNotificationId = result.notification?.id;
+      print("_lastOpenedNotificationId: $_lastOpenedNotificationId");
       this.setState(() {
         _debugLabelString =
             "Notification received: \n${result.notification!.jsonRepresentation().replaceAll("\\n", "\n")}";
@@ -161,6 +164,42 @@ class _MyAppState extends State<MyApp> {
     this.setState(() {
       _debugLabelString = remoteNotifications.length.toString();
     });
+  }
+
+  void _removeNotification() async {
+    final notificationId = _lastOpenedNotificationId;
+    if (notificationId == null || notificationId.isEmpty) {
+      print('No last opened notification ID available');
+      return;
+    }
+
+    try {
+      await CleverPush.shared.removeNotification(notificationId);
+      print('Notification removed: $notificationId');
+    } catch (e) {
+      print('Failed to remove notification: $e');
+    }
+  }
+
+  void _removeFromNotificationCenter() async {
+    final notificationId = _lastOpenedNotificationId;
+    if (notificationId == null || notificationId.isEmpty) {
+      print('No last opened notification ID available');
+      return;
+    }
+
+    try {
+      await CleverPush.shared.removeNotification(
+        notificationId, removeFromNotificationCenter: true,
+      );
+      print('Notification removed: $notificationId');
+    } catch (e) {
+      print('Failed to remove notification: $e');
+    }
+  }
+
+  void _clearNotificationsFromNotificationCenter() {
+    CleverPush.shared.clearNotificationsFromNotificationCenter();
   }
 
   void _getSubscriptionTopics() async {
@@ -330,6 +369,18 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton("Get Remote Notifications",
                           _getNotificationsWithApi, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Remove Notification", _removeNotification, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Remove Notification from Local and Center", _removeFromNotificationCenter, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Clear All Notifications From Notification Center", _clearNotificationsFromNotificationCenter, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(

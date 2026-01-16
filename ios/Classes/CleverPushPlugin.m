@@ -3,6 +3,7 @@
 #import "CPStoryViewFlutter.h"
 #import "UIColor+HexString.h"
 #import <objc/runtime.h>
+#import <UserNotifications/UserNotifications.h>
 
 @interface CleverPushPlugin ()
 
@@ -145,6 +146,10 @@
         [self setNotificationRead:call withResult:result];
     else if ([@"CleverPush#getNotificationRead" isEqualToString:call.method])
         [self getNotificationRead:call withResult:result];
+    else if ([@"CleverPush#removeNotification" isEqualToString:call.method])
+        [self removeNotification:call withResult:result];
+    else if ([@"CleverPush#clearNotificationsFromNotificationCenter" isEqualToString:call.method])
+        [self clearNotificationsFromNotificationCenter:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -590,6 +595,24 @@
     NSString *notificationId = call.arguments[@"notificationId"];
     BOOL notificationRead = [CleverPush getNotificationRead:notificationId];
     result([NSNumber numberWithBool:notificationRead]);
+}
+
+- (void)removeNotification:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSString *notificationId = call.arguments[@"notificationId"];
+    BOOL removeFromCenter = NO;
+    if (call.arguments[@"removeFromNotificationCenter"] != nil) {
+        removeFromCenter = [call.arguments[@"removeFromNotificationCenter"] boolValue];
+    }
+    [CleverPush removeNotification:notificationId removeFromNotificationCenter:removeFromCenter];
+    result(nil);
+}
+
+- (void)clearNotificationsFromNotificationCenter:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center removeAllDeliveredNotifications];
+        result(nil);
+    });
 }
 
 - (NSDictionary *)dictionaryWithPropertiesOfObject:(id)obj {
