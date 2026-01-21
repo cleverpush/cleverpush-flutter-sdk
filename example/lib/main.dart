@@ -168,6 +168,7 @@ class _MyAppState extends State<MyApp> {
   void _removeNotification() async {
     final notificationId = _lastOpenedNotificationId;
     if (notificationId == null || notificationId.isEmpty) {
+      print('No last received notification ID available');
       return;
     }
 
@@ -182,6 +183,7 @@ class _MyAppState extends State<MyApp> {
   void _removeFromNotificationCenter() async {
     final notificationId = _lastOpenedNotificationId;
     if (notificationId == null || notificationId.isEmpty) {
+      print('No last received notification ID available');
       return;
     }
 
