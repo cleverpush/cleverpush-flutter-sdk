@@ -14,7 +14,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _debugLabelString = "";
   bool _isInitialized = false;
-  String? _lastOpenedNotificationId;
+  String? _lastReceivedNotificationId;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
 
     CleverPush.shared
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
-      _lastOpenedNotificationId = result.notification?.id;
+      _lastReceivedNotificationId = result.notification?.id;
       this.setState(() {
         _debugLabelString =
             "Notification received: \n${result.notification!.jsonRepresentation().replaceAll("\\n", "\n")}";
@@ -166,7 +166,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _removeNotification() async {
-    final notificationId = _lastOpenedNotificationId;
+    final notificationId = _lastReceivedNotificationId;
     if (notificationId == null || notificationId.isEmpty) {
       print('No last received notification ID available');
       return;
@@ -181,7 +181,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _removeFromNotificationCenter() async {
-    final notificationId = _lastOpenedNotificationId;
+    final notificationId = _lastReceivedNotificationId;
     if (notificationId == null || notificationId.isEmpty) {
       print('No last received notification ID available');
       return;
