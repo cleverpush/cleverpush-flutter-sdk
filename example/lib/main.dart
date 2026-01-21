@@ -31,7 +31,6 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared
         .setNotificationReceivedHandler((CPNotificationReceivedResult result) {
       _lastOpenedNotificationId = result.notification?.id;
-      print("_lastOpenedNotificationId: $_lastOpenedNotificationId");
       this.setState(() {
         _debugLabelString =
             "Notification received: \n${result.notification!.jsonRepresentation().replaceAll("\\n", "\n")}";
@@ -169,7 +168,6 @@ class _MyAppState extends State<MyApp> {
   void _removeNotification() async {
     final notificationId = _lastOpenedNotificationId;
     if (notificationId == null || notificationId.isEmpty) {
-      print('No last opened notification ID available');
       return;
     }
 
@@ -184,7 +182,6 @@ class _MyAppState extends State<MyApp> {
   void _removeFromNotificationCenter() async {
     final notificationId = _lastOpenedNotificationId;
     if (notificationId == null || notificationId.isEmpty) {
-      print('No last opened notification ID available');
       return;
     }
 
