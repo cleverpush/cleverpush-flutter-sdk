@@ -114,8 +114,6 @@
         [self enableAppBanners:call withResult:result];
     else if ([@"CleverPush#disableAppBanners" isEqualToString:call.method])
         [self disableAppBanners:call withResult:result];
-    else if ([@"CleverPush#initNotificationOpenedHandlerParams" isEqualToString:call.method])
-        [self initNotificationOpenedHandlerParams];
     else if ([@"CleverPush#enableDevelopmentMode" isEqualToString:call.method])
         [self enableDevelopmentMode:call withResult:result];
     else if ([@"CleverPush#setLogListener" isEqualToString:call.method])
