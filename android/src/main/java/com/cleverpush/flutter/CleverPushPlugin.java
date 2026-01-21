@@ -1,6 +1,7 @@
 package com.cleverpush.flutter;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.util.Log;
 
@@ -193,10 +194,18 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             this.showAppBanner(call, result);
         } else if (call.method.contentEquals("CleverPush#setMaximumNotificationCount")) {
             this.setMaximumNotificationCount(call, result);
-        }  else if (call.method.contentEquals("CleverPush#setNotificationRead")) {
+        } else if (call.method.contentEquals("CleverPush#setNotificationRead")) {
             this.setNotificationRead(call, result);
-        }  else if (call.method.contentEquals("CleverPush#getNotificationRead")) {
+        } else if (call.method.contentEquals("CleverPush#getNotificationRead")) {
             this.getNotificationRead(call, result);
+        } else if (call.method.contentEquals("CleverPush#removeNotification")) {
+            this.removeNotification(call, result);
+        } else if (call.method.contentEquals("CleverPush#clearNotificationsFromNotificationCenter")) {
+            this.clearNotificationsFromNotificationCenter(call, result);
+        } else if (call.method.contentEquals("CleverPush#setHandleUniversalLinksInAppForDomains")) { // iOS-only no-op on Android
+            replySuccess(result, null);
+        } else if (call.method.contentEquals("CleverPush#getHandleUniversalLinksInAppForDomains")) { // iOS-only no-op on Android
+            replySuccess(result, null);
         } else {
             replyNotImplemented(result);
         }
@@ -784,4 +793,27 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         Boolean notificationRead = CleverPush.getInstance(context).getNotificationRead(notificationId);
         replySuccess(result, notificationRead);
     }
+
+    private void removeNotification(MethodCall call, final Result result) {
+        String notificationId = call.argument("notificationId");
+        Boolean removeFromNotificationCenter = call.argument("removeFromNotificationCenter");
+        if (removeFromNotificationCenter == null) {
+            removeFromNotificationCenter = false;
+        }
+        CleverPush.getInstance(context).removeNotification(notificationId, removeFromNotificationCenter);
+        replySuccess(result, null);
+    }
+
+  public void clearNotificationsFromNotificationCenter(MethodCall call, final Result result) {
+      try {
+          NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+          if (notificationManager != null) {
+              notificationManager.cancelAll();
+          }
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+      replySuccess(result, null);
+  }
+
 }

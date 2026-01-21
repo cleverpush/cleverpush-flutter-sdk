@@ -3,6 +3,7 @@
 #import "CPStoryViewFlutter.h"
 #import "UIColor+HexString.h"
 #import <objc/runtime.h>
+#import <UserNotifications/UserNotifications.h>
 
 @interface CleverPushPlugin ()
 
@@ -113,8 +114,6 @@
         [self enableAppBanners:call withResult:result];
     else if ([@"CleverPush#disableAppBanners" isEqualToString:call.method])
         [self disableAppBanners:call withResult:result];
-    else if ([@"CleverPush#initNotificationOpenedHandlerParams" isEqualToString:call.method])
-        [self initNotificationOpenedHandlerParams];
     else if ([@"CleverPush#enableDevelopmentMode" isEqualToString:call.method])
         [self enableDevelopmentMode:call withResult:result];
     else if ([@"CleverPush#setLogListener" isEqualToString:call.method])
@@ -145,6 +144,14 @@
         [self setNotificationRead:call withResult:result];
     else if ([@"CleverPush#getNotificationRead" isEqualToString:call.method])
         [self getNotificationRead:call withResult:result];
+    else if ([@"CleverPush#removeNotification" isEqualToString:call.method])
+        [self removeNotification:call withResult:result];
+    else if ([@"CleverPush#clearNotificationsFromNotificationCenter" isEqualToString:call.method])
+        [self clearNotificationsFromNotificationCenter:call withResult:result];
+    else if ([@"CleverPush#setHandleUniversalLinksInAppForDomains" isEqualToString:call.method])
+        [self setHandleUniversalLinksInAppForDomains:call withResult:result];
+    else if ([@"CleverPush#getHandleUniversalLinksInAppForDomains" isEqualToString:call.method])
+        [self getHandleUniversalLinksInAppForDomains:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -590,6 +597,39 @@
     NSString *notificationId = call.arguments[@"notificationId"];
     BOOL notificationRead = [CleverPush getNotificationRead:notificationId];
     result([NSNumber numberWithBool:notificationRead]);
+}
+
+- (void)removeNotification:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSString *notificationId = call.arguments[@"notificationId"];
+    BOOL removeFromCenter = NO;
+    if (call.arguments[@"removeFromNotificationCenter"] != nil) {
+        removeFromCenter = [call.arguments[@"removeFromNotificationCenter"] boolValue];
+    }
+    [CleverPush removeNotification:notificationId removeFromNotificationCenter:removeFromCenter];
+    result(nil);
+}
+
+- (void)clearNotificationsFromNotificationCenter:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center removeAllDeliveredNotifications];
+        result(nil);
+    });
+}
+
+- (void)setHandleUniversalLinksInAppForDomains:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    id domainsArg = call.arguments[@"domains"];
+    NSArray<NSString *> *domains = nil;
+    if (domainsArg != nil && ![domainsArg isKindOfClass:[NSNull class]]) {
+        domains = (NSArray<NSString *> *)domainsArg;
+    }
+    [CleverPush setHandleUniversalLinksInAppForDomains:domains];
+    result(nil);
+}
+
+- (void)getHandleUniversalLinksInAppForDomains:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSArray<NSString *> *domains = [CleverPush getHandleUniversalLinksInAppForDomains];
+    result(domains);
 }
 
 - (NSDictionary *)dictionaryWithPropertiesOfObject:(id)obj {

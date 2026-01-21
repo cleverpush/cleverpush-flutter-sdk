@@ -286,6 +286,38 @@ class CleverPush {
     });
   }
 
+  Future<void> removeNotification(String notificationId, {
+    bool removeFromNotificationCenter = false,}) {
+    return _channel.invokeMethod(
+      'CleverPush#removeNotification',
+      {
+        'notificationId': notificationId,
+        'removeFromNotificationCenter': removeFromNotificationCenter,
+      },
+    );
+  }
+
+  Future<dynamic> clearNotificationsFromNotificationCenter() async {
+    return await _channel.invokeMethod("CleverPush#clearNotificationsFromNotificationCenter");
+  }
+
+  Future<void> setHandleUniversalLinksInAppForDomains(List<String>? domains) async {
+    await _channel.invokeMethod(
+      'CleverPush#setHandleUniversalLinksInAppForDomains',
+      {'domains': domains},
+    );
+  }
+
+  Future<List<String>?> getHandleUniversalLinksInAppForDomains() async {
+    final dynamic result = await _channel.invokeMethod(
+      'CleverPush#getHandleUniversalLinksInAppForDomains',
+    );
+    if (result == null) {
+      return null;
+    }
+    return List<String>.from(result as List);
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (
