@@ -1,3 +1,8 @@
+## 1.24.30 (22.01.2026)
+* Implemented `removeNotification(notificationId)`, `removeNotification(notificationId, removeFromNotificationCenter)`, and `clearNotificationsFromNotificationCenter` for notification removal
+* Implemented `setHandleUniversalLinksInAppForDomains` and `getHandleUniversalLinksInAppForDomains` (iOS only)
+* Updated native Android SDK
+
 ## 1.24.29 (22.12.2025)
 * Fixed a CPTopic mapping issue (parentTopic on iOS vs parentTopicId on Android) to ensure compatibility with both payloads.
 * Updated native iOS + Android SDKs
