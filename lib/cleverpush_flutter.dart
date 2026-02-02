@@ -301,6 +301,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#clearNotificationsFromNotificationCenter");
   }
 
+  Future<dynamic> removeAllNotifications() async {
+    return await _channel.invokeMethod("CleverPush#removeAllNotifications");
+  }
+
   Future<void> setHandleUniversalLinksInAppForDomains(List<String>? domains) async {
     await _channel.invokeMethod(
       'CleverPush#setHandleUniversalLinksInAppForDomains',

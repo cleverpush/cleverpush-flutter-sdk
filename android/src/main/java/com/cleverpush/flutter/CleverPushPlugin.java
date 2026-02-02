@@ -206,6 +206,8 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             replySuccess(result, null);
         } else if (call.method.contentEquals("CleverPush#getHandleUniversalLinksInAppForDomains")) { // iOS-only no-op on Android
             replySuccess(result, null);
+        } else if (call.method.contentEquals("CleverPush#removeAllNotifications")) {
+          this.removeAllNotifications(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -804,16 +806,20 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         replySuccess(result, null);
     }
 
-  public void clearNotificationsFromNotificationCenter(MethodCall call, final Result result) {
-      try {
-          NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-          if (notificationManager != null) {
-              notificationManager.cancelAll();
-          }
-      } catch (Exception e) {
-          e.printStackTrace();
-      }
-      replySuccess(result, null);
-  }
+    public void clearNotificationsFromNotificationCenter(MethodCall call, final Result result) {
+        try {
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                notificationManager.cancelAll();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        replySuccess(result, null);
+    }
 
+    private void removeAllNotifications(MethodCall call, final Result result) {
+        CleverPush.getInstance(context).removeAllNotifications();
+        replySuccess(result, null);
+    }
 }
