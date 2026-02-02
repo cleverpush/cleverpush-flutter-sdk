@@ -152,6 +152,8 @@
         [self setHandleUniversalLinksInAppForDomains:call withResult:result];
     else if ([@"CleverPush#getHandleUniversalLinksInAppForDomains" isEqualToString:call.method])
         [self getHandleUniversalLinksInAppForDomains:call withResult:result];
+    else if ([@"CleverPush#removeAllNotifications" isEqualToString:call.method])
+        [self removeAllNotifications:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -630,6 +632,11 @@
 - (void)getHandleUniversalLinksInAppForDomains:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSArray<NSString *> *domains = [CleverPush getHandleUniversalLinksInAppForDomains];
     result(domains);
+}
+
+- (void)removeAllNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush removeAllNotifications];
+    result(nil);
 }
 
 - (NSDictionary *)dictionaryWithPropertiesOfObject:(id)obj {
