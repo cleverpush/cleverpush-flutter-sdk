@@ -1,3 +1,7 @@
+## 1.24.31 (02.02.2026)
+* Added a new method `removeAllNotifications` to clear all locally stored notifications.
+* Updated native iOS + Android SDKs
+
 ## 1.24.30 (22.01.2026)
 * Implemented `removeNotification(notificationId)`, `removeNotification(notificationId, removeFromNotificationCenter)`, and `clearNotificationsFromNotificationCenter` for notification removal
 * Implemented `setHandleUniversalLinksInAppForDomains` and `getHandleUniversalLinksInAppForDomains` (iOS only)
