@@ -1,3 +1,6 @@
+## 1.24.32 (16.02.2026)
+* Updated native iOS + Android SDKs
+
 ## 1.24.31 (02.02.2026)
 * Added a new method `removeAllNotifications` to clear all locally stored notifications.
 * Updated native iOS + Android SDKs
