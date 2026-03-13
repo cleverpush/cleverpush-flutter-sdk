@@ -1,3 +1,8 @@
+## 1.24.33 (13.03.2026)
+* Updated native iOS + Android SDKs
+* Added a new method `setHandleUrlFromSceneDelegate` to configure URL handling from SceneDelegate (iOS only)
+* Fixed the iOS example build by updating CocoaPods/Xcode configuration
+
 ## 1.24.32 (16.02.2026)
 * Updated native iOS + Android SDKs
 
