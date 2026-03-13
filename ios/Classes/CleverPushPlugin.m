@@ -152,6 +152,8 @@
         [self setHandleUniversalLinksInAppForDomains:call withResult:result];
     else if ([@"CleverPush#getHandleUniversalLinksInAppForDomains" isEqualToString:call.method])
         [self getHandleUniversalLinksInAppForDomains:call withResult:result];
+    else if ([@"CleverPush#setHandleUrlFromSceneDelegate" isEqualToString:call.method])
+        [self setHandleUrlFromSceneDelegate:call withResult:result];
     else if ([@"CleverPush#removeAllNotifications" isEqualToString:call.method])
         [self removeAllNotifications:call withResult:result];
     else
@@ -632,6 +634,12 @@
 - (void)getHandleUniversalLinksInAppForDomains:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     NSArray<NSString *> *domains = [CleverPush getHandleUniversalLinksInAppForDomains];
     result(domains);
+}
+
+- (void)setHandleUrlFromSceneDelegate:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    BOOL handleFromSceneDelegate = [call.arguments[@"handleFromSceneDelegate"] boolValue];
+    [CleverPush setHandleUrlFromSceneDelegate:handleFromSceneDelegate];
+    result(nil);
 }
 
 - (void)removeAllNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {

@@ -322,6 +322,13 @@ class CleverPush {
     return List<String>.from(result as List);
   }
 
+  Future<void> setHandleUrlFromSceneDelegate(bool handleFromSceneDelegate) async {
+    await _channel.invokeMethod(
+      'CleverPush#setHandleUrlFromSceneDelegate',
+      {'handleFromSceneDelegate': handleFromSceneDelegate},
+    );
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (
