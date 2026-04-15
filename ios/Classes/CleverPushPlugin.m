@@ -8,8 +8,10 @@
 @interface CleverPushPlugin ()
 
 @property (strong, nonatomic) CPNotificationOpenedResult *coldStartOpenResult;
-@property (strong, nonatomic) NSDictionary *launchOptions;
+@property (strong, nonatomic) NSDictionary *appLaunchOptions;
+@property (strong, nonatomic) NSMutableArray *pendingNotificationEvents;
 @property (nonatomic) BOOL hasNotificationOpenedHandler;
+@property (nonatomic) BOOL dartInitialized;
 
 @end
 
@@ -40,11 +42,28 @@
     [registrar registerViewFactory:storyFactory withId:@"cleverpush-story-view"];
 
     [registrar addApplicationDelegate:CleverPushPlugin.sharedInstance];
+    
+    NSString *storedChannelId = [[NSUserDefaults standardUserDefaults]
+                                 stringForKey:@"CleverPush_CHANNEL_ID"];
+    if (storedChannelId && storedChannelId.length > 0) {
+        __weak CleverPushPlugin *weakSelf = CleverPushPlugin.sharedInstance;
+        [CleverPush initWithLaunchOptions:nil channelId:storedChannelId
+               handleNotificationReceived:^(CPNotificationReceivedResult *result) {
+            [weakSelf handleNotificationReceived:result];
+        }      handleNotificationOpened:^(CPNotificationOpenedResult *result) {
+            if (!weakSelf.hasNotificationOpenedHandler) {
+                weakSelf.coldStartOpenResult = result;
+            }
+        } handleSubscribed:nil autoRegister:NO handleInitialized:nil];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    CleverPushPlugin.sharedInstance.launchOptions = launchOptions;
-
+    CleverPushPlugin.sharedInstance.appLaunchOptions = launchOptions;
+    NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotif && [CleverPush channelId]) {
+        [CleverPush handleSilentNotificationReceived:application UserInfo:remoteNotif completionHandler:nil];
+    }
     return YES;
 }
 
@@ -167,7 +186,12 @@
         autoRegister = [call.arguments[@"autoRegister"] boolValue];
     }
 
-    [CleverPush initWithLaunchOptions:self.launchOptions channelId:channelId
+    if (channelId && channelId.length > 0) {
+        [[NSUserDefaults standardUserDefaults] setObject:channelId forKey:@"CleverPush_CHANNEL_ID"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+
+    [CleverPush initWithLaunchOptions:self.appLaunchOptions channelId:channelId
            handleNotificationReceived:^(CPNotificationReceivedResult *result) {
         [self handleNotificationReceived:result];
     } handleNotificationOpened:^(CPNotificationOpenedResult *result) {
@@ -194,6 +218,9 @@
     [CleverPush setAppBannerOpenedCallback:^(CPAppBannerAction *action) {
         [self handleAppBannerOpened:action];
     }];
+    
+    self.dartInitialized = YES;
+    [self deliverPendingNotificationEvents];
 
     result(nil);
 }
@@ -219,7 +246,7 @@
 }
 
 - (void)isSubscribed:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    bool subscribed = [CleverPush isSubscribed];
+    BOOL subscribed = [CleverPush isSubscribed];
     result([NSNumber numberWithBool:subscribed]);
 }
 
@@ -531,9 +558,40 @@
 - (void)handleNotificationReceived:(CPNotificationReceivedResult *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
+    
+    if (!self.dartInitialized) {
+        if (!self.pendingNotificationEvents) {
+            self.pendingNotificationEvents = [NSMutableArray new];
+        }
+        [self.pendingNotificationEvents addObject:resultDict];
+        return;
+    }
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:resultDict];
     });
+}
+
+- (void)deliverPendingNotificationEvents {
+    if (!self.pendingNotificationEvents || self.pendingNotificationEvents.count == 0) return;
+    NSArray *events = [self.pendingNotificationEvents copy];
+    [self.pendingNotificationEvents removeAllObjects];
+    for (NSDictionary *dict in events) {
+        [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:dict];
+    }
+}
+
+- (BOOL)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    if ([CleverPush channelId]) {
+        BOOL startedBackgroundJob = [CleverPush handleSilentNotificationReceived:application UserInfo:userInfo completionHandler:completionHandler];
+        if (!startedBackgroundJob) {
+            completionHandler(UIBackgroundFetchResultNewData);
+        }
+        return YES;
+    } else {
+        completionHandler(UIBackgroundFetchResultNoData);
+        return NO;
+    }
 }
 
 - (void)handleNotificationOpened:(CPNotificationOpenedResult *)result {
