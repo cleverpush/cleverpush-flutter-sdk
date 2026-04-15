@@ -585,7 +585,7 @@
     if ([CleverPush channelId]) {
         BOOL startedBackgroundJob = [CleverPush handleSilentNotificationReceived:application UserInfo:userInfo completionHandler:completionHandler];
         if (!startedBackgroundJob) {
-            completionHandler(UIBackgroundFetchResultNewData);
+            completionHandler(UIBackgroundFetchResultNoData);
         }
         return YES;
     } else {
