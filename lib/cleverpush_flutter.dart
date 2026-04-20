@@ -216,6 +216,14 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#setSubscriptionAttribute", {'id': id, 'value': value});
   }
 
+  Future<dynamic> removeSubscriptionAttribute(String attributeId) async {
+    return await _channel.invokeMethod("CleverPush#removeSubscriptionAttribute", {'id': attributeId});
+  }
+
+  Future<dynamic> removeSubscriptionAttributes(List<String> attributeIds) async {
+    return await _channel.invokeMethod("CleverPush#removeSubscriptionAttributes", {'ids': attributeIds});
+  }
+
   Future<dynamic> setTrackingConsentRequired(bool consentRequired) async {
     return await _channel.invokeMethod("CleverPush#setTrackingConsentRequired", {'consentRequired': consentRequired});
   }
