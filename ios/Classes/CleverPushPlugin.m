@@ -175,6 +175,8 @@
         [self setHandleUrlFromSceneDelegate:call withResult:result];
     else if ([@"CleverPush#removeAllNotifications" isEqualToString:call.method])
         [self removeAllNotifications:call withResult:result];
+    else if ([@"CleverPush#markSubscriptionAsTest" isEqualToString:call.method])
+        [self markSubscriptionAsTest:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -703,6 +705,14 @@
 - (void)removeAllNotifications:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush removeAllNotifications];
     result(nil);
+}
+
+- (void)markSubscriptionAsTest:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush markSubscriptionAsTestOnSuccess:^(NSDictionary * _Nullable res) {
+        result(nil);
+    } onFailure:^(NSError * _Nullable error) {
+        result(nil);
+    }];
 }
 
 - (NSDictionary *)dictionaryWithPropertiesOfObject:(id)obj {
