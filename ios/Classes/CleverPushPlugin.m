@@ -115,6 +115,10 @@
         [self getSubscriptionAttribute:call withResult:result];
     else if ([@"CleverPush#setSubscriptionAttribute" isEqualToString:call.method])
         [self setSubscriptionAttribute:call withResult:result];
+    else if ([@"CleverPush#removeSubscriptionAttribute" isEqualToString:call.method])
+        [self removeSubscriptionAttribute:call withResult:result];
+    else if ([@"CleverPush#removeSubscriptionAttributes" isEqualToString:call.method])
+        [self removeSubscriptionAttributes:call withResult:result];
     else if ([@"CleverPush#initNotificationOpenedHandlerParams" isEqualToString:call.method])
         [self initNotificationOpenedHandlerParams];
     else if ([@"CleverPush#setShowNotificationsInForeground" isEqualToString:call.method])
@@ -413,6 +417,25 @@
 
 - (void)getSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     result([CleverPush getSubscriptionAttribute:call.arguments[@"id"]]);
+}
+
+- (void)removeSubscriptionAttribute:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSString *attributeId = call.arguments[@"id"];
+    [CleverPush removeSubscriptionAttribute:attributeId callback:^(NSString * _Nullable attr) {
+        result(nil);
+    } onFailure:^(NSError * _Nullable error) {
+        result(nil);
+    }];
+}
+
+- (void)removeSubscriptionAttributes:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    NSArray *ids = call.arguments[@"ids"];
+    if (ids == nil) {
+        result(nil);
+        return;
+    }
+    [CleverPush removeSubscriptionAttributes:ids];
+    result(nil);
 }
 
 - (void)getAvailableAttributes:(FlutterMethodCall *)call withResult:(FlutterResult)result {
