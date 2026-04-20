@@ -210,6 +210,8 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             replySuccess(result, null);
         } else if (call.method.contentEquals("CleverPush#removeAllNotifications")) {
           this.removeAllNotifications(call, result);
+        } else if (call.method.contentEquals("CleverPush#markSubscriptionAsTest")) {
+            this.markSubscriptionAsTest(call, result);
         } else {
             replyNotImplemented(result);
         }
@@ -823,5 +825,19 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
     private void removeAllNotifications(MethodCall call, final Result result) {
         CleverPush.getInstance(context).removeAllNotifications();
         replySuccess(result, null);
+    }
+
+    private void markSubscriptionAsTest(MethodCall call, final Result result) {
+        CleverPush.getInstance(context).markSubscriptionAsTest(new CompletionFailureListener() {
+            @Override
+            public void onComplete() {
+                replySuccess(result, null);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                replySuccess(result, null);
+            }
+        });
     }
 }
