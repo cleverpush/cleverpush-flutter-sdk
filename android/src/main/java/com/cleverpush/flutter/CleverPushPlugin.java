@@ -249,10 +249,14 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             }
         };
 
+        final boolean[] replied = {false};
         cleverPush.init(channelId, receivedListener, this, this, autoRegister, new InitializeListener() {
             @Override
             public void onInitialized() {
-                replySuccess(reply, null);
+                if (!replied[0]) {
+                    replySuccess(reply, null);
+                    replied[0] = true;
+                }
             }
 
             @Override
@@ -267,9 +271,16 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             @Override
             public void onInitializationFailure(Throwable throwable) {
                 InitializeListener.super.onInitializationFailure(throwable);
+                if (!replied[0]) {
+                    replySuccess(reply, null);
+                    replied[0] = true;
+                }
+                String failureMessage = (throwable != null && throwable.getMessage() != null)
+                        ? throwable.getMessage()
+                        : "Initialization failed with unknown error.";
                 HashMap<String, Object> hash = new HashMap<>();
                 hash.put("success", false);
-                hash.put("failureMessage", throwable.getMessage() != null ? throwable.getMessage() : "Initialization failed with unknown error.");
+                hash.put("failureMessage", failureMessage);
                 invokeMethodOnUiThread("CleverPush#handleInitialized", hash);
             }
         });
