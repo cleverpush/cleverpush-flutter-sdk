@@ -28,6 +28,7 @@
 
 + (void)registerWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
     CleverPushPlugin.sharedInstance.hasNotificationOpenedHandler = NO;
+    CleverPushPlugin.sharedInstance.registrar = registrar;
 
     CleverPushPlugin.sharedInstance.channel = [FlutterMethodChannel
                                                methodChannelWithName:@"CleverPush"
@@ -56,6 +57,14 @@
             }
         } handleSubscribed:nil autoRegister:NO handleInitialized:nil];
     }
+
+    if ([registrar respondsToSelector:@selector(addSceneDelegate:)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+        [registrar performSelector:@selector(addSceneDelegate:)
+                        withObject:CleverPushPlugin.sharedInstance];
+#pragma clang diagnostic pop
+    }
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -65,6 +74,52 @@
         [CleverPush handleSilentNotificationReceived:application UserInfo:remoteNotif completionHandler:nil];
     }
     return YES;
+}
+
+- (BOOL)scene:(UIScene *)scene
+    willConnectToSession:(UISceneSession *)session
+                 options:(UISceneConnectionOptions *)connectionOptions API_AVAILABLE(ios(13.0)) {
+    NSDictionary *launchOptions = [self connectionOptionsToLaunchOptions:connectionOptions];
+    if (launchOptions) {
+        CleverPushPlugin.sharedInstance.appLaunchOptions = launchOptions;
+    }
+    return YES;
+}
+
+- (NSDictionary *)connectionOptionsToLaunchOptions:(UISceneConnectionOptions *)connectionOptions API_AVAILABLE(ios(13.0)) {
+    NSMutableDictionary *launchOptions = [NSMutableDictionary dictionary];
+
+    if (connectionOptions.notificationResponse) {
+        NSDictionary *userInfo = connectionOptions.notificationResponse.notification.request.content.userInfo;
+        if (userInfo) {
+            launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] = userInfo;
+        }
+    }
+
+    for (UIOpenURLContext *urlContext in connectionOptions.URLContexts) {
+        if (urlContext.URL) {
+            launchOptions[UIApplicationLaunchOptionsURLKey] = urlContext.URL;
+            if (urlContext.options.sourceApplication) {
+                launchOptions[UIApplicationLaunchOptionsSourceApplicationKey] =
+                    urlContext.options.sourceApplication;
+            }
+        }
+        break;
+    }
+
+    if (connectionOptions.shortcutItem) {
+        launchOptions[UIApplicationLaunchOptionsShortcutItemKey] = connectionOptions.shortcutItem;
+    }
+
+    NSUserActivity *userActivity = connectionOptions.userActivities.anyObject;
+    if (userActivity) {
+        launchOptions[UIApplicationLaunchOptionsUserActivityDictionaryKey] = @{
+            UIApplicationLaunchOptionsUserActivityTypeKey: userActivity.activityType,
+            @"UIApplicationLaunchOptionsUserActivityKey": userActivity
+        };
+    }
+
+    return launchOptions.count > 0 ? [NSDictionary dictionaryWithDictionary:launchOptions] : nil;
 }
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
@@ -275,15 +330,27 @@
 }
 
 - (UIWindow *)keyWindow {
-    UIWindow *foundWindow = nil;
-    NSArray *windows = [[UIApplication sharedApplication] windows];
-    for (UIWindow *window in windows) {
-        if (window.isKeyWindow) {
-            foundWindow = window;
-            break;
+    if (@available(iOS 15.0, *)) {
+        UIWindow *keyWindow = self.registrar.viewController.view.window.windowScene.keyWindow;
+        if (keyWindow) return keyWindow;
+    }
+
+    if (@available(iOS 13.0, *)) {
+        for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
+            if (![scene isKindOfClass:[UIWindowScene class]]) continue;
+            UIWindowScene *windowScene = (UIWindowScene *)scene;
+            if (windowScene.activationState == UISceneActivationStateForegroundActive) {
+                for (UIWindow *window in windowScene.windows) {
+                    if (window.isKeyWindow) return window;
+                }
+            }
         }
     }
-    return foundWindow;
+
+    for (UIWindow *window in [UIApplication sharedApplication].windows) {
+        if (window.isKeyWindow) return window;
+    }
+    return nil;
 }
 
 - (void)showTopicsDialog:(FlutterMethodCall *)call withResult:(FlutterResult)result {
