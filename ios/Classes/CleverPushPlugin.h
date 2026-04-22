@@ -1,7 +1,8 @@
 #import <Flutter/Flutter.h>
 #import <CleverPush/CleverPush.h>
 
-#ifdef FlutterSceneLifeCycleDelegate
+#if __has_include(<Flutter/FlutterSceneLifeCycle.h>)
+#import <Flutter/FlutterSceneLifeCycle.h>
 @interface CleverPushPlugin : NSObject<FlutterPlugin, FlutterSceneLifeCycleDelegate>
 #else
 @interface CleverPushPlugin : NSObject<FlutterPlugin>
