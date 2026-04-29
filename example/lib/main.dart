@@ -318,6 +318,10 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _handleMarkSubscriptionAsTest() {
+    CleverPush.shared.markSubscriptionAsTest();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -365,6 +369,10 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Is Subscribed?", _handleIsSubscribed, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Mark Subscription As Test", _handleMarkSubscriptionAsTest, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(
