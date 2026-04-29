@@ -153,6 +153,10 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
             this.getSubscriptionAttribute(call, result);
         } else if (call.method.contentEquals("CleverPush#setSubscriptionAttribute")) {
             this.setSubscriptionAttribute(call, result);
+        } else if (call.method.contentEquals("CleverPush#removeSubscriptionAttribute")) {
+            this.removeSubscriptionAttribute(call, result);
+        } else if (call.method.contentEquals("CleverPush#removeSubscriptionAttributes")) {
+            this.removeSubscriptionAttributes(call, result);
         } else if (call.method.contentEquals("CleverPush#setShowNotificationsInForeground")) {
             this.setShowNotificationsInForeground(call, result);
         } else if (call.method.contentEquals("CleverPush#setTrackingConsentRequired")) {
@@ -685,6 +689,32 @@ public class CleverPushPlugin extends FlutterMessengerResponder implements Metho
         String value = call.argument("value");
         CleverPush.getInstance(context).setSubscriptionAttribute(id, value);
         replySuccess(result, null);
+    }
+
+    private void removeSubscriptionAttribute(MethodCall call, final Result result) {
+        String id = call.argument("id");
+        CleverPush.getInstance(context).removeSubscriptionAttribute(id, new CompletionFailureListener() {
+            @Override
+            public void onComplete() {
+                replySuccess(result, null);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                replySuccess(result, null);
+            }
+        });
+    }
+
+    private void removeSubscriptionAttributes(MethodCall call, final Result result) {
+        List<String> ids = call.argument("ids");
+        if (ids == null) {
+            replySuccess(result, null);
+            return;
+        }
+        String[] attributeIds = new String[ids.size()];
+        attributeIds = ids.toArray(attributeIds);
+        CleverPush.getInstance(context).removeSubscriptionAttributes(attributeIds);
     }
 
     private void setShowNotificationsInForeground(MethodCall call, final Result result) {

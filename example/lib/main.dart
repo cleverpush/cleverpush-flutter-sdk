@@ -292,6 +292,19 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.pullSubscriptionAttributeValue("ATTRIBUTE_KEY","ATTRIBUTE_VALUE");
   }
 
+  void _setSubscriptionAttribute() async {
+    CleverPush.shared.setSubscriptionAttribute("ATTRIBUTE_KEY", "ATTRIBUTE_VALUE");
+  }
+
+  void _removeSubscriptionAttribute() async {
+    CleverPush.shared.removeSubscriptionAttribute("ATTRIBUTE_KEY");
+  }
+
+  void _removeSubscriptionAttributes() async {
+    List<String> attributeIds = ['ATTRIBUTE_KEY1', 'ATTRIBUTE_KEY2'];
+    CleverPush.shared.removeSubscriptionAttributes(attributeIds);
+  }
+
   void _showAppBanner() async {
     CleverPush.shared.showAppBanner("APP_BANNER_ID");
   }
@@ -432,6 +445,18 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Track Follow-Up Event", _triggerFollowUpEvent, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Set Subscription Attribute", _setSubscriptionAttribute, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Remove Subscription Attribute", _removeSubscriptionAttribute, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Remove Subscription Attributes", _removeSubscriptionAttributes, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(
