@@ -308,7 +308,21 @@
 - (void)updateDarkModeState {
     BOOL isDarkMode = NO;
     if (@available(iOS 13.0, *)) {
-        UIWindow *window = [UIApplication sharedApplication].windows.firstObject;
+        UIWindow *window = nil;
+
+        for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
+            if (![scene isKindOfClass:[UIWindowScene class]]) continue;
+            UIWindowScene *windowScene = (UIWindowScene *)scene;
+            if (windowScene.activationState == UISceneActivationStateForegroundActive) {
+                window = windowScene.windows.firstObject;
+                break;
+            }
+        }
+
+        if (!window) {
+            window = [UIApplication sharedApplication].windows.firstObject;
+        }
+
         if (window) {
             isDarkMode = (window.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark);
         }
