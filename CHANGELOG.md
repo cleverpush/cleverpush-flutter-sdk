@@ -1,5 +1,11 @@
-## 1.24.34 (29.04.2026)
+## 1.24.35 (21.05.2026)
 * Updated native iOS + Android SDKs
+
+## 1.24.34 (29.04.2026)
+* Updated native iOS and Android SDKs
+* Added markSubscriptionAsTest method to mark a subscription as test
+* Added removeSubscriptionAttribute method to remove an attribute from the subscription
+* Added UIScene lifecycle support for iOS in Flutter
 
 ## 1.24.33 (13.03.2026)
 * Updated native iOS + Android SDKs
