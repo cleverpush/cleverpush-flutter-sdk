@@ -1,7 +1,7 @@
-#import "CleverPushPlugin.h"
-#import "CPChatViewFlutter.h"
-#import "CPStoryViewFlutter.h"
-#import "UIColor+HexString.h"
+#import "include/cleverpush_flutter/CleverPushPlugin.h"
+#import "include/cleverpush_flutter/CPChatViewFlutter.h"
+#import "include/cleverpush_flutter/CPStoryViewFlutter.h"
+#import "include/cleverpush_flutter/UIColor+HexString.h"
 #import <objc/runtime.h>
 #import <UserNotifications/UserNotifications.h>
 

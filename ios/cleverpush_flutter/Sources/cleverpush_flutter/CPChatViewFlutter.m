@@ -1,6 +1,10 @@
-#import "CPChatViewFlutter.h"
-#import "CleverPushPlugin.h"
+#import "include/cleverpush_flutter/CPChatViewFlutter.h"
+#import "include/cleverpush_flutter/CleverPushPlugin.h"
+#if __has_include(<CleverPush/CPChatView.h>)
 #import <CleverPush/CPChatView.h>
+#else
+#import <CPChatView.h>
+#endif
 #import <UIKit/UIKit.h>
 
 @implementation CPChatViewFlutterFactory {

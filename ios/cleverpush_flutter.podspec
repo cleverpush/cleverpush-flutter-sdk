@@ -7,8 +7,8 @@ Pod::Spec.new do |s|
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'CleverPush GmbH' => 'info@cleverpush.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files = 'cleverpush_flutter/Sources/cleverpush_flutter/**/*.{h,m}'
+  s.public_header_files = 'cleverpush_flutter/Sources/cleverpush_flutter/include/**/*.h'
   s.dependency 'Flutter'
   s.dependency 'CleverPush', '1.34.45'
   s.static_framework = true

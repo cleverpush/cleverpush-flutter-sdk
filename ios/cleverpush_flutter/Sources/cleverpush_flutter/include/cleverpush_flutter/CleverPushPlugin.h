@@ -1,5 +1,9 @@
 #import <Flutter/Flutter.h>
+#if __has_include(<CleverPush/CleverPush.h>)
 #import <CleverPush/CleverPush.h>
+#else
+#import <CleverPush.h>
+#endif
 
 #if __has_include(<Flutter/FlutterSceneLifeCycle.h>)
 #import <Flutter/FlutterSceneLifeCycle.h>
