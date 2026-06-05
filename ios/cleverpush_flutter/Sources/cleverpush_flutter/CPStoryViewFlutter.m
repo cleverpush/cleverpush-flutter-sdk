@@ -1,8 +1,12 @@
-#import "CPStoryViewFlutter.h"
-#import "CleverPushPlugin.h"
+#import "include/cleverpush_flutter/CPStoryViewFlutter.h"
+#import "include/cleverpush_flutter/CleverPushPlugin.h"
+#if __has_include(<CleverPush/CPStoryView.h>)
 #import <CleverPush/CPStoryView.h>
+#else
+#import <CPStoryView.h>
+#endif
 #import <UIKit/UIKit.h>
-#import "UIColor+HexString.h"
+#import "include/cleverpush_flutter/UIColor+HexString.h"
 
 @implementation CPStoryViewFlutterFactory {
     NSObject<FlutterBinaryMessenger>* _messenger;
