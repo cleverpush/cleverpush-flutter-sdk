@@ -322,6 +322,10 @@ class _MyAppState extends State<MyApp> {
     CleverPush.shared.markSubscriptionAsTest();
   }
 
+  void _handleUnmarkSubscriptionAsTest() {
+    CleverPush.shared.unmarkSubscriptionAsTest();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -373,6 +377,10 @@ class _MyAppState extends State<MyApp> {
                     new TableRow(children: [
                       new CleverPushButton(
                           "Mark Subscription As Test", _handleMarkSubscriptionAsTest, true)
+                    ]),
+                    new TableRow(children: [
+                      new CleverPushButton(
+                          "Unmark Subscription As Test", _handleUnmarkSubscriptionAsTest, true)
                     ]),
                     new TableRow(children: [
                       new CleverPushButton(

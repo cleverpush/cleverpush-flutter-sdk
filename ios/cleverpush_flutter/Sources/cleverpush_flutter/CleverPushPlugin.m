@@ -236,6 +236,8 @@
         [self removeAllNotifications:call withResult:result];
     else if ([@"CleverPush#markSubscriptionAsTest" isEqualToString:call.method])
         [self markSubscriptionAsTest:call withResult:result];
+    else if ([@"CleverPush#unmarkSubscriptionAsTest" isEqualToString:call.method])
+        [self unmarkSubscriptionAsTest:call withResult:result];
     else
         result(FlutterMethodNotImplemented);
 }
@@ -799,6 +801,14 @@
 
 - (void)markSubscriptionAsTest:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush markSubscriptionAsTestOnSuccess:^(NSDictionary * _Nullable res) {
+        result(nil);
+    } onFailure:^(NSError * _Nullable error) {
+        result(nil);
+    }];
+}
+
+- (void)unmarkSubscriptionAsTest:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush unmarkSubscriptionAsTestOnSuccess:^(NSDictionary * _Nullable res) {
         result(nil);
     } onFailure:^(NSError * _Nullable error) {
         result(nil);

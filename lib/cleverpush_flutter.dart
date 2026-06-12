@@ -341,6 +341,10 @@ class CleverPush {
     return await _channel.invokeMethod("CleverPush#markSubscriptionAsTest");
   }
 
+  Future<dynamic> unmarkSubscriptionAsTest() async {
+    return await _channel.invokeMethod("CleverPush#unmarkSubscriptionAsTest");
+  }
+
   Future<Null> _handleMethod(MethodCall call) async {
     try {
       if (
