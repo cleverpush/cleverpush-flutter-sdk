@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.source_files = 'cleverpush_flutter/Sources/cleverpush_flutter/**/*.{h,m}'
   s.public_header_files = 'cleverpush_flutter/Sources/cleverpush_flutter/include/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'CleverPush', '1.34.45'
+  s.dependency 'CleverPush', '1.34.47'
   s.static_framework = true
   s.ios.deployment_target = '8.0'
 end
