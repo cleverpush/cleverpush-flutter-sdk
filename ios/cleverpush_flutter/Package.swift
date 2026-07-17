@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "cleverpush-flutter", targets: ["cleverpush_flutter"])
     ],
     dependencies: [
-        .package(url: "https://github.com/CleverPush/CleverPush-iOS-SDK.git", exact: "1.34.50")
+        .package(url: "https://github.com/CleverPush/CleverPush-iOS-SDK.git", exact: "1.34.51")
     ],
     targets: [
         .target(
