@@ -178,6 +178,8 @@
         [self initNotificationOpenedHandlerParams];
     else if ([@"CleverPush#setShowNotificationsInForeground" isEqualToString:call.method])
         [self setShowNotificationsInForeground:call withResult:result];
+    else if ([@"CleverPush#setProvisionalNotificationAuthorizationEnabled" isEqualToString:call.method])
+        [self setProvisionalNotificationAuthorizationEnabled:call withResult:result];
     else if ([@"CleverPush#setTrackingConsentRequired" isEqualToString:call.method])
         [self setTrackingConsentRequired:call withResult:result];
     else if ([@"CleverPush#setTrackingConsent" isEqualToString:call.method])
@@ -527,6 +529,11 @@
     result(nil);
 }
 
+- (void)setProvisionalNotificationAuthorizationEnabled:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [CleverPush setProvisionalNotificationAuthorizationEnabled:[call.arguments[@"enabled"] boolValue]];
+    result(nil);
+}
+    
 - (void)setTrackingConsentRequired:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [CleverPush setTrackingConsentRequired:[call.arguments[@"consentRequired"] boolValue]];
     result(nil);
