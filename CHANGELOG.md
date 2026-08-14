@@ -1,3 +1,7 @@
+## 1.24.40 (14.08.2026)
+* Added `setProvisionalNotificationAuthorizationEnabled` method to support Apple's provisional push authorisation.
+* Updated native iOS + Android SDKs
+
 ## 1.24.39 (17.07.2026)
 * Updated native iOS + Android SDKs
 
