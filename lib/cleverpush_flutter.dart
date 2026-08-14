@@ -48,6 +48,10 @@ class CleverPush {
     await _channel.invokeMethod('CleverPush#setShowNotificationsInForeground', {'show': show});
   }
 
+  Future<void> setProvisionalNotificationAuthorizationEnabled(bool enabled) async {
+    await _channel.invokeMethod('CleverPush#setProvisionalNotificationAuthorizationEnabled', {'enabled': enabled});
+  }
+  
   void setNotificationReceivedHandler(NotificationReceivedHandler handler) {
     _notificationReceivedHandler = handler;
   }
