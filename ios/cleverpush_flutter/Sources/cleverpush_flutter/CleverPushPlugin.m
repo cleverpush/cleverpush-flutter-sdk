@@ -291,16 +291,18 @@
 }
 
 - (void)subscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        __block BOOL hasCompletedResult = NO;
-        void (^completeResult)(id) = ^(id value) {
+    __block BOOL hasCompletedResult = NO;
+    void (^completeResult)(id) = ^(id value) {
+        dispatch_async(dispatch_get_main_queue(), ^{
             if (hasCompletedResult) {
                 return;
             }
             hasCompletedResult = YES;
             result(value);
-        };
+        });
+    };
 
+    dispatch_async(dispatch_get_main_queue(), ^{
         [CleverPush subscribe:^(NSString *subscriptionId) {
             [self handleSubscriptionResult:YES subscriptionId:subscriptionId failureMessage:nil];
             completeResult(subscriptionId);
@@ -333,11 +335,11 @@
 - (void)getSubscriptionId:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     __block BOOL hasCompletedResult = NO;
     void (^completeResult)(id) = ^(id value) {
-        if (hasCompletedResult) {
-            return;
-        }
-        hasCompletedResult = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (hasCompletedResult) {
+                return;
+            }
+            hasCompletedResult = YES;
             result(value);
         });
     };
@@ -350,11 +352,11 @@
 - (void)getDeviceToken:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     __block BOOL hasCompletedResult = NO;
     void (^completeResult)(id) = ^(id value) {
-        if (hasCompletedResult) {
-            return;
-        }
-        hasCompletedResult = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (hasCompletedResult) {
+                return;
+            }
+            hasCompletedResult = YES;
             result(value);
         });
     };
