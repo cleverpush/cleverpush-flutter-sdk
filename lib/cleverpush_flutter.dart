@@ -363,15 +363,14 @@ class CleverPush {
         && this._subscribedHandler != null
       ) {
         this._subscribedHandler!(call.arguments['subscriptionId']);
-      } else if (
-        call.method == 'CleverPush#handleSubscriptionResult'
-        && this._subscriptionHandler != null
-      ) {
-        this._subscriptionHandler!(
-          call.arguments['success'] ?? false, 
-          call.arguments['subscriptionId'], 
-          call.arguments['failureMessage']
-        );
+      } else if (call.method == 'CleverPush#handleSubscriptionResult') {
+        if (this._subscriptionHandler != null) {
+          this._subscriptionHandler!(
+            call.arguments['success'] ?? false,
+            call.arguments['subscriptionId'],
+            call.arguments['failureMessage']
+          );
+        }
       } else if (
         call.method == 'CleverPush#handleNotificationOpened'
         && this._notificationOpenedHandler != null
