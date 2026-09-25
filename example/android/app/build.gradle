@@ -15,10 +15,6 @@ android {
         targetCompatibility JavaVersion.VERSION_17
 	}
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
     lintOptions {
         disable 'InvalidPackage'
     }
@@ -31,7 +27,6 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-
     }
 
     buildTypes {
@@ -41,6 +36,12 @@ android {
                     'proguard-android.txt'),
                     'proguard-rules.pro'
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 
