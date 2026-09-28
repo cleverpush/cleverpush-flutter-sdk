@@ -291,14 +291,25 @@
 }
 
 - (void)subscribe:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    __block BOOL hasCompletedResult = NO;
+    void (^completeResult)(id) = ^(id value) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (hasCompletedResult) {
+                return;
+            }
+            hasCompletedResult = YES;
+            result(value);
+        });
+    };
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [CleverPush subscribe:^(NSString *subscriptionId) {
             [self handleSubscriptionResult:YES subscriptionId:subscriptionId failureMessage:nil];
-            result(subscriptionId);
+            completeResult(subscriptionId);
         } failure:^(NSError *error) {
             NSString *errorMessage = error.localizedDescription ?: @"Unknown subscription error";
             [self handleSubscriptionResult:NO subscriptionId:nil failureMessage:errorMessage];
-            result(errorMessage);
+            completeResult(errorMessage);
         }];
     });
 }
@@ -322,19 +333,40 @@
 }
 
 - (void)getSubscriptionId:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    __block BOOL hasCompletedResult = NO;
+    void (^completeResult)(id) = ^(id value) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (hasCompletedResult) {
+                return;
+            }
+            hasCompletedResult = YES;
+            result(value);
+        });
+    };
+
     [CleverPush getSubscriptionId:^(NSString *subscriptionId) {
-        result(subscriptionId);
+        completeResult(subscriptionId);
     }];
 }
 
 - (void)getDeviceToken:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    __block BOOL hasCompletedResult = NO;
+    void (^completeResult)(id) = ^(id value) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (hasCompletedResult) {
+                return;
+            }
+            hasCompletedResult = YES;
+            result(value);
+        });
+    };
+
     [CleverPush getDeviceToken:^(NSString *deviceToken) {
         if (deviceToken != nil && ![deviceToken isKindOfClass:[NSNull class]] &&
             ![deviceToken isEqualToString:@""]) {
-            result(deviceToken);
+            completeResult(deviceToken);
         } else {
-            NSString *errorMessage = @"Device token is null or empty";
-            result(errorMessage);
+            completeResult(@"Device token is null or empty");
         }
     }];
 }
