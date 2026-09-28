@@ -1,3 +1,7 @@
+## 1.24.41 (28.09.2026)
+* Updated native iOS + Android SDKs
+* Prevent double FlutterResult replies on iOS subscribe/token APIs and drop unused handleSubscriptionResult warnings.
+
 ## 1.24.40 (14.08.2026)
 * Added `setProvisionalNotificationAuthorizationEnabled` method to support Apple's provisional push authorisation.
 * Updated native iOS + Android SDKs
