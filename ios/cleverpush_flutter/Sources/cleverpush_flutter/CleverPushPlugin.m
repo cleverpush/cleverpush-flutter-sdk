@@ -13,6 +13,7 @@
 @property (nonatomic) BOOL hasNotificationOpenedHandler;
 @property (nonatomic) BOOL dartInitialized;
 @property (nonatomic) BOOL engineAttached;
+@property (strong, nonatomic) NSHashTable<id<FlutterPluginRegistrar>> *attachedRegistrars;
 
 @end
 
@@ -28,15 +29,21 @@
 }
 
 + (void)registerWithRegistrar:(NSObject <FlutterPluginRegistrar> *)registrar {
-    CleverPushPlugin.sharedInstance.hasNotificationOpenedHandler = NO;
-    CleverPushPlugin.sharedInstance.registrar = registrar;
+    CleverPushPlugin *plugin = CleverPushPlugin.sharedInstance;
+    plugin.hasNotificationOpenedHandler = NO;
+    plugin.registrar = registrar;
 
-    CleverPushPlugin.sharedInstance.channel = [FlutterMethodChannel
-                                               methodChannelWithName:@"CleverPush"
-                                               binaryMessenger:[registrar messenger]];
-    CleverPushPlugin.sharedInstance.engineAttached = YES;
+    if (!plugin.attachedRegistrars) {
+        plugin.attachedRegistrars = [NSHashTable weakObjectsHashTable];
+    }
+    [plugin.attachedRegistrars addObject:registrar];
 
-    [registrar addMethodCallDelegate:CleverPushPlugin.sharedInstance channel:CleverPushPlugin.sharedInstance.channel];
+    plugin.channel = [FlutterMethodChannel
+                      methodChannelWithName:@"CleverPush"
+                      binaryMessenger:[registrar messenger]];
+    plugin.engineAttached = YES;
+
+    [registrar addMethodCallDelegate:plugin channel:plugin.channel];
 
     CPChatViewFlutterFactory *factory = [[CPChatViewFlutterFactory alloc] initWithMessenger:registrar.messenger];
     [registrar registerViewFactory:factory withId:@"cleverpush-chat-view"];
@@ -70,6 +77,14 @@
 }
 
 - (void)detachFromEngineForRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+    [self.attachedRegistrars removeObject:registrar];
+    if (self.attachedRegistrars.count > 0) {
+        if (self.registrar == registrar) {
+            self.registrar = nil;
+        }
+        return;
+    }
+
     [CleverPush setLogListener:nil];
     self.engineAttached = NO;
     self.dartInitialized = NO;
