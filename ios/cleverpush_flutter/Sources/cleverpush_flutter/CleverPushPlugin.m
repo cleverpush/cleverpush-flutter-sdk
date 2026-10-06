@@ -12,6 +12,7 @@
 @property (strong, nonatomic) NSMutableArray *pendingNotificationEvents;
 @property (nonatomic) BOOL hasNotificationOpenedHandler;
 @property (nonatomic) BOOL dartInitialized;
+@property (nonatomic) BOOL engineAttached;
 
 @end
 
@@ -33,6 +34,7 @@
     CleverPushPlugin.sharedInstance.channel = [FlutterMethodChannel
                                                methodChannelWithName:@"CleverPush"
                                                binaryMessenger:[registrar messenger]];
+    CleverPushPlugin.sharedInstance.engineAttached = YES;
 
     [registrar addMethodCallDelegate:CleverPushPlugin.sharedInstance channel:CleverPushPlugin.sharedInstance.channel];
 
@@ -65,6 +67,31 @@
                         withObject:CleverPushPlugin.sharedInstance];
 #pragma clang diagnostic pop
     }
+}
+
+- (void)detachFromEngineForRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+    [CleverPush setLogListener:nil];
+    self.engineAttached = NO;
+    self.dartInitialized = NO;
+    self.channel = nil;
+    self.registrar = nil;
+}
+
+- (BOOL)isEngineAttached {
+    return self.engineAttached && self.channel != nil;
+}
+
+- (void)invokeMethodOnChannel:(NSString *)method arguments:(id)arguments {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self.engineAttached || !self.channel) {
+            return;
+        }
+        @try {
+            [self.channel invokeMethod:method arguments:arguments];
+        } @catch (NSException *exception) {
+            NSLog(@"CleverPush Flutter: skipped %@ (%@)", method, exception.reason);
+        }
+    });
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -618,9 +645,7 @@
     [CleverPush setLogListener:^(NSString *message) {
         NSMutableDictionary *resultDict = [NSMutableDictionary new];
         resultDict[@"message"] = message;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.channel invokeMethod:@"CleverPush#handleLog" arguments:resultDict];
-        });
+        [self invokeMethodOnChannel:@"CleverPush#handleLog" arguments:resultDict];
     }];
     result(nil);
 }
@@ -672,10 +697,8 @@
 - (void)handleSubscribed:(NSString *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"subscriptionId"] = result;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.channel invokeMethod:@"CleverPush#handleSubscribed" arguments:resultDict];
-        [self handleSubscriptionResult:YES subscriptionId:result failureMessage:nil];
-    });
+    [self invokeMethodOnChannel:@"CleverPush#handleSubscribed" arguments:resultDict];
+    [self handleSubscriptionResult:YES subscriptionId:result failureMessage:nil];
 }
 
 - (void)handleSubscriptionResult:(BOOL)success subscriptionId:(NSString *)subscriptionId failureMessage:(NSString *)failureMessage {
@@ -683,9 +706,7 @@
     resultDict[@"success"] = @(success);
     resultDict[@"subscriptionId"] = subscriptionId;
     resultDict[@"failureMessage"] = failureMessage;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.channel invokeMethod:@"CleverPush#handleSubscriptionResult" arguments:resultDict];
-    });
+    [self invokeMethodOnChannel:@"CleverPush#handleSubscriptionResult" arguments:resultDict];
 }
 
 - (void)handleNotificationReceived:(CPNotificationReceivedResult *)result {
@@ -700,9 +721,7 @@
         return;
     }
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:resultDict];
-    });
+    [self invokeMethodOnChannel:@"CleverPush#handleNotificationReceived" arguments:resultDict];
 }
 
 - (void)deliverPendingNotificationEvents {
@@ -710,7 +729,7 @@
     NSArray *events = [self.pendingNotificationEvents copy];
     [self.pendingNotificationEvents removeAllObjects];
     for (NSDictionary *dict in events) {
-        [self.channel invokeMethod:@"CleverPush#handleNotificationReceived" arguments:dict];
+        [self invokeMethodOnChannel:@"CleverPush#handleNotificationReceived" arguments:dict];
     }
 }
 
@@ -730,43 +749,33 @@
 - (void)handleNotificationOpened:(CPNotificationOpenedResult *)result {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"notification"] = [self dictionaryWithPropertiesOfObject:result.notification];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.channel invokeMethod:@"CleverPush#handleNotificationOpened" arguments:resultDict];
-    });
+    [self invokeMethodOnChannel:@"CleverPush#handleNotificationOpened" arguments:resultDict];
 }
 
 - (void)handleAppBannerShown:(CPAppBanner *)appBanner {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"appBanner"] = [self dictionaryWithPropertiesOfObject:appBanner];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.channel invokeMethod:@"CleverPush#handleAppBannerShown" arguments:resultDict];
-    });
+    [self invokeMethodOnChannel:@"CleverPush#handleAppBannerShown" arguments:resultDict];
 }
 
 - (void)handleAppBannerOpened:(CPAppBannerAction *)action {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"action"] = [self dictionaryWithPropertiesOfObject:action];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.channel invokeMethod:@"CleverPush#handleAppBannerOpened" arguments:resultDict];
-    });
+    [self invokeMethodOnChannel:@"CleverPush#handleAppBannerOpened" arguments:resultDict];
 }
 
 - (void)handleInitializationResult:(NSString *)failureMessage success:(BOOL)success {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"failureMessage"] = failureMessage;
     resultDict[@"success"] = @(success);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.channel invokeMethod:@"CleverPush#handleInitialized" arguments:resultDict];
-    });
+    [self invokeMethodOnChannel:@"CleverPush#handleInitialized" arguments:resultDict];
 }
 
 - (void)handleSubscriptionTopics:(NSString *)failureMessage success:(BOOL)success {
     NSMutableDictionary *resultDict = [NSMutableDictionary new];
     resultDict[@"failureMessage"] = failureMessage;
     resultDict[@"success"] = @(success);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.channel invokeMethod:@"CleverPush#handleSubscriptionTopics" arguments:resultDict];
-    });
+    [self invokeMethodOnChannel:@"CleverPush#handleSubscriptionTopics" arguments:resultDict];
 }
 
 - (void)showAppBanner:(FlutterMethodCall *)call withResult:(FlutterResult)result {

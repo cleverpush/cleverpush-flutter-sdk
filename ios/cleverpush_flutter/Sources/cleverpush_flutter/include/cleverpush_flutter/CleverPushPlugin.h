@@ -16,5 +16,7 @@
 @property (weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
 
 + (instancetype)sharedInstance;
+- (BOOL)isEngineAttached;
+- (void)invokeMethodOnChannel:(NSString *)method arguments:(id)arguments;
 
 @end
