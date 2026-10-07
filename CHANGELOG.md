@@ -1,3 +1,6 @@
+## 1.24.42 (07.10.2026)
+* Optimized syncSubscription function on explicit subscribe() call for existing subscribers to ensure getSubscriptionTags() returns fresh server data in iOS.
+
 ## 1.24.41 (28.09.2026)
 * Updated native iOS + Android SDKs
 * Prevent double FlutterResult replies on iOS subscribe/token APIs and drop unused handleSubscriptionResult warnings.
