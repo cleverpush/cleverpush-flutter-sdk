@@ -41,9 +41,7 @@
     _chatView = [[CPChatView alloc] initWithFrame:frame urlOpenedCallback:^(NSURL *url) {
       NSMutableDictionary *resultDict = [NSMutableDictionary new];
       resultDict[@"url"] = url.absoluteString;
-      dispatch_async(dispatch_get_main_queue(), ^{
-          [[[CleverPushPlugin sharedInstance] channel] invokeMethod:@"CleverPush#handleChatUrlOpened" arguments:resultDict];
-      });
+      [[CleverPushPlugin sharedInstance] invokeMethodOnChannel:@"CleverPush#handleChatUrlOpened" arguments:resultDict];
     } subscribeCallback:^() {
         
     }];
