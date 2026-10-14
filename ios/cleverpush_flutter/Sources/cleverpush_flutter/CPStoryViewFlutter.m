@@ -281,8 +281,12 @@
             _storyView.openedCallback = ^(NSURL *url, void (^finishedCallback)(void)) {
                 NSString *openedUrl = url.absoluteString ?: @"";
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (self->_channel) {
-                        [self->_channel invokeMethod:@"onOpened" arguments:openedUrl];
+                    if (self->_channel && [[CleverPushPlugin sharedInstance] isEngineAttached]) {
+                        @try {
+                            [self->_channel invokeMethod:@"onOpened" arguments:openedUrl];
+                        } @catch (NSException *exception) {
+                            NSLog(@"CleverPush Flutter: skipped onOpened (%@)", exception.reason);
+                        }
                     }
                     if (finishedCallback) {
                         finishedCallback();
