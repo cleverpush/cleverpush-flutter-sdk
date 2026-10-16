@@ -1,9 +1,16 @@
+## 1.24.43 (16.10.2026)
+* Updated native Android SDK
+* Fixed iOS native-to-Dart callbacks when the FlutterEngine is not running.
+
 ## 1.24.42 (07.10.2026)
-* Optimized syncSubscription function on explicit subscribe() call for existing subscribers to ensure getSubscriptionTags() returns fresh server data in iOS.
+* Updated native iOS SDK
+* Optimized syncSubscription on explicit subscribe() calls for existing subscribers to ensure getSubscriptionTags() returns fresh server data on iOS.
 
 ## 1.24.41 (28.09.2026)
 * Updated native iOS + Android SDKs
 * Prevent double FlutterResult replies on iOS subscribe/token APIs and drop unused handleSubscriptionResult warnings.
+* Migrate example Android project to declarative Flutter Gradle plugins
+* Remove jcenter() so the Android plugin configures on Gradle 9.
 
 ## 1.24.40 (14.08.2026)
 * Added `setProvisionalNotificationAuthorizationEnabled` method to support Apple's provisional push authorisation.
