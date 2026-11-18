@@ -1,3 +1,6 @@
+## 1.24.44 (18.11.2026)
+* Updated native iOS + Android SDKs
+
 ## 1.24.43 (16.10.2026)
 * Updated native Android SDK
 * Fixed iOS native-to-Dart callbacks when the FlutterEngine is not running.
