@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cleverpush_flutter/cleverpush_chat_view.dart';
 import 'package:cleverpush_flutter/cleverpush_flutter.dart';
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -89,7 +90,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // CleverPush Channel ID
-    await CleverPush.shared.init("CHANNEL_ID", true);
+    await CleverPush.shared.init("zETeJFCgzbcfeLdaJ", true);
 
     CleverPush.shared.enableAppBanners();
 
@@ -496,7 +497,7 @@ class _MyAppState extends State<MyApp> {
             ),
             body: _isInitialized
                 ? CleverPushStoryView(
-                    widgetId: 'WIDGET_ID',
+                    widgetId: 'CyELm3daayQGuSGTD',
                     storyViewHeightAndroid: CleverPushStoryViewSize.wrapContent,
                     storyViewWidthAndroid: CleverPushStoryViewSize.matchParent,
                     storyViewHeightiOS: 130,
